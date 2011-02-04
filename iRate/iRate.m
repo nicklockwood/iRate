@@ -16,15 +16,17 @@ NSString * const iRateLastVersionUsedKey = @"iRateLastVersionUsed";
 NSString * const iRateFirstUsedKey = @"iRateFirstUsed";
 NSString * const iRateUseCountKey = @"iRateUseCount";
 NSString * const iRateEventCountKey = @"iRateEventCount";
+NSString * const macAppStoreBundleID = @"com.apple.appstore";
 
 NSString * const iRateiPhoneAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";;
 NSString * const iRateiPadAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i";
-NSString * const iRateMacAppStoreURLFormat = @"http://itunes.apple.com/us/app/app-name/id%i?mt=12&ls=1";
+NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/us/app/mathemagics/id%i?mt=12";
 
 static iRate *sharedInstance = nil;
 
 
 #define SECONDS_IN_A_DAY 86400.0
+#define MAC_APP_STORE_REFRESH_DELAY 1
 
 
 @interface iRate()
@@ -89,7 +91,7 @@ static iRate *sharedInstance = nil;
 		//application name and version
 		self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
 		self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
-
+		
 		//usage settings - these have sensible defaults
 		usesUntilPrompt = 10;
 		eventsUntilPrompt = 10;
@@ -144,7 +146,7 @@ static iRate *sharedInstance = nil;
 {
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-
+	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 	{
 		return [NSURL URLWithString:[NSString stringWithFormat:iRateiPadAppStoreURLFormat, appStoreID]];
@@ -153,7 +155,7 @@ static iRate *sharedInstance = nil;
 	{
 		return [NSURL URLWithString:[NSString stringWithFormat:iRateiPhoneAppStoreURLFormat, appStoreID]];
 	}
-
+	
 #else
 	
 	return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, appStoreID]];
@@ -242,12 +244,12 @@ static iRate *sharedInstance = nil;
 												   delegate:self
 										  cancelButtonTitle:cancelButtonLabel
 										  otherButtonTitles:rateButtonLabel, nil];
-		
+	
 	if (remindButtonLabel)
 	{
 		[alert addButtonWithTitle:remindButtonLabel];
 	}
-		
+	
 	[alert show];
 	[alert release];
 	
@@ -265,7 +267,7 @@ static iRate *sharedInstance = nil;
 								   alternateButton:cancelButtonLabel
 									   otherButton:nil
 						 informativeTextWithFormat:self.message];	
-		
+	
 	if (remindButtonLabel)
 	{
 		[alert addButtonWithTitle:remindButtonLabel];
@@ -364,6 +366,31 @@ static iRate *sharedInstance = nil;
 
 #else
 
+- (void)openAppPageWhenAppStoreLaunched
+{
+	//open app store
+	[[NSWorkspace sharedWorkspace] openURL:[self ratingURL]];
+	
+	//check if app store is running
+    ProcessSerialNumber psn = { kNoProcess, kNoProcess };
+    while (GetNextProcess(&psn) == noErr)
+	{
+        CFDictionaryRef cfDict = ProcessInformationCopyDictionary(&psn,  kProcessDictionaryIncludeAllInformationMask);
+		NSString *bundleID = [(NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
+		if ([macAppStoreBundleID isEqualToString:bundleID])
+		{
+			//open app page
+			[[NSWorkspace sharedWorkspace] performSelector:@selector(openURL:) withObject:[self ratingURL] afterDelay:MAC_APP_STORE_REFRESH_DELAY];
+			CFRelease(cfDict);
+			return;
+		}
+		CFRelease(cfDict);
+    }
+	
+	//try again
+	[self performSelector:@selector(openAppPageWhenAppStoreLaunched) withObject:nil afterDelay:0];
+}
+
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -383,8 +410,9 @@ static iRate *sharedInstance = nil;
 			[defaults setObject:applicationVersion forKey:iRateRatedVersionKey];
 			[defaults synchronize];
 			
-			//go to ratings page			
-			[[NSWorkspace sharedWorkspace] openURL:[self ratingURL]];
+			//launch mac app store
+			[[NSWorkspace sharedWorkspace] launchApplication:macAppStoreBundleID];
+			[self openAppPageWhenAppStoreLaunched];
 			break;
 		}
 		default:
@@ -397,10 +425,10 @@ static iRate *sharedInstance = nil;
 }
 
 #endif
-			 
+
 #pragma mark -
 #pragma mark Public methods
-			 
+
 - (void)logEvent:(BOOL)deferPrompt
 {
 	[self incrementEventCount];
