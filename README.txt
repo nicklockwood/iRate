@@ -33,13 +33,13 @@ appStoreID - This should match the iTunes app ID of your application, which you 
 
 applicationName - This is the name of the app displayed in the iRate alert. It is set automatically from the application's info.plist, but you may wish to override it with a shorter or longer version.
 
-daysUntilPrompt - This is the number of days the user must have had the app installed before they are prompted to rate it. The time is measured from the first time the app is launched.
+daysUntilPrompt - This is the number of days the user must have had the app installed before they are prompted to rate it. The time is measured from the first time the app is launched. This is a floating point value, so it can be used to specify a fractional number of days (e.g. 0.5). The default value is 10 days.
 
-usesUntilPrompt - This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoid the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again. By setting the use count you ensure they are a frequent user. The prompt will appear only after the specified number of days AND uses has been met.
+usesUntilPrompt - This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoid the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again. By setting the use count you ensure they are a frequent user. The prompt will appear only after the specified number of days AND uses has been met. This defaults to 10 uses.
 
-eventsUntilPrompt - For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly. In this case you can manually log significant events and have the prompt appear after a number of events, configured with this setting. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however the prompt will appear if the event OR uses threshold is reached.
+eventsUntilPrompt - For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly. In this case you can manually log significant events and have the prompt appear after a number of events, configured with this setting. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however the prompt will appear if the event OR uses threshold is reached. This defaults to 10 events.
 
-remindPeriod - How long the app should wait before reminding a user to rate after they select the "remind me later" option. A value of zero means the app will remind the user next launch. Note that this value supersedes the other criteria, so the app won't prompt for a rating during the reminder period, even if a new version is released in the meantime.
+remindPeriod - How long the app should wait before reminding a user to rate after they select the "remind me later" option. A value of zero means the app will remind the user next launch. Note that this value supersedes the other criteria, so the app won't prompt for a rating during the reminder period, even if a new version is released in the meantime.  This defaults to 1 day.
 
 messageTitle - The title displayed for the rating prompt.
 
@@ -54,6 +54,16 @@ remindButtonLabel - The button label for the button the user presses if they don
 disabled - Set this to YES to disable the rating prompt. The rating criteria will continue to be tracked, but the prompt will not be displayed while this setting is in effect.
 
 debug - If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use. Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release.
+
+
+Methods
+--------------
+
+Besides configuration, iRate has only one method, which is the following:
+
+- (void)logEvent:(BOOL)deferPrompt;
+
+This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be hown immediately (NO) or if the app will wait until the next launch (YES).
 
 
 Localisation

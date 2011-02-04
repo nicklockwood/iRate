@@ -7,7 +7,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 0;
+		breakpointsEnabled = 1;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -16,6 +16,7 @@
 		dataTipSortType = 0;
 		debuggerPlugin = GDBDebugging;
 		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
 		enableDebugStr = 1;
 		environmentEntries = (
 		);
@@ -23,9 +24,13 @@
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
 		name = iRateMac;
+		savedGlobals = {
+		};
 		showTypeColumn = 0;
 		sourceDirectories = (
 		);
+		variableFormatDictionary = {
+		};
 	};
 	01D0CB4112FC99E100F15064 /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -40,6 +45,64 @@
 	01D0CB4212FC99E100F15064 /* Code sense */ = {
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
+	};
+	01D0CB6312FC9C0D00F15064 /* iRate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 611}}";
+			sepNavSelRange = "{1121, 15}";
+			sepNavVisRange = "{360, 961}";
+		};
+	};
+	01D0CB6412FC9C0D00F15064 /* iRate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 5720}}";
+			sepNavSelRange = "{3437, 1}";
+			sepNavVisRange = "{0, 1125}";
+		};
+	};
+	01D0CBFD12FCAA5A00F15064 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D80F4B6AC300CF3369 /* iRateMacAppDelegate.h */;
+		name = "iRateMacAppDelegate.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 320;
+		vrLoc = 0;
+	};
+	01D0CBFE12FCAA5A00F15064 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */;
+		name = "iRateMacAppDelegate.m: 11";
+		rLen = 0;
+		rLoc = 200;
+		rType = 0;
+		vrLen = 521;
+		vrLoc = 0;
+	};
+	01D0CBFF12FCAA5A00F15064 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */;
+		name = "iRateMacAppDelegate.m: 11";
+		rLen = 0;
+		rLoc = 200;
+		rType = 0;
+		vrLen = 476;
+		vrLoc = 45;
+	};
+	256AC3D80F4B6AC300CF3369 /* iRateMacAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {625, 423}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 320}";
+		};
+	};
+	256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 390}}";
+			sepNavSelRange = "{200, 0}";
+			sepNavVisRange = "{45, 476}";
+		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
@@ -58,9 +121,9 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					364,
+					998,
 					20,
-					48.16259765625,
+					48,
 					43,
 					43,
 					20,
@@ -77,6 +140,11 @@
 			};
 			PBXPerProjectTemplateStateSaveDate = 318544851;
 			PBXWorkspaceStateSaveDate = 318544851;
+		};
+		perUserProjectItems = {
+			01D0CBFD12FCAA5A00F15064 /* PBXTextBookmark */ = 01D0CBFD12FCAA5A00F15064 /* PBXTextBookmark */;
+			01D0CBFE12FCAA5A00F15064 /* PBXTextBookmark */ = 01D0CBFE12FCAA5A00F15064 /* PBXTextBookmark */;
+			01D0CBFF12FCAA5A00F15064 /* PBXTextBookmark */ = 01D0CBFF12FCAA5A00F15064 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 01D0CB4112FC99E100F15064 /* Source Control */;
 		userBuildSettings = {
