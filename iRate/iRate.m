@@ -168,7 +168,7 @@ static iRate *sharedInstance = nil;
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSUInteger uses = [defaults integerForKey:iRateUseCountKey];
-	[defaults setInteger:uses++ forKey:iRateUseCountKey];
+	[defaults setInteger:uses+1 forKey:iRateUseCountKey];
 	[defaults synchronize];
 }
 
@@ -176,7 +176,7 @@ static iRate *sharedInstance = nil;
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSUInteger events = [defaults integerForKey:iRateEventCountKey];
-	[defaults setInteger:events++ forKey:iRateEventCountKey];
+	[defaults setInteger:events+1 forKey:iRateEventCountKey];
 	[defaults synchronize];
 }
 
