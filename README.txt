@@ -63,7 +63,7 @@ Besides configuration, iRate has only one method, which is the following:
 
 - (void)logEvent:(BOOL)deferPrompt;
 
-This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be hown immediately (NO) or if the app will wait until the next launch (YES).
+This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
 
 
 Localisation
