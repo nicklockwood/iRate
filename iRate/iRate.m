@@ -20,7 +20,7 @@ NSString * const macAppStoreBundleID = @"com.apple.appstore";
 
 NSString * const iRateiPhoneAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";;
 NSString * const iRateiPadAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i";
-NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/us/app/mathemagics/id%i?mt=12";
+NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%i";
 
 static iRate *sharedInstance = nil;
 
@@ -168,7 +168,7 @@ static iRate *sharedInstance = nil;
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSUInteger uses = [defaults integerForKey:iRateUseCountKey];
-	[defaults setInteger:uses++ forKey:iRateUseCountKey];
+	[defaults setInteger:uses+1 forKey:iRateUseCountKey];
 	[defaults synchronize];
 }
 
@@ -176,7 +176,7 @@ static iRate *sharedInstance = nil;
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSUInteger events = [defaults integerForKey:iRateEventCountKey];
-	[defaults setInteger:events++ forKey:iRateEventCountKey];
+	[defaults setInteger:events+1 forKey:iRateEventCountKey];
 	[defaults synchronize];
 }
 
@@ -368,9 +368,6 @@ static iRate *sharedInstance = nil;
 
 - (void)openAppPageWhenAppStoreLaunched
 {
-	//open app store
-	[[NSWorkspace sharedWorkspace] openURL:[self ratingURL]];
-	
 	//check if app store is running
     ProcessSerialNumber psn = { kNoProcess, kNoProcess };
     while (GetNextProcess(&psn) == noErr)
@@ -411,7 +408,7 @@ static iRate *sharedInstance = nil;
 			[defaults synchronize];
 			
 			//launch mac app store
-			[[NSWorkspace sharedWorkspace] launchApplication:macAppStoreBundleID];
+			[[NSWorkspace sharedWorkspace] openURL:[self ratingURL]];
 			[self openAppPageWhenAppStoreLaunched];
 			break;
 		}
