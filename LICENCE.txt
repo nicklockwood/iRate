@@ -1,7 +1,7 @@
 iRate
 version 1.0, February 3nd, 2011
 
-Copyright (C) 2010 Charcoal Design
+Copyright (C) 2011 Charcoal Design
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
