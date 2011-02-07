@@ -26,7 +26,7 @@ static iRate *sharedInstance = nil;
 
 
 #define SECONDS_IN_A_DAY 86400.0
-#define MAC_APP_STORE_REFRESH_DELAY 1
+#define MAC_APP_STORE_REFRESH_DELAY 2
 
 
 @interface iRate()
