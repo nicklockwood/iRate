@@ -1,3 +1,7 @@
+Version 1.1
+
+- Now compatible with iOS 3.x
+
 Version 1.0
 
 - Initial release.

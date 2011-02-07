@@ -35,15 +35,15 @@ applicationName - This is the name of the app displayed in the iRate alert. It i
 
 daysUntilPrompt - This is the number of days the user must have had the app installed before they are prompted to rate it. The time is measured from the first time the app is launched. This is a floating point value, so it can be used to specify a fractional number of days (e.g. 0.5). The default value is 10 days.
 
-usesUntilPrompt - This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoid the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again. By setting the use count you ensure they are a frequent user. The prompt will appear only after the specified number of days AND uses has been met. This defaults to 10 uses.
+usesUntilPrompt - This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoids the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again, only to be immediately prompted to rate it. The minimum use count ensures that only frequent users are prompted. The prompt will appear only after the specified number of days AND uses has been reached. This defaults to 10 uses.
 
-eventsUntilPrompt - For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly. In this case you can manually log significant events and have the prompt appear after a number of events, configured with this setting. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however the prompt will appear if the event OR uses threshold is reached. This defaults to 10 events.
+eventsUntilPrompt - For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly, or a game where the user can't write an informed review until they've reached a particular level. In this case you can manually log significant events and have the prompt appear after a predetermined number of these events. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however once the day threshold is reached, the prompt will appear if either the event threshold OR uses threshold is reached. This defaults to 10 events.
 
 remindPeriod - How long the app should wait before reminding a user to rate after they select the "remind me later" option. A value of zero means the app will remind the user next launch. Note that this value supersedes the other criteria, so the app won't prompt for a rating during the reminder period, even if a new version is released in the meantime.  This defaults to 1 day.
 
 messageTitle - The title displayed for the rating prompt.
 
-message - The rating prompt message. This should be polite and courteous, but not too lengthy.
+message - The rating prompt message. This should be polite and courteous, but not too wordy.
 
 cancelButtonLabel - The button label for the button to dismiss the rating prompt without rating the app.
 
