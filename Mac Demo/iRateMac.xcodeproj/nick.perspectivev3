@@ -279,7 +279,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {185, 701}}</string>
+							<string>{{0, 0}, {185, 628}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -289,14 +289,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {202, 719}}</string>
+						<string>{{0, 0}, {202, 646}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>185</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>737 229 1444 760 0 0 1920 1178 </string>
+						<string>522 491 1444 687 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -307,14 +307,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>01D0CB4312FC99F400F15064</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>iRateMacAppDelegate.m</string>
+								<string>iRate.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -322,15 +320,18 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>01D0CB4412FC99F400F15064</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>iRateMacAppDelegate.m</string>
+										<string>iRate.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>01D0CBFF12FCAA5A00F15064</string>
+										<string>01D0D1AE12FF517D00F15064</string>
 										<key>history</key>
 										<array>
-											<string>01D0CBFD12FCAA5A00F15064</string>
-											<string>01D0CBFE12FCAA5A00F15064</string>
+											<string>01D0D1A812FF517D00F15064</string>
+											<string>01D0D1A912FF517D00F15064</string>
+											<string>01D0D1AA12FF517D00F15064</string>
+											<string>01D0D1AB12FF517D00F15064</string>
+											<string>01D0D1AC12FF517D00F15064</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -344,18 +345,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1237, 379}}</string>
+								<string>{{0, 0}, {1237, 641}}</string>
 								<key>RubberWindowFrame</key>
-								<string>737 229 1444 760 0 0 1920 1178 </string>
+								<string>522 491 1444 687 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>379pt</string>
+							<string>641pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>335pt</string>
+							<string>0pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -369,9 +370,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1237, 308}}</string>
+										<string>{{10, 27}, {1237, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>737 229 1444 760 0 0 1920 1178 </string>
+										<string>522 491 1444 687 0 0 1920 1178 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -647,13 +648,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>01D0CC0912FCAA5A00F15064</string>
 		<string>01D0CC0A12FCAA5A00F15064</string>
 		<string>01D0CC0B12FCAA5A00F15064</string>
 		<string>/Users/nick/Documents/Programming Projects/Open Source/cocoa/iRate/trunk/Mac Demo/iRateMac.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>737 229 1444 760 0 0 1920 1178 </string>
+	<string>522 491 1444 687 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

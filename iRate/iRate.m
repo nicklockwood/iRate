@@ -16,7 +16,7 @@ NSString * const iRateLastVersionUsedKey = @"iRateLastVersionUsed";
 NSString * const iRateFirstUsedKey = @"iRateFirstUsed";
 NSString * const iRateUseCountKey = @"iRateUseCount";
 NSString * const iRateEventCountKey = @"iRateEventCount";
-NSString * const macAppStoreBundleID = @"com.apple.appstore";
+NSString * const iRateMacAppStoreBundleID = @"com.apple.appstore";
 
 NSString * const iRateiPhoneAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";;
 NSString * const iRateiPadAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i";
@@ -374,7 +374,7 @@ static iRate *sharedInstance = nil;
 	{
         CFDictionaryRef cfDict = ProcessInformationCopyDictionary(&psn,  kProcessDictionaryIncludeAllInformationMask);
 		NSString *bundleID = [(NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
-		if ([macAppStoreBundleID isEqualToString:bundleID])
+		if ([iRateMacAppStoreBundleID isEqualToString:bundleID])
 		{
 			//open app page
 			[[NSWorkspace sharedWorkspace] performSelector:@selector(openURL:) withObject:[self ratingURL] afterDelay:MAC_APP_STORE_REFRESH_DELAY];
