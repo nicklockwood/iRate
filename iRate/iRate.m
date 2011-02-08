@@ -18,8 +18,7 @@ NSString * const iRateUseCountKey = @"iRateUseCount";
 NSString * const iRateEventCountKey = @"iRateEventCount";
 NSString * const iRateMacAppStoreBundleID = @"com.apple.appstore";
 
-NSString * const iRateiPhoneAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
-NSString * const iRateiPadAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i";
+NSString * const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
 NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%i";
 
 static iRate *sharedInstance = nil;
@@ -148,24 +147,15 @@ static iRate *sharedInstance = nil;
 
 - (NSURL *)ratingURL
 {
-	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	{
-		return [NSURL URLWithString:[NSString stringWithFormat:iRateiPadAppStoreURLFormat, appStoreID]];
-	}
-	else
-	{
-		return [NSURL URLWithString:[NSString stringWithFormat:iRateiPhoneAppStoreURLFormat, appStoreID]];
-	}
+	return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, appStoreID]];
 	
 #else
 	
 	return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, appStoreID]];
 	
 #endif
-	
 }
 
 - (void)incrementUseCount
