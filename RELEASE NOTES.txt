@@ -1,6 +1,7 @@
 Version 1.1
 
 - Now compatible with iOS 3.x
+- Fixed incorrect iPhone review URL
 
 Version 1.0
 

@@ -18,7 +18,7 @@ NSString * const iRateUseCountKey = @"iRateUseCount";
 NSString * const iRateEventCountKey = @"iRateEventCount";
 NSString * const iRateMacAppStoreBundleID = @"com.apple.appstore";
 
-NSString * const iRateiPhoneAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i&onlyLatestVersion=true&pageNumber=0&sortOrdering=1";;
+NSString * const iRateiPhoneAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
 NSString * const iRateiPadAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%i";
 NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%i";
 
