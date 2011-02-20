@@ -9,6 +9,15 @@
 #import <Foundation/Foundation.h>
 
 
+@protocol iRateDelegate
+
+@optional
+- (void)iRateCouldNotConnectToAppStore:(NSError *)error;
+- (BOOL)iRateShouldShouldPromptForRating;
+
+@end
+
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 @interface iRate : NSObject<UIAlertViewDelegate>
 #else
@@ -27,8 +36,10 @@
 	NSString *cancelButtonLabel;
 	NSString *remindButtonLabel;
 	NSString *rateButtonLabel;
+	NSURL *ratingsURL;
 	BOOL disabled;
 	BOOL debug;
+	id<iRateDelegate> delegate;
 }
 #endif
 #endif
@@ -58,7 +69,20 @@
 @property (nonatomic, assign) BOOL disabled;
 @property (nonatomic, assign) BOOL debug;
 
-//log a significant event
+//advanced properties for implementing custom behaviour
+@property (nonatomic, retain) NSURL *ratingsURL;
+@property (nonatomic, retain) NSDate *firstUsed;
+@property (nonatomic, retain) NSDate *lastReminded;
+@property (nonatomic, assign) NSUInteger usesCount;
+@property (nonatomic, assign) NSUInteger eventCount;
+@property (nonatomic, assign) BOOL declinedThisVersion;
+@property (nonatomic, assign) BOOL ratedThisVersion;
+@property (nonatomic, assign) id<iRateDelegate> delegate;
+
+//manually control behaviour
+- (void)promptForRating;
+- (void)promptIfNetworkAvailable;
+- (void)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;
 
 @end

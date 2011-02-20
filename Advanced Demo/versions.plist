@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1.0</key>
+	<array>
+		<string>First release</string>
+	</array>
+	<key>1.1</key>
+	<array>
+		<string>NEW: Added  new snoodlebar feature</string>
+		<string>FIX: Fixed the bugalloo glitch</string>
+	</array>
+	<key>1.2</key>
+	<array>
+		<string>NEW: Some important feature</string>
+		<string>FIX: Some important bug fix</string>
+		<string>CHANGE: Some significant change</string>
+	</array>
+</dict>
+</plist>

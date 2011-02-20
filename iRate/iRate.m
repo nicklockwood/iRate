@@ -49,8 +49,10 @@ static iRate *sharedInstance = nil;
 @synthesize cancelButtonLabel;
 @synthesize remindButtonLabel;
 @synthesize rateButtonLabel;
+@synthesize ratingsURL;
 @synthesize disabled;
 @synthesize debug;
+@synthesize delegate;
 
 #pragma mark -
 #pragma mark Lifecycle methods
@@ -113,20 +115,103 @@ static iRate *sharedInstance = nil;
 
 - (NSString *)messageTitle
 {
-	if (messageTitle == nil)
+	if (messageTitle)
 	{
-		self.messageTitle = [NSString stringWithFormat:@"Rate %@", applicationName];
+		return messageTitle;
 	}
-	return messageTitle;
+	return [NSString stringWithFormat:@"Rate %@", applicationName];
 }
 
 - (NSString *)message
 {
-	if (message == nil)
+	if (message)
 	{
-		self.message = [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", applicationName];
+		return message;
 	}
-	return message;
+	return [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", applicationName];
+}
+
+- (NSURL *)ratingsURL
+{
+	if (ratingsURL)
+	{
+		return ratingsURL;
+	}
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+	
+	return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, appStoreID]];
+	
+#else
+	
+	return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, appStoreID]];
+	
+#endif
+}
+
+- (NSDate *)firstUsed
+{
+	return [[NSUserDefaults standardUserDefaults] objectForKey:iRateFirstUsedKey];
+}
+
+- (void)setFirstUsed:(NSDate *)date
+{
+	[[NSUserDefaults standardUserDefaults] setObject:date forKey:iRateFirstUsedKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSDate *)lastReminded
+{
+	return [[NSUserDefaults standardUserDefaults] objectForKey:iRateLastRemindedKey];
+}
+
+- (void)setLastReminded:(NSDate *)date
+{
+	[[NSUserDefaults standardUserDefaults] setObject:date forKey:iRateLastRemindedKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSUInteger)usesCount
+{
+	return [[NSUserDefaults standardUserDefaults] integerForKey:iRateUseCountKey];
+}
+
+- (void)setUsesCount:(NSUInteger)count
+{
+	[[NSUserDefaults standardUserDefaults] setInteger:count forKey:iRateUseCountKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSUInteger)eventCount;
+{
+	return [[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
+}
+
+- (void)setEventCount:(NSUInteger)count
+{
+	[[NSUserDefaults standardUserDefaults] setInteger:count forKey:iRateEventCountKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)declinedThisVersion
+{
+	return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey] isEqualToString:applicationVersion];
+}
+
+- (void)setDeclinedThisVersion:(BOOL)declined
+{
+	[[NSUserDefaults standardUserDefaults] setObject:(declined? applicationVersion: nil) forKey:iRateDeclinedVersionKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)ratedThisVersion
+{
+	return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateRatedVersionKey] isEqualToString:applicationVersion];
+}
+
+- (void)setRatedThisVersion:(BOOL)rated
+{
+	[[NSUserDefaults standardUserDefaults] setObject:(rated? applicationVersion: nil) forKey:iRateRatedVersionKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)dealloc
@@ -139,45 +224,25 @@ static iRate *sharedInstance = nil;
 	[cancelButtonLabel release];
 	[remindButtonLabel release];
 	[rateButtonLabel release];
+	[ratingsURL release];
 	[super dealloc];
 }
 
 #pragma mark -
-#pragma mark Private methods
-
-- (NSURL *)ratingURL
-{
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-	
-	return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, appStoreID]];
-	
-#else
-	
-	return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, appStoreID]];
-	
-#endif
-}
+#pragma mark Methods
 
 - (void)incrementUseCount
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSUInteger uses = [defaults integerForKey:iRateUseCountKey];
-	[defaults setInteger:uses+1 forKey:iRateUseCountKey];
-	[defaults synchronize];
+	self.usesCount ++;
 }
 
 - (void)incrementEventCount
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSUInteger events = [defaults integerForKey:iRateEventCountKey];
-	[defaults setInteger:events+1 forKey:iRateEventCountKey];
-	[defaults synchronize];
+	self.eventCount ++;
 }
 
 - (BOOL)shouldPromptForRating
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
 	//check if disabled
 	if (disabled)
 	{
@@ -185,41 +250,37 @@ static iRate *sharedInstance = nil;
 	}
 	
 	//debug mode?
-	if (debug)
+	else if (debug)
 	{
 		return YES;
 	}
 	
 	//check if we've rated this version
-	if ([[defaults objectForKey:iRateRatedVersionKey] isEqualToString:applicationVersion])
+	else if (self.ratedThisVersion)
 	{
 		return NO;
 	}
 	
 	//check if we've declined to rate this version
-	if ([[defaults objectForKey:iRateDeclinedVersionKey] isEqualToString:applicationVersion])
+	else if (self.declinedThisVersion)
 	{
 		return NO;
 	}
 	
 	//check how long we've been using this version
-	NSDate *firstUsed = [defaults objectForKey:iRateFirstUsedKey];
-	if (firstUsed == nil || [[NSDate date] timeIntervalSinceDate:firstUsed] < (float)daysUntilPrompt * SECONDS_IN_A_DAY)
+	else if (self.firstUsed == nil || [[NSDate date] timeIntervalSinceDate:self.firstUsed] < daysUntilPrompt * SECONDS_IN_A_DAY)
 	{
 		return NO;
 	}
 	
 	//check how many times we've used it and the number of significant events
-	NSUInteger used = [defaults integerForKey:iRateUseCountKey];
-	NSUInteger events = [defaults integerForKey:iRateEventCountKey];
-	if (used < usesUntilPrompt && events < eventsUntilPrompt)
+	else if (self.usesCount < usesUntilPrompt && self.eventCount < eventsUntilPrompt)
 	{
 		return NO;
 	}
 	
 	//check if within the reminder period
-	NSDate *lastReminded = [defaults objectForKey:iRateLastRemindedKey];
-	if (lastReminded != nil && [[NSDate date] timeIntervalSinceDate:lastReminded] < (float)remindPeriod * SECONDS_IN_A_DAY)
+	else if (self.lastReminded != nil && [[NSDate date] timeIntervalSinceDate:self.lastReminded] < remindPeriod * SECONDS_IN_A_DAY)
 	{
 		return NO;
 	}
@@ -291,8 +352,26 @@ static iRate *sharedInstance = nil;
 	//good enough; don't download any more data
 	[connection cancel];
 	
+	//confirm with delegate
+	if ([(NSObject *)delegate respondsToSelector:@selector(iRateShouldShouldPromptForRating)])
+	{
+		if (![delegate iRateShouldShouldPromptForRating])
+		{
+			return;
+		}
+	}
+	
 	//prompt user
 	[self promptForRating];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+	//could not connect
+	if ([(NSObject *)delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
+	{
+		[delegate iRateCouldNotConnectToAppStore:error];
+	}
 }
 
 - (void)applicationLaunched:(NSNotification *)notification
@@ -331,30 +410,30 @@ static iRate *sharedInstance = nil;
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
+- (void)openRatingsPageInAppStore
+{
+	[[UIApplication sharedApplication] openURL:self.ratingURL];
+}
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
 	if (buttonIndex == alertView.cancelButtonIndex)
 	{
 		//ignore this version
-		[defaults setObject:applicationVersion forKey:iRateDeclinedVersionKey];
-		[defaults synchronize];
+		self.declinedThisVersion = YES;
 	}
 	else if (buttonIndex == 2)
 	{
 		//remind later
-		[defaults setObject:[NSDate date] forKey:iRateLastRemindedKey];
-		[defaults synchronize];
+		self.lastReminded = [NSDate date];
 	}
 	else
 	{
 		//mark as rated
-		[defaults setObject:applicationVersion forKey:iRateRatedVersionKey];
-		[defaults synchronize];
+		self.ratedThisVersion = YES;
 		
 		//go to ratings page
-		[[UIApplication sharedApplication] openURL:[self ratingURL]];
+		[self openRatingsPageInAppStore];
 	}
 }
 
@@ -371,7 +450,7 @@ static iRate *sharedInstance = nil;
 		if ([iRateMacAppStoreBundleID isEqualToString:bundleID])
 		{
 			//open app page
-			[[NSWorkspace sharedWorkspace] performSelector:@selector(openURL:) withObject:[self ratingURL] afterDelay:MAC_APP_STORE_REFRESH_DELAY];
+			[[NSWorkspace sharedWorkspace] performSelector:@selector(openURL:) withObject:self.ratingsURL afterDelay:MAC_APP_STORE_REFRESH_DELAY];
 			CFRelease(cfDict);
 			return;
 		}
@@ -382,43 +461,40 @@ static iRate *sharedInstance = nil;
 	[self performSelector:@selector(openAppPageWhenAppStoreLaunched) withObject:nil afterDelay:0];
 }
 
+- (void)openRatingsPageInAppStore
+{
+	[[NSWorkspace sharedWorkspace] openURL:self.ratingsURL];
+	[self openAppPageWhenAppStoreLaunched];
+}
+
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
 	switch (returnCode)
 	{
 		case NSAlertAlternateReturn:
 		{
 			//ignore this version
-			[defaults setObject:applicationVersion forKey:iRateDeclinedVersionKey];
-			[defaults synchronize];
+			self.declinedThisVersion = YES;
 			break;
 		}
 		case NSAlertDefaultReturn:
 		{
 			//mark as rated
-			[defaults setObject:applicationVersion forKey:iRateRatedVersionKey];
-			[defaults synchronize];
+			self.ratedThisVersion = YES;
 			
 			//launch mac app store
-			[[NSWorkspace sharedWorkspace] openURL:[self ratingURL]];
-			[self openAppPageWhenAppStoreLaunched];
+			[self openRatingsPageInAppStore];
 			break;
 		}
 		default:
 		{
 			//remind later
-			[defaults setObject:[NSDate date] forKey:iRateLastRemindedKey];
-			[defaults synchronize];
+			self.lastReminded = [NSDate date];
 		}
 	}
 }
 
 #endif
-
-#pragma mark -
-#pragma mark Public methods
 
 - (void)logEvent:(BOOL)deferPrompt
 {

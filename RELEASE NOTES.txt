@@ -1,3 +1,9 @@
+Version 1.2
+
+- Added delegate and additional accessor properties for custom behaviour
+- Added advanced example project to demonstrate use of the delegate protocol
+- Added explicit ivars to support i386 (32bit x86) targets
+
 Version 1.1
 
 - Now compatible with iOS 3.x

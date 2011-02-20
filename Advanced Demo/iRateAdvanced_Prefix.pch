@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'iVersionMac' target in the 'iVersionMac' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
