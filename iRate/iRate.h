@@ -13,6 +13,24 @@
 @interface iRate : NSObject<UIAlertViewDelegate>
 #else
 @interface iRate : NSObject
+#ifdef __i386__
+{
+	NSUInteger appStoreID;
+	NSString *applicationName;
+	NSString *applicationVersion;
+	NSUInteger usesUntilPrompt;
+	NSUInteger eventsUntilPrompt;
+	float daysUntilPrompt;
+	float remindPeriod;
+	NSString *messageTitle;
+	NSString *message;
+	NSString *cancelButtonLabel;
+	NSString *remindButtonLabel;
+	NSString *rateButtonLabel;
+	BOOL disabled;
+	BOOL debug;
+}
+#endif
 #endif
 
 + (iRate *)sharedInstance;
