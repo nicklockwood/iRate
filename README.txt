@@ -97,7 +97,7 @@ This method will check if the app store is available, and if it is, it will disp
 
 - (void)openRatingsPageInAppStore;
 
-This method skips the user alert and opens the App Store immediately. This method does not perform any checs to verify that the machine has network access or that the app store is available. It also does not call any delegate methods.
+This method skips the user alert and opens the App Store immediately. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods.
 
 
 Delegate methods

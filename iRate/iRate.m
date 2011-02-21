@@ -412,7 +412,7 @@ static iRate *sharedInstance = nil;
 
 - (void)openRatingsPageInAppStore
 {
-	[[UIApplication sharedApplication] openURL:self.ratingURL];
+	[[UIApplication sharedApplication] openURL:self.ratingsURL];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex

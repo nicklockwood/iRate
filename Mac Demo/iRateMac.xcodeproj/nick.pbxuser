@@ -95,7 +95,7 @@
 		fRef = 01D0CB6412FC9C0D00F15064 /* iRate.m */;
 		name = "iRate.m: 416";
 		rLen = 0;
-		rLoc = 12645;
+		rLoc = 12646;
 		rType = 0;
 		vrLen = 754;
 		vrLoc = 10721;
@@ -324,6 +324,46 @@
 		vrLen = 521;
 		vrLoc = 0;
 	};
+	01E66FE61311DF7C00AA606F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */;
+		name = "iRateMacAppDelegate.m: 15";
+		rLen = 0;
+		rLoc = 258;
+		rType = 0;
+		vrLen = 521;
+		vrLoc = 0;
+	};
+	01E66FE71311DF8600AA606F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */;
+		name = "iRateMacAppDelegate.m: 15";
+		rLen = 0;
+		rLoc = 258;
+		rType = 0;
+		vrLen = 521;
+		vrLoc = 0;
+	};
+	01E66FE81311E2DF00AA606F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */;
+		name = "iRateMacAppDelegate.m: 15";
+		rLen = 0;
+		rLoc = 258;
+		rType = 0;
+		vrLen = 521;
+		vrLoc = 0;
+	};
+	01E670471311EC9800AA606F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */;
+		name = "iRateMacAppDelegate.m: 15";
+		rLen = 0;
+		rLoc = 258;
+		rType = 0;
+		vrLen = 521;
+		vrLoc = 0;
+	};
 	256AC3D80F4B6AC300CF3369 /* iRateMacAppDelegate.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1179, 629}}";
@@ -403,6 +443,10 @@
 			01E66E5C1311A42E00AA606F /* PBXTextBookmark */ = 01E66E5C1311A42E00AA606F /* PBXTextBookmark */;
 			01E66E5D1311A42E00AA606F /* PBXTextBookmark */ = 01E66E5D1311A42E00AA606F /* PBXTextBookmark */;
 			01E66ED31311B48900AA606F /* PBXTextBookmark */ = 01E66ED31311B48900AA606F /* PBXTextBookmark */;
+			01E66FE61311DF7C00AA606F /* PBXTextBookmark */ = 01E66FE61311DF7C00AA606F /* PBXTextBookmark */;
+			01E66FE71311DF8600AA606F /* PBXTextBookmark */ = 01E66FE71311DF8600AA606F /* PBXTextBookmark */;
+			01E66FE81311E2DF00AA606F /* PBXTextBookmark */ = 01E66FE81311E2DF00AA606F /* PBXTextBookmark */;
+			01E670471311EC9800AA606F /* PBXTextBookmark */ = 01E670471311EC9800AA606F /* PBXTextBookmark */;
 		};
 		sourceControlManager = 01D0CB4112FC99E100F15064 /* Source Control */;
 		userBuildSettings = {
