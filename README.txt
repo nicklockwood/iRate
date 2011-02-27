@@ -93,7 +93,7 @@ This method will immediately trigger the rating prompt without checking that the
 
 - (void)promptIfNetworkAvailable;
 
-This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldShouldPromptForRating will be called before the alert is shown, so you can intercept it.
+This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it.
 
 - (void)openRatingsPageInAppStore;
 
