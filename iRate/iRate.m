@@ -25,7 +25,7 @@ static iRate *sharedInstance = nil;
 
 
 #define SECONDS_IN_A_DAY 86400.0
-#define MAC_APP_STORE_REFRESH_DELAY 2
+#define MAC_APP_STORE_REFRESH_DELAY 5
 
 
 @interface iRate()
@@ -242,15 +242,9 @@ static iRate *sharedInstance = nil;
 }
 
 - (BOOL)shouldPromptForRating
-{
-	//check if disabled
-	if (disabled)
-	{
-		return NO;
-	}
-	
+{	
 	//debug mode?
-	else if (debug)
+	if (debug)
 	{
 		return YES;
 	}
@@ -390,7 +384,7 @@ static iRate *sharedInstance = nil;
 	}
 	
 	[self incrementUseCount];
-	if ([self shouldPromptForRating])
+	if (!disabled && [self shouldPromptForRating])
 	{
 		[self promptIfNetworkAvailable];
 	}
@@ -399,7 +393,7 @@ static iRate *sharedInstance = nil;
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
 	[self incrementUseCount];
-	if ([self shouldPromptForRating])
+	if (!disabled && [self shouldPromptForRating])
 	{
 		[self promptIfNetworkAvailable];
 	}
@@ -499,7 +493,7 @@ static iRate *sharedInstance = nil;
 - (void)logEvent:(BOOL)deferPrompt
 {
 	[self incrementEventCount];
-	if (!deferPrompt && [self shouldPromptForRating])
+	if (!deferPrompt && !disabled && [self shouldPromptForRating])
 	{
 		[self promptIfNetworkAvailable];
 	}

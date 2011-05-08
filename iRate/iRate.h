@@ -80,6 +80,7 @@
 @property (nonatomic, assign) id<iRateDelegate> delegate;
 
 //manually control behaviour
+- (BOOL)shouldPromptForRating;
 - (void)promptForRating;
 - (void)promptIfNetworkAvailable;
 - (void)openRatingsPageInAppStore;

@@ -1,8 +1,12 @@
+Version 1.2.1
+
+- Exposed the shouldPromptForRating method to make it easier to control when rating prompt is displayed
+- Increased MAC_APP_STORE_REFRESH_DELAY to 5 seconds to support older machines
+
 Version 1.2
 
 - Added delegate and additional accessor properties for custom behaviour
 - Added advanced example project to demonstrate use of the delegate protocol
-- Added explicit ivars to support i386 (32bit x86) targets
 
 Version 1.1
 

@@ -51,7 +51,7 @@ rateButtonLabel - The button label for the button the user presses if they do wa
 
 remindButtonLabel - The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to nil if you don't want to display the remind me button - e.g. if you don't have space on screen.
 
-disabled - Set this to YES to disable the rating prompt. The rating criteria will continue to be tracked, but the prompt will not be displayed while this setting is in effect.
+disabled - Set this to YES to disable the rating prompt. The rating criteria will continue to be tracked, but the prompt will not be displayed while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt rather than having it appear automatically at launch.
 
 debug - If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use. Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release.
 
@@ -87,17 +87,21 @@ Besides configuration, iRate has the following methods:
 
 This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
 
+- (BOOL)shouldPromptForRating;
+
+Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch.
+
 - (void)promptForRating;
 
 This method will immediately trigger the rating prompt without checking that the  app store is available, and without calling the iRateShouldShouldPromptForRating delegate method.
 
 - (void)promptIfNetworkAvailable;
 
-This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it.
+This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldShouldPromptForRating will be called before the alert is shown, so you can intercept it.
 
 - (void)openRatingsPageInAppStore;
 
-This method skips the user alert and opens the App Store immediately. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods.
+This method skips the user alert and opens the App Store immediately. This method does not perform any checs to verify that the machine has network access or that the app store is available. It also does not call any delegate methods.
 
 
 Delegate methods
