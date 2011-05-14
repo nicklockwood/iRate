@@ -106,9 +106,9 @@ static iRate *sharedInstance = nil;
 		//message text, you may wish to customise these, e.g. for localisation
 		self.messageTitle = nil; //set lazily so that appname can be included
 		self.message = nil; //set lazily so that appname can be included
-		self.cancelButtonLabel = @"No, Thanks";
-		self.remindButtonLabel = @"Remind Me Later";
-		self.rateButtonLabel = @"Rate It Now";
+		self.cancelButtonLabel = NSLocalizedString(@"No, Thanks", @"iRate");
+		self.remindButtonLabel = NSLocalizedString(@"Remind Me Later", @"iRate");
+		self.rateButtonLabel = NSLocalizedString(@"Rate It Now", @"iRate");
 	}
 	return self;
 }
@@ -119,7 +119,7 @@ static iRate *sharedInstance = nil;
 	{
 		return messageTitle;
 	}
-	return [NSString stringWithFormat:@"Rate %@", applicationName];
+	return [NSString stringWithFormat:NSLocalizedString(@"Rate %@", @"iRate"), applicationName];
 }
 
 - (NSString *)message
@@ -128,7 +128,7 @@ static iRate *sharedInstance = nil;
 	{
 		return message;
 	}
-	return [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", applicationName];
+	return [NSString stringWithFormat:NSLocalizedString(@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", @"iRate"), applicationName];
 }
 
 - (NSURL *)ratingsURL
