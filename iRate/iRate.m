@@ -356,7 +356,7 @@ static iRate *sharedInstance = nil;
 	}
 	
 	//prompt user
-	[self promptForRating];
+  [self performSelectorOnMainThread:@selector(promptForRating) withObject:nil waitUntilDone:YES];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
