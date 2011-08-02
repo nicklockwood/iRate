@@ -385,7 +385,7 @@ static iRate *sharedInstance = nil;
 	}
 	
 	[self incrementUseCount];
-	if (!disabled && [self shouldPromptForRating] && waitToShowDialogUntilSignificantEventOccurs)
+	if (!disabled && [self shouldPromptForRating] && !waitToShowDialogUntilSignificantEventOccurs)
 	{
 		[self promptIfNetworkAvailable];
 	}
