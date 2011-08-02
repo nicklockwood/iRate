@@ -53,6 +53,7 @@ static iRate *sharedInstance = nil;
 @synthesize disabled;
 @synthesize debug;
 @synthesize delegate;
+@synthesize waitToShowDialogUntilSignificantEventOccurs;
 
 #pragma mark -
 #pragma mark Lifecycle methods
@@ -384,7 +385,7 @@ static iRate *sharedInstance = nil;
 	}
 	
 	[self incrementUseCount];
-	if (!disabled && [self shouldPromptForRating])
+	if (!disabled && [self shouldPromptForRating] && waitToShowDialogUntilSignificantEventOccurs)
 	{
 		[self promptIfNetworkAvailable];
 	}

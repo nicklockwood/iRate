@@ -39,6 +39,7 @@
 	NSURL *ratingsURL;
 	BOOL disabled;
 	BOOL debug;
+	BOOL waitToShowDialogUntilSignificantEventOccurs;
 	id<iRateDelegate> delegate;
 }
 #endif
@@ -68,6 +69,9 @@
 //debugging and disabling
 @property (nonatomic, assign) BOOL disabled;
 @property (nonatomic, assign) BOOL debug;
+
+//set to NO by default, if YES then you MUST call logEvent to get the dialog to occur
+@property (nonatomic, assign) BOOL waitToShowDialogUntilSignificantEventOccurs;
 
 //advanced properties for implementing custom behaviour
 @property (nonatomic, retain) NSURL *ratingsURL;
