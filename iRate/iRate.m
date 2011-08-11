@@ -79,7 +79,7 @@ static iRate *sharedInstance = nil;
 													 name:UIApplicationDidFinishLaunchingNotification
 												   object:nil];
 		
-		if (&UIApplicationWillEnterForegroundNotification)
+		if (&UIApplicationWillEnterForegroundNotification != NULL)
 		{
 			[[NSNotificationCenter defaultCenter] addObserver:self
 													 selector:@selector(applicationWillEnterForeground:)
