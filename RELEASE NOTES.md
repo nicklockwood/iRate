@@ -1,7 +1,7 @@
 Version 1.2.1
 
 - Exposed the shouldPromptForRating method to make it easier to control when rating prompt is displayed
-- Increased MAC_APP_STORE_REFRESH_DELAY to 5 seconds to support older machines
+- Increased `MAC_APP_STORE_REFRESH_DELAY` to 5 seconds to support older machines
 
 Version 1.2
 

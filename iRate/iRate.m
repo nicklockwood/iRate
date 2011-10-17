@@ -1,9 +1,33 @@
 //
 //  iRate.m
-//  iRate
+//
+//  Version 1.2.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design. All rights reserved.
+//
+//  Get the latest version of iCarousel from either of these locations:
+//
+//  http://charcoaldesign.co.uk/source/cocoa#irate
+//  https://github.com/nicklockwood/iRate
+//
+//  This software is provided 'as-is', without any express or implied
+//  warranty.  In no event will the authors be held liable for any damages
+//  arising from the use of this software.
+//
+//  Permission is granted to anyone to use this software for any purpose,
+//  including commercial applications, and to alter it and redistribute it
+//  freely, subject to the following restrictions:
+//
+//  1. The origin of this software must not be misrepresented; you must not
+//  claim that you wrote the original software. If you use this software
+//  in a product, an acknowledgment in the product documentation would be
+//  appreciated but is not required.
+//
+//  2. Altered source versions must be plainly marked as such, and must not be
+//  misrepresented as being the original software.
+//
+//  3. This notice may not be removed or altered from any source distribution.
 //
 
 #import "iRate.h"
@@ -21,14 +45,12 @@ NSString * const iRateMacAppStoreBundleID = @"com.apple.appstore";
 NSString * const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
 NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%i";
 
-static iRate *sharedInstance = nil;
-
 
 #define SECONDS_IN_A_DAY 86400.0
 #define MAC_APP_STORE_REFRESH_DELAY 5
 
 
-@interface iRate()
+@interface iRate() <UIAlertViewDelegate>
 
 @property (nonatomic, retain) NSString *applicationVersion;
 
@@ -59,6 +81,7 @@ static iRate *sharedInstance = nil;
 
 + (iRate *)sharedInstance
 {
+    static iRate *sharedInstance = nil;
 	if (sharedInstance == nil)
 	{
 		sharedInstance = [[iRate alloc] init];
@@ -100,8 +123,8 @@ static iRate *sharedInstance = nil;
 		//usage settings - these have sensible defaults
 		usesUntilPrompt = 10;
 		eventsUntilPrompt = 10;
-		daysUntilPrompt = 10;
-		remindPeriod = 1;
+		daysUntilPrompt = 10.0f;
+		remindPeriod = 1.0f;
 		
 		//message text, you may wish to customise these, e.g. for localisation
 		self.messageTitle = nil; //set lazily so that appname can be included
