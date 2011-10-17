@@ -50,7 +50,11 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 #define MAC_APP_STORE_REFRESH_DELAY 5
 
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 @interface iRate() <UIAlertViewDelegate>
+#else
+@interface iRate()
+#endif
 
 @property (nonatomic, retain) NSString *applicationVersion;
 
