@@ -106,7 +106,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 													 name:UIApplicationDidFinishLaunchingNotification
 												   object:nil];
 		
-		if (&UIApplicationWillEnterForegroundNotification)
+		if (&UIApplicationWillEnterForegroundNotification != NULL)
 		{
 			[[NSNotificationCenter defaultCenter] addObserver:self
 													 selector:@selector(applicationWillEnterForeground:)
