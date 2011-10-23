@@ -34,10 +34,10 @@
 
 
 @protocol iRateDelegate
-
 @optional
+
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
-- (BOOL)iRateShouldShouldPromptForRating;
+- (BOOL)iRateShouldPromptForRating;
 
 @end
 

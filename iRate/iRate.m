@@ -47,7 +47,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 
 
 #define SECONDS_IN_A_DAY 86400.0
-#define MAC_APP_STORE_REFRESH_DELAY 5
+#define MAC_APP_STORE_REFRESH_DELAY 5.0
 
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -479,7 +479,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
     }
 	
 	//try again
-	[self performSelector:@selector(openAppPageWhenAppStoreLaunched) withObject:nil afterDelay:0];
+	[self performSelector:@selector(openAppPageWhenAppStoreLaunched) withObject:nil afterDelay:0.0];
 }
 
 - (void)openRatingsPageInAppStore
