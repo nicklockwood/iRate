@@ -1,3 +1,9 @@
+Version 1.2.2
+
+- Fixed misspelled delegate method
+- Fixed bug in advanced Mac project where rating prompt was displayed automatically even if button was not pressed
+- Removed unneeded project files
+
 Version 1.2.1
 
 - Exposed the shouldPromptForRating method to make it easier to control when rating prompt is displayed

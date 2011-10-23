@@ -73,7 +73,7 @@ The button label for the button the user presses if they don't want to rate the 
 
 	@property (nonatomic, assign) BOOL disabled;
 
-Set this to YES to disable the rating prompt. The rating criteria will continue to be tracked, but the prompt will not be displayed while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt rather than having it appear automatically at launch.
+Set this to YES to disable the rating prompt. The rating criteria will continue to be tracked, but the prompt will not be displayed automatically while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt rather than having it appear automatically at launch.
 
 	@property (nonatomic, assign) BOOL debug;
 
