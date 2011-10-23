@@ -374,9 +374,9 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 	[connection cancel];
 	
 	//confirm with delegate
-	if ([(NSObject *)delegate respondsToSelector:@selector(iRateShouldShouldPromptForRating)])
+	if ([(NSObject *)delegate respondsToSelector:@selector(iRateShouldPromptForRating)])
 	{
-		if (![delegate iRateShouldShouldPromptForRating])
+		if (![delegate iRateShouldPromptForRating])
 		{
 			return;
 		}

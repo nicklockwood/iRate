@@ -21,6 +21,9 @@
 	//configure iRate
 	[iRate sharedInstance].appStoreID = 412363063;
 	[iRate sharedInstance].debug = NO;
+    
+    //prevent automatic prompt
+    [iRate sharedInstance].disabled = YES;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -46,7 +49,7 @@
 	[progressIndicator stopAnimation:self];
 }
 
-- (BOOL)iRateShouldShouldPromptForRating
+- (BOOL)iRateShouldPromptForRating
 {
 	//don't show prompt, just open app store
 	[[iRate sharedInstance] openRatingsPageInAppStore];
