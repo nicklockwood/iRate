@@ -4,6 +4,16 @@ Purpose
 iRate is a library to help you promote your iPhone and Mac App Store apps by prompting users to rate the app after using it for a few days. This approach is one of the best ways to get positive app reviews by targeting only regular users (who presumably like the app or they wouldn't keep using it!).
 
 
+Supported iOS & SDK Versions
+-----------------------------
+
+* Supported build target - iOS 5.0 (Xcode 4.2)
+* Earliest supported deployment target - iOS 4.0 (Xcode 4.2)
+* Earliest compatible deployment target - iOS 3.0
+
+NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
+
+
 Installation
 --------------
 
@@ -31,7 +41,7 @@ To configure iRate, there are a number of properties of the iRate class that can
 
 This should match the iTunes app ID of your application, which you can get from iTunes connect after setting up your app. This is the only compulsory setting - everything else can be left as default if you like.
 
-	@property (nonatomic, retain) NSString *applicationName;
+	@property (nonatomic, copy) NSString *applicationName;
 
 This is the name of the app displayed in the iRate alert. It is set automatically from the application's info.plist, but you may wish to override it with a shorter or longer version.
 
@@ -51,23 +61,23 @@ For some apps, launches are not a good metric for usage. For example the app mig
 
 How long the app should wait before reminding a user to rate after they select the "remind me later" option (measured in days). A value of zero means the app will remind the user next launch. Note that this value supersedes the other criteria, so the app won't prompt for a rating during the reminder period, even if a new version is released in the meantime.  This defaults to 1 day.
 
-	@property (nonatomic, retain) NSString *messageTitle;
+	@property (nonatomic, copy) NSString *messageTitle;
 
 The title displayed for the rating prompt.
 
-	@property (nonatomic, retain) NSString *message;
+	@property (nonatomic, copy) NSString *message;
 
 The rating prompt message. This should be polite and courteous, but not too wordy.
 
-	@property (nonatomic, retain) NSString *cancelButtonLabel;
+	@property (nonatomic, copy) NSString *cancelButtonLabel;
 
 The button label for the button to dismiss the rating prompt without rating the app.
 
-	@property (nonatomic, retain) NSString *rateButtonLabel;
+	@property (nonatomic, copy) NSString *rateButtonLabel;
 
 The button label for the button the user presses if they do want to rate the app.
 
-	@property (nonatomic, retain) NSString *remindButtonLabel;
+	@property (nonatomic, copy) NSString *remindButtonLabel;
 
 The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to nil if you don't want to display the remind me button - e.g. if you don't have space on screen.
 

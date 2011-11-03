@@ -7,17 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01D0CB6512FC9C0D00F15064 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D0CB6412FC9C0D00F15064 /* iRate.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* iRateMacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* iRateMacAppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B205F2261462AC2700B69B0D /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = B205F2251462AC2700B69B0D /* iRate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01D0CB6312FC9C0D00F15064 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
-		01D0CB6412FC9C0D00F15064 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -30,6 +28,8 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* iRateMac-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iRateMac-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* iRateMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRateMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B205F2241462AC2700B69B0D /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
+		B205F2251462AC2700B69B0D /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,16 +44,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01D0CB6212FC9C0D00F15064 /* iRate */ = {
-			isa = PBXGroup;
-			children = (
-				01D0CB6312FC9C0D00F15064 /* iRate.h */,
-				01D0CB6412FC9C0D00F15064 /* iRate.m */,
-			);
-			name = iRate;
-			path = ../iRate;
-			sourceTree = SOURCE_ROOT;
-		};
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,7 +82,7 @@
 		29B97314FDCFA39411CA2CEA /* iRateMac */ = {
 			isa = PBXGroup;
 			children = (
-				01D0CB6212FC9C0D00F15064 /* iRate */,
+				B205F2231462AC2700B69B0D /* iRate */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -128,6 +118,16 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B205F2231462AC2700B69B0D /* iRate */ = {
+			isa = PBXGroup;
+			children = (
+				B205F2241462AC2700B69B0D /* iRate.h */,
+				B205F2251462AC2700B69B0D /* iRate.m */,
+			);
+			name = iRate;
+			path = ../../iRate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,7 +197,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* iRateMacAppDelegate.m in Sources */,
-				01D0CB6512FC9C0D00F15064 /* iRate.m in Sources */,
+				B205F2261462AC2700B69B0D /* iRate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,3 +1,8 @@
+Version 1.2.3
+
+- iRate now uses CFBundleDisplayName for the application name (if available) 
+- Reorganised examples
+
 Version 1.2.2
 
 - Fixed misspelled delegate method

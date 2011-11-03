@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.2.2
+//  Version 1.2.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design. All rights reserved.
@@ -120,9 +120,13 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 													 name:NSApplicationDidFinishLaunchingNotification
 												   object:nil];
 #endif
-		//application name and version
-		self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
+		//localised application name and version
 		self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+		self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+		if ([applicationName length] == 0)
+		{
+			self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
+		}
 		
 		//usage settings - these have sensible defaults
 		usesUntilPrompt = 10;
