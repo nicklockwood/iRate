@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.2.3
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design. All rights reserved.
@@ -33,11 +33,14 @@
 #import <Foundation/Foundation.h>
 
 
-@protocol iRateDelegate
+@protocol iRateDelegate <NSObject>
 @optional
 
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
 - (BOOL)iRateShouldPromptForRating;
+- (void)iRateUserDidAttemptToRateApp;
+- (void)iRateUserDidDeclineToRateApp;
+- (void)iRateUserDidRequestReminderToRateApp;
 
 @end
 
@@ -58,7 +61,7 @@
 	NSString *remindButtonLabel;
 	NSString *rateButtonLabel;
 	NSURL *ratingsURL;
-	BOOL disabled;
+	BOOL promptAtLaunch;
 	BOOL debug;
 	id<iRateDelegate> delegate;
 }
@@ -85,8 +88,8 @@
 @property (nonatomic, copy) NSString *remindButtonLabel;
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
-//debugging and disabling
-@property (nonatomic, assign) BOOL disabled;
+//debugging and automatic prompt
+@property (nonatomic, assign) BOOL promptAtLaunch;
 @property (nonatomic, assign) BOOL debug;
 
 //advanced properties for implementing custom behaviour

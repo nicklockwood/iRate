@@ -1,3 +1,8 @@
+Version 1.3
+
+- Added additional delegate methods to facilitate logging
+- Renamed disabled property to promptAtLaunch for clarity
+
 Version 1.2.3
 
 - iRate now uses CFBundleDisplayName for the application name (if available) 

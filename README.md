@@ -8,7 +8,7 @@ Supported iOS & SDK Versions
 -----------------------------
 
 * Supported build target - iOS 5.0 (Xcode 4.2)
-* Earliest supported deployment target - iOS 4.0 (Xcode 4.2)
+* Earliest supported deployment target - iOS 4.3 (Xcode 4.2)
 * Earliest compatible deployment target - iOS 3.0
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -81,9 +81,9 @@ The button label for the button the user presses if they do want to rate the app
 
 The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to nil if you don't want to display the remind me button - e.g. if you don't have space on screen.
 
-	@property (nonatomic, assign) BOOL disabled;
+	@property (nonatomic, assign) BOOL promptAtLaunch;
 
-Set this to YES to disable the rating prompt. The rating criteria will continue to be tracked, but the prompt will not be displayed automatically while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt rather than having it appear automatically at launch.
+Set this to NO to disable the rating prompt appearing automatically when the application launches or returns from the background. The rating criteria will continue to be tracked, but the prompt will not be displayed automatically while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt.
 
 	@property (nonatomic, assign) BOOL debug;
 
@@ -135,7 +135,7 @@ Besides configuration, iRate has the following methods:
 
 	- (void)logEvent:(BOOL)deferPrompt;
 
-This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
+This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached, the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
 
 	- (BOOL)shouldPromptForRating;
 
@@ -166,6 +166,18 @@ This method is called if iRate cannot connect to the App Store, usually because 
 	- (BOOL)iRateShouldShouldPromptForRating;
 
 This method is called immediately before the rating prompt is displayed to the user. You can use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.
+
+	- (void)iRateUserDidAttemptToRateApp;
+	
+This is called when the user pressed the rate button in the rating prompt. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation or call the `openRatingsPageInAppStore` method directly.
+	
+	- (void)iRateUserDidDeclineToRateApp;
+	
+This is called when the user declines to rate the app. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation.
+	
+	- (void)iRateUserDidRequestReminderToRateApp;
+
+This is called when the user asks to be reminded to rate the app. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation.
 
 
 Localisation
@@ -199,3 +211,5 @@ Advanced Example
 The advanced example demonstrates how you might implement a completely bespoke iRate interface. Automatic prompting is disabled and instead the user can opt to rate the app by pressing the "Rate this app" button.
 
 When pressed, the app first checks that the app store is available (it may not be if the computer has no Internet connection or apple.com is down), and then launches the Mac App Store.
+
+The example is for Mac OS, but the same thing can be applied on iOS.

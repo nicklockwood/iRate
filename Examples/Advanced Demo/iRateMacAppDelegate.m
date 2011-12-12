@@ -23,7 +23,7 @@
 	[iRate sharedInstance].debug = NO;
     
     //prevent automatic prompt
-    [iRate sharedInstance].disabled = YES;
+    [iRate sharedInstance].promptAtLaunch = NO;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

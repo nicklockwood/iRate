@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.2.3
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design. All rights reserved.
@@ -76,7 +76,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 @synthesize remindButtonLabel;
 @synthesize rateButtonLabel;
 @synthesize ratingsURL;
-@synthesize disabled;
+@synthesize promptAtLaunch;
 @synthesize debug;
 @synthesize delegate;
 
@@ -129,6 +129,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 		}
 		
 		//usage settings - these have sensible defaults
+        promptAtLaunch = YES;
 		usesUntilPrompt = 10;
 		eventsUntilPrompt = 10;
 		daysUntilPrompt = 10.0f;
@@ -378,7 +379,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 	[connection cancel];
 	
 	//confirm with delegate
-	if ([(NSObject *)delegate respondsToSelector:@selector(iRateShouldPromptForRating)])
+	if ([delegate respondsToSelector:@selector(iRateShouldPromptForRating)])
 	{
 		if (![delegate iRateShouldPromptForRating])
 		{
@@ -393,7 +394,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	//could not connect
-	if ([(NSObject *)delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
+	if ([delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
 	{
 		[delegate iRateCouldNotConnectToAppStore:error];
 	}
@@ -415,7 +416,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 	}
 	
 	[self incrementUseCount];
-	if (!disabled && [self shouldPromptForRating])
+	if (promptAtLaunch && [self shouldPromptForRating])
 	{
 		[self promptIfNetworkAvailable];
 	}
@@ -424,7 +425,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
 	[self incrementUseCount];
-	if (!disabled && [self shouldPromptForRating])
+	if (promptAtLaunch && [self shouldPromptForRating])
 	{
 		[self promptIfNetworkAvailable];
 	}
@@ -444,16 +445,34 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 {
 	if (buttonIndex == alertView.cancelButtonIndex)
 	{
+        //log event
+        if ([delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
+        {
+            [delegate iRateUserDidDeclineToRateApp];
+        }
+        
 		//ignore this version
 		self.declinedThisVersion = YES;
 	}
 	else if (buttonIndex == 2)
 	{
+        //log event
+        if ([delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
+        {
+            [delegate iRateUserDidRequestReminderToRateApp];
+        }
+        
 		//remind later
 		self.lastReminded = [NSDate date];
 	}
 	else
 	{
+        //log event
+        if ([delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
+        {
+            [delegate iRateUserDidAttemptToRateApp];
+        }
+        
 		//mark as rated
 		self.ratedThisVersion = YES;
 		
@@ -498,12 +517,24 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 	{
 		case NSAlertAlternateReturn:
 		{
+            //log event
+            if ([delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
+            {
+                [delegate iRateUserDidDeclineToRateApp];
+            }
+            
 			//ignore this version
 			self.declinedThisVersion = YES;
 			break;
 		}
 		case NSAlertDefaultReturn:
 		{
+            //log event
+            if ([delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
+            {
+                [delegate iRateUserDidAttemptToRateApp];
+            }
+            
 			//mark as rated
 			self.ratedThisVersion = YES;
 			
@@ -513,6 +544,12 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 		}
 		default:
 		{
+            //log event
+            if ([delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
+            {
+                [delegate iRateUserDidRequestReminderToRateApp];
+            }
+            
 			//remind later
 			self.lastReminded = [NSDate date];
 		}
@@ -524,7 +561,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 - (void)logEvent:(BOOL)deferPrompt
 {
 	[self incrementEventCount];
-	if (!deferPrompt && !disabled && [self shouldPromptForRating])
+	if (!deferPrompt && [self shouldPromptForRating])
 	{
 		[self promptIfNetworkAvailable];
 	}
