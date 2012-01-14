@@ -14,6 +14,17 @@ Supported iOS & SDK Versions
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
 
+ARC Compatibility
+------------------
+
+iRate does not use automatic reference counting, but can be converted using the ARC migration tool without any issues.
+
+However, in the interests of avoiding modifying the library (which may cause unknown bugs or problems later when upgrading to a new version) a better approach is to specify in your ARC project that iRate's files should be excluded from the ARC validation process. To do that:
+
+1. Go to Project Settings, under Build Phases > Compile Sources
+2. Double-click the iRate.m file and add the -fno-objc-arc compiler flag
+
+
 Installation
 --------------
 

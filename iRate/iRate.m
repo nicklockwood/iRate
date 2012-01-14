@@ -1,12 +1,13 @@
 //
 //  iRate.m
 //
-//  Version 1.3
+//  Version 1.3.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
-//  Copyright 2011 Charcoal Design. All rights reserved.
+//  Copyright 2011 Charcoal Design
 //
-//  Get the latest version of iCarousel from either of these locations:
+//  Distributed under the permissive zlib License
+//  Get the latest version from either of these locations:
 //
 //  http://charcoaldesign.co.uk/source/cocoa#irate
 //  https://github.com/nicklockwood/iRate
@@ -33,17 +34,19 @@
 #import "iRate.h"
 
 
-NSString * const iRateRatedVersionKey = @"iRateRatedVersionChecked";
-NSString * const iRateDeclinedVersionKey = @"iRateDeclinedVersion";
-NSString * const iRateLastRemindedKey = @"iRateLastReminded";
-NSString * const iRateLastVersionUsedKey = @"iRateLastVersionUsed";
-NSString * const iRateFirstUsedKey = @"iRateFirstUsed";
-NSString * const iRateUseCountKey = @"iRateUseCount";
-NSString * const iRateEventCountKey = @"iRateEventCount";
-NSString * const iRateMacAppStoreBundleID = @"com.apple.appstore";
+static NSString *const iRateRatedVersionKey = @"iRateRatedVersionChecked";
+static NSString *const iRateDeclinedVersionKey = @"iRateDeclinedVersion";
+static NSString *const iRateLastRemindedKey = @"iRateLastReminded";
+static NSString *const iRateLastVersionUsedKey = @"iRateLastVersionUsed";
+static NSString *const iRateFirstUsedKey = @"iRateFirstUsed";
+static NSString *const iRateUseCountKey = @"iRateUseCount";
+static NSString *const iRateEventCountKey = @"iRateEventCount";
 
-NSString * const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
-NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%i";
+static NSString *const iRateMacAppStoreBundleID = @"com.apple.appstore";
+
+//note, these don't link directly to the review page - there doesn't seem to be a way to do that
+static NSString *const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
+static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%i";
 
 
 #define SECONDS_IN_A_DAY 86400.0
@@ -55,9 +58,6 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 #else
 @interface iRate()
 #endif
-
-@property (nonatomic, retain) NSString *applicationVersion;
-
 @end
 
 
@@ -249,15 +249,16 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[applicationName release];
-	[applicationVersion release];
-	[messageTitle release];
-	[message release];
-	[cancelButtonLabel release];
-	[remindButtonLabel release];
-	[rateButtonLabel release];
-	[ratingsURL release];
-	[super dealloc];
+	
+	AH_RELEASE(applicationName);
+	AH_RELEASE(applicationVersion);
+	AH_RELEASE(messageTitle);
+	AH_RELEASE(message);
+	AH_RELEASE(cancelButtonLabel);
+	AH_RELEASE(remindButtonLabel);
+	AH_RELEASE(rateButtonLabel);
+	AH_RELEASE(ratingsURL);
+	AH_SUPER_DEALLOC;
 }
 
 #pragma mark -
@@ -332,7 +333,7 @@ NSString * const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/ap
 	}
 	
 	[alert show];
-	[alert release];
+	AH_RELEASE(alert);
 	
 #else
 	

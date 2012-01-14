@@ -1,3 +1,8 @@
+Version 1.3.1
+
+- Added automatic support for ARC compile targets
+- Now requires Apple LLVM 3.0 compiler target
+
 Version 1.3
 
 - Added additional delegate methods to facilitate logging
