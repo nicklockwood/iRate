@@ -6,7 +6,7 @@
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
 //
-//  Distributed under the permissive zlib License
+//  Distributed under the permissive zlib license
 //  Get the latest version from either of these locations:
 //
 //  http://charcoaldesign.co.uk/source/cocoa#irate
@@ -39,7 +39,7 @@
 //  Created by Nick Lockwood on 05/01/2012.
 //  Copyright 2012 Charcoal Design
 //
-//  Distributed under the permissive zlib License
+//  Distributed under the permissive zlib license
 //  Get the latest version from here:
 //
 //  https://gist.github.com/1563325

@@ -7,8 +7,8 @@ iRate is a library to help you promote your iPhone and Mac App Store apps by pro
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 5.0 (Xcode 4.2)
-* Earliest supported deployment target - iOS 4.3 (Xcode 4.2)
+* Supported build target - iOS 5.0 / Mac OS 10.7 (Xcode 4.2, Apple LLVM compiler 3.0)
+* Earliest supported deployment target - iOS 4.3 / Mac OS 10.6
 * Earliest compatible deployment target - iOS 3.0
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -17,12 +17,7 @@ NOTE: 'Supported' means that the library has been tested with this version. 'Com
 ARC Compatibility
 ------------------
 
-iRate does not use automatic reference counting, but can be converted using the ARC migration tool without any issues.
-
-However, in the interests of avoiding modifying the library (which may cause unknown bugs or problems later when upgrading to a new version) a better approach is to specify in your ARC project that iRate's files should be excluded from the ARC validation process. To do that:
-
-1. Go to Project Settings, under Build Phases > Compile Sources
-2. Double-click the iRate.m file and add the -fno-objc-arc compiler flag
+iRate makes use of the ARC Helper library to automatically work with both ARC and non-ARC projects through conditional compilation. There is no need to exclude iRate files from the ARC validation process, or to convert iRate using the ARC conversion tool.
 
 
 Installation
