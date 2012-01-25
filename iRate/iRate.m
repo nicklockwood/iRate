@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.3.1
+//  Version 1.3.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -58,6 +58,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #else
 @interface iRate()
 #endif
+
+@property (nonatomic, strong) id visibleAlert;
+
 @end
 
 
@@ -79,6 +82,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize promptAtLaunch;
 @synthesize debug;
 @synthesize delegate;
+@synthesize visibleAlert;
 
 #pragma mark -
 #pragma mark Lifecycle methods
@@ -258,6 +262,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 	AH_RELEASE(remindButtonLabel);
 	AH_RELEASE(rateButtonLabel);
 	AH_RELEASE(ratingsURL);
+    AH_RELEASE(visibleAlert);
 	AH_SUPER_DEALLOC;
 }
 
@@ -318,50 +323,53 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)promptForRating
 {
+    if (!visibleAlert)
+    {
 	
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
-													message:self.message
-												   delegate:self
-										  cancelButtonTitle:cancelButtonLabel
-										  otherButtonTitles:rateButtonLabel, nil];
-	
-	if (remindButtonLabel)
-	{
-		[alert addButtonWithTitle:remindButtonLabel];
-	}
-	
-	[alert show];
-	AH_RELEASE(alert);
+        self.visibleAlert = [[UIAlertView alloc] initWithTitle:self.messageTitle
+                                                       message:self.message
+                                                      delegate:self
+                                             cancelButtonTitle:cancelButtonLabel
+                                             otherButtonTitles:rateButtonLabel, nil];
+        
+        if (remindButtonLabel)
+        {
+            [visibleAlert addButtonWithTitle:remindButtonLabel];
+        }
+        
+        [visibleAlert show];
+        AH_RELEASE(visibleAlert);
 	
 #else
 	
-	//only show when main window is available
-	if (![[NSApplication sharedApplication] mainWindow])
-	{
-		[self performSelector:@selector(promptForRating) withObject:nil afterDelay:0.5];
-		return;
-	}
-	
-	NSAlert *alert = [NSAlert alertWithMessageText:self.messageTitle
-									 defaultButton:rateButtonLabel
-								   alternateButton:cancelButtonLabel
-									   otherButton:nil
-						 informativeTextWithFormat:self.message];	
-	
-	if (remindButtonLabel)
-	{
-		[alert addButtonWithTitle:remindButtonLabel];
-	}
-	
-	[alert beginSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
-					  modalDelegate:self
-					 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
-						contextInfo:nil];
+        //only show when main window is available
+        if (![[NSApplication sharedApplication] mainWindow])
+        {
+            [self performSelector:@selector(promptForRating) withObject:nil afterDelay:0.5];
+            return;
+        }
+        
+        self.visibleAlert = [NSAlert alertWithMessageText:self.messageTitle
+                                            defaultButton:rateButtonLabel
+                                          alternateButton:cancelButtonLabel
+                                              otherButton:nil
+                                informativeTextWithFormat:self.message];	
+        
+        if (remindButtonLabel)
+        {
+            [visibleAlert addButtonWithTitle:remindButtonLabel];
+        }
+        
+        [visibleAlert beginSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
+                                 modalDelegate:self
+                                didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
+                                   contextInfo:nil];
 	
 #endif
-	
+        
+	}
 }
 
 - (void)promptIfNetworkAvailable
@@ -423,14 +431,21 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 	}
 }
 
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
-	[self incrementUseCount];
-	if (promptAtLaunch && [self shouldPromptForRating])
-	{
-		[self promptIfNetworkAvailable];
-	}
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+		[self incrementUseCount];
+        if (promptAtLaunch && [self shouldPromptForRating])
+        {
+            [self promptIfNetworkAvailable];
+        }
+    }
 }
+
+#endif
 
 #pragma mark -
 #pragma mark UIAlertViewDelegate methods
@@ -480,6 +495,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 		//go to ratings page
 		[self openRatingsPageInAppStore];
 	}
+    
+    //release alert
+    self.visibleAlert = nil;
 }
 
 #else
@@ -555,6 +573,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 			self.lastReminded = [NSDate date];
 		}
 	}
+    
+    //release alert
+    self.visibleAlert = nil;
 }
 
 #endif

@@ -9,7 +9,7 @@ Supported iOS & SDK Versions
 
 * Supported build target - iOS 5.0 / Mac OS 10.7 (Xcode 4.2, Apple LLVM compiler 3.0)
 * Earliest supported deployment target - iOS 4.3 / Mac OS 10.6
-* Earliest compatible deployment target - iOS 3.0
+* Earliest compatible deployment target - iOS 3.0 / Mac OS 10.6
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
@@ -101,15 +101,15 @@ Advanced properties
 
 If the default iRate behaviour doesn't meet your requirements, you can implement your own by using the advanced properties, methods and delegate. The properties below let you access internal state and override it:
 
-	@property (nonatomic, retain) NSURL *ratingsURL;
+	@property (nonatomic, strong) NSURL *ratingsURL;
 
 The URL that the app will direct the user to so they can write a rating for the app. If you are implementing your own rating prompt, you should probably use the `openRatingsPageInAppStore` method instead, especially on Mac OS, as the process for opening the Mac app store is more complex than merely opening the URL.
 
-	@property (nonatomic, retain) NSDate *firstUsed;
+	@property (nonatomic, strong) NSDate *firstUsed;
 
 The first date on which the user launched the current version of the app. This is used to calculate whether the daysUntilPrompt criterion has been met.
 
-	@property (nonatomic, retain) NSDate *lastReminded;
+	@property (nonatomic, strong) NSDate *lastReminded;
 
 The date on which the user last requested to be reminded of an update.
 

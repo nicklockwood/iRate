@@ -1,3 +1,8 @@
+Version 1.3.2
+
+- Added logic to prevent multiple prompts from being displayed if user fails to close one prompt before the next is due to be opened.
+- Fixed issue where use count was incremented every time device awakens from sleep as opposed to every time the app returns from the background. This appears to be a bug in Apple's UIApplicationWillEnterForegroundNotification implementation, however the fix should be safe even if they correct this bug in future.
+
 Version 1.3.1
 
 - Added automatic support for ARC compile targets
