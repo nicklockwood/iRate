@@ -1,3 +1,7 @@
+Version 1.3.3
+
+- Added missing ivar required for 32-bit Mac OS builds.
+
 Version 1.3.2
 
 - Added logic to prevent multiple prompts from being displayed if user fails to close one prompt before the next is due to be opened.

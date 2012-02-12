@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.3.2
+//  Version 1.3.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -110,24 +110,25 @@
 //required for 32-bit Macs
 #ifdef __i386__
 {
-	@private
-	
-	NSUInteger appStoreID;
-	NSString *applicationName;
-	NSString *applicationVersion;
-	NSUInteger usesUntilPrompt;
-	NSUInteger eventsUntilPrompt;
-	float daysUntilPrompt;
-	float remindPeriod;
-	NSString *messageTitle;
-	NSString *message;
-	NSString *cancelButtonLabel;
-	NSString *remindButtonLabel;
-	NSString *rateButtonLabel;
-	NSURL *ratingsURL;
-	BOOL promptAtLaunch;
-	BOOL debug;
-	id<iRateDelegate> __AH_WEAK delegate;
+    @private
+    
+    NSUInteger appStoreID;
+    NSString *applicationName;
+    NSString *applicationVersion;
+    NSUInteger usesUntilPrompt;
+    NSUInteger eventsUntilPrompt;
+    float daysUntilPrompt;
+    float remindPeriod;
+    NSString *messageTitle;
+    NSString *message;
+    NSString *cancelButtonLabel;
+    NSString *remindButtonLabel;
+    NSString *rateButtonLabel;
+    NSURL *ratingsURL;
+    BOOL promptAtLaunch;
+    BOOL debug;
+    id<iRateDelegate> __AH_WEAK delegate;
+    id visibleAlert;
 }
 #endif
 
