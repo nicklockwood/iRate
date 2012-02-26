@@ -4,14 +4,14 @@ Purpose
 iRate is a library to help you promote your iPhone and Mac App Store apps by prompting users to rate the app after using it for a few days. This approach is one of the best ways to get positive app reviews by targeting only regular users (who presumably like the app or they wouldn't keep using it!).
 
 
-Supported iOS & SDK Versions
+Supported OS & SDK Versions
 -----------------------------
 
 * Supported build target - iOS 5.0 / Mac OS 10.7 (Xcode 4.2, Apple LLVM compiler 3.0)
 * Earliest supported deployment target - iOS 4.3 / Mac OS 10.6
 * Earliest compatible deployment target - iOS 3.0 / Mac OS 10.6
 
-NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
+NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
 
 ARC Compatibility
@@ -168,6 +168,10 @@ The iRateDelegate protocol provides the following methods that can be used inter
     - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
 
 This method is called if iRate cannot connect to the App Store, usually because the network connection is down.
+
+    - (void)iRateDidDetectAppUpdate;
+
+This method is called if iRate detects that the application has been updated since the last time it was launched.
 
     - (BOOL)iRateShouldShouldPromptForRating;
 

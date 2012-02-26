@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.3.3
+//  Version 1.3.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -424,7 +424,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [defaults synchronize];
 
         //inform about app update
-        if ([delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)]) {
+        if ([delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)])
+        {
             [delegate iRateDidDetectAppUpdate];
         }        
     }
