@@ -328,19 +328,19 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     
-        self.visibleAlert = [[UIAlertView alloc] initWithTitle:self.messageTitle
-                                                       message:self.message
-                                                      delegate:self
-                                             cancelButtonTitle:cancelButtonLabel
-                                             otherButtonTitles:rateButtonLabel, nil];
-        
-        if (remindButtonLabel)
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
+                                                        message:self.message
+                                                       delegate:self
+                                              cancelButtonTitle:cancelButtonLabel
+                                              otherButtonTitles:rateButtonLabel, nil];
+        if (alert)
         {
             [visibleAlert addButtonWithTitle:remindButtonLabel];
         }
         
+        self.visibleAlert = alert;
         [visibleAlert show];
-        AH_RELEASE(visibleAlert);
+        AH_RELEASE(alert);
     
 #else
     
