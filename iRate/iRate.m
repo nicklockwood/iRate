@@ -422,6 +422,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [defaults setInteger:0 forKey:iRateEventCountKey];
         [defaults setObject:nil forKey:iRateLastRemindedKey];
         [defaults synchronize];
+
+        //inform about app update
+        if ([delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)]) {
+            [delegate iRateDidDetectAppUpdate];
+        }        
     }
     
     [self incrementUseCount];
