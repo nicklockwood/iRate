@@ -101,6 +101,7 @@
 - (void)iRateUserDidAttemptToRateApp;
 - (void)iRateUserDidDeclineToRateApp;
 - (void)iRateUserDidRequestReminderToRateApp;
+- (void)iRateDidDetectAppUpdate;
 
 @end
 
