@@ -1,0 +1,12 @@
+/* This is the default message that is show to prompt the user asking them to rate the app */
+"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Si te gusta utilizar %@, ¿te importaría dedicar un momento a valorarlo? No tardarás más de un minuto. ¡Gracias por tu apoyo!";
+
+/* Button in prompting message stating that they would not like to rate the app. Pressing this button will dismiss the prompt. */
+"No, Thanks" = "No, gracias";
+
+/* Button in prompting message stating that they would like to rate the app. Pressing this button will take the user to the app store. */
+"Rate It Now" = "Valorar ahora";
+
+/* Button in prompting message stating that they would like to be reminded to rate the app. Pressing this button will dismiss the prompt. */
+"Remind Me Later" = "Recordar más tarde";
+

@@ -142,9 +142,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         //message text, you may wish to customise these, e.g. for localisation
         self.messageTitle = nil; //set lazily so that appname can be included
         self.message = nil; //set lazily so that appname can be included
-        self.cancelButtonLabel = @"No, Thanks";
-        self.remindButtonLabel = @"Remind Me Later";
-        self.rateButtonLabel = @"Rate It Now";
+        self.cancelButtonLabel = NSLocalizedStringFromTable(@"No, Thanks", @"iRate", @"Button in prompting message stating that they would not like to rate the app. Pressing this button will dismiss the prompt.") ;
+        self.remindButtonLabel = NSLocalizedStringFromTable(@"Remind Me Later", @"iRate", @"Button in prompting message stating that they would like to be reminded to rate the app. Pressing this button will dismiss the prompt.") ;
+        self.rateButtonLabel = NSLocalizedStringFromTable(@"Rate It Now", @"iRate", @"Button in prompting message stating that they would like to rate the app. Pressing this button will take the user to the app store.") ;
     }
     return self;
 }
@@ -164,7 +164,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         return message;
     }
-    return [NSString stringWithFormat:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", applicationName];
+    
+    
+    NSString *formatString = NSLocalizedStringFromTable(@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!", @"iRate", @"This is the default message that is show to prompt the user asking them to rate the app");
+    
+    return [NSString stringWithFormat:formatString, applicationName];
 }
 
 - (NSURL *)ratingsURL
@@ -509,7 +513,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     while (GetNextProcess(&psn) == noErr)
     {
         CFDictionaryRef cfDict = ProcessInformationCopyDictionary(&psn,  kProcessDictionaryIncludeAllInformationMask);
-        NSString *bundleID = [(NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
+        NSString *bundleID = [(__bridge NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
         if ([iRateMacAppStoreBundleID isEqualToString:bundleID])
         {
             //open app page
