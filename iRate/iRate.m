@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.3.3
+//  Version 1.3.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -332,19 +332,19 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     
-        self.visibleAlert = [[UIAlertView alloc] initWithTitle:self.messageTitle
-                                                       message:self.message
-                                                      delegate:self
-                                             cancelButtonTitle:cancelButtonLabel
-                                             otherButtonTitles:rateButtonLabel, nil];
-        
-        if (remindButtonLabel)
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
+                                                        message:self.message
+                                                       delegate:self
+                                              cancelButtonTitle:cancelButtonLabel
+                                              otherButtonTitles:rateButtonLabel, nil];
+        if (alert)
         {
             [visibleAlert addButtonWithTitle:remindButtonLabel];
         }
         
+        self.visibleAlert = alert;
         [visibleAlert show];
-        AH_RELEASE(visibleAlert);
+        AH_RELEASE(alert);
     
 #else
     
@@ -426,6 +426,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [defaults setInteger:0 forKey:iRateEventCountKey];
         [defaults setObject:nil forKey:iRateLastRemindedKey];
         [defaults synchronize];
+
+        //inform about app update
+        if ([delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)])
+        {
+            [delegate iRateDidDetectAppUpdate];
+        }        
     }
     
     [self incrementUseCount];

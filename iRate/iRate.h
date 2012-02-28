@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.3.3
+//  Version 1.3.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -34,7 +34,7 @@
 //
 //  ARC Helper
 //
-//  Version 1.2
+//  Version 1.2.1
 //
 //  Created by Nick Lockwood on 05/01/2012.
 //  Copyright 2012 Charcoal Design
@@ -47,16 +47,16 @@
 
 #ifndef AH_RETAIN
 #if __has_feature(objc_arc)
-#define AH_RETAIN(x) x
+#define AH_RETAIN(x) (x)
 #define AH_RELEASE(x)
-#define AH_AUTORELEASE(x) x
+#define AH_AUTORELEASE(x) (x)
 #define AH_SUPER_DEALLOC
 #else
 #define __AH_WEAK
 #define AH_WEAK assign
-#define AH_RETAIN(x) [x retain]
-#define AH_RELEASE(x) [x release]
-#define AH_AUTORELEASE(x) [x autorelease]
+#define AH_RETAIN(x) [(x) retain]
+#define AH_RELEASE(x) [(x) release]
+#define AH_AUTORELEASE(x) [(x) autorelease]
 #define AH_SUPER_DEALLOC [super dealloc]
 #endif
 #endif
@@ -97,6 +97,7 @@
 @optional
 
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
+- (void)iRateDidDetectAppUpdate;
 - (BOOL)iRateShouldPromptForRating;
 - (void)iRateUserDidAttemptToRateApp;
 - (void)iRateUserDidDeclineToRateApp;

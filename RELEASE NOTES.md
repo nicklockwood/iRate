@@ -1,3 +1,9 @@
+Version 1.3.4
+
+- Fixed compiler warning
+- Added `iRateDidDetectAppUpdate` delegate method
+- Added ARC Test example
+
 Version 1.3.3
 
 - Added missing ivar required for 32-bit Mac OS builds.
@@ -5,7 +11,7 @@ Version 1.3.3
 Version 1.3.2
 
 - Added logic to prevent multiple prompts from being displayed if user fails to close one prompt before the next is due to be opened.
-- Fixed issue where use count was incremented every time device awakens from sleep as opposed to every time the app returns from the background. This appears to be a bug in Apple's UIApplicationWillEnterForegroundNotification implementation, however the fix should be safe even if they correct this bug in future.
+- Added workaround for change in UIApplicationWillEnterForegroundNotification implementation in iOS5
 
 Version 1.3.1
 
