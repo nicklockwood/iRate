@@ -1,0 +1,12 @@
+/* This is the default message that is show to prompt the user asking them to rate the app */
+"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "%@ を気に入っていただけましたら、お手数ですが評価をお願い致します。 評価にかかる時間は１分ほどです。ご協力ありがとうございます！";
+
+/* Button in prompting message stating that they would not like to rate the app. Pressing this button will dismiss the prompt. */
+"No, Thanks" = "評価に参加しません。";
+
+/* Button in prompting message stating that they would like to rate the app. Pressing this button will take the user to the app store. */
+"Rate It Now" = "すぐに評価する。";
+
+/* Button in prompting message stating that they would like to be reminded to rate the app. Pressing this button will dismiss the prompt. */
+"Remind Me Later" = "後で再度通知する。";
+
