@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.3.4
+//  Version 1.3.5
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -333,17 +333,17 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                                        delegate:self
                                               cancelButtonTitle:cancelButtonLabel
                                               otherButtonTitles:rateButtonLabel, nil];
-        if (alert)
+        if (remindButtonLabel)
         {
-            [visibleAlert addButtonWithTitle:remindButtonLabel];
+            [alert addButtonWithTitle:remindButtonLabel];
         }
         
         self.visibleAlert = alert;
         [visibleAlert show];
         AH_RELEASE(alert);
-    
+
 #else
-    
+
         //only show when main window is available
         if (![[NSApplication sharedApplication] mainWindow])
         {
@@ -366,7 +366,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                  modalDelegate:self
                                 didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
                                    contextInfo:nil];
-    
+
 #endif
         
     }

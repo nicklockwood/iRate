@@ -1,3 +1,7 @@
+Version 1.3.5
+
+- Fixed bug introduced in 1.3.4 where remind button would not appear on iOS
+
 Version 1.3.4
 
 - Fixed compiler warning
