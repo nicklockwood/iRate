@@ -10,10 +10,7 @@
 
 @class iRateViewController;
 
-@interface iRateAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    iRateViewController *viewController;
-}
+@interface iRateAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic) IBOutlet UIWindow *window;
 @property (nonatomic) IBOutlet iRateViewController *viewController;

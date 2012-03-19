@@ -1,3 +1,12 @@
+Version 1.4
+
+- Included localisation for French, German, Italian, Spanish and Japanese
+- iRate is now *completely zero-config* in most cases!
+- It is no longer necessary to set the app store ID in most cases
+- iRate default text now uses "playing" instead of "using" for games
+- iRate delegate now defaults to App Delegate unless otherwise specified
+- By default, iRate no longer prompts the user to rate the app unless they are running the latest version
+
 Version 1.3.5
 
 - Fixed bug introduced in 1.3.4 where remind button would not appear on iOS

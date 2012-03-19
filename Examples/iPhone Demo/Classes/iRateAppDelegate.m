@@ -22,9 +22,13 @@
 
 + (void)initialize
 {
-	//configure iRate
+	//set the app and bundle ID. normally you wouldn't need to do this
+    //but we need to test with an app that's actually on the store
 	[iRate sharedInstance].appStoreID = 355313284;
-	[iRate sharedInstance].debug = YES;
+    [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks";
+	
+    //enable debug mode
+    [iRate sharedInstance].debug = YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -32,8 +36,8 @@
     // Override point for customization after application launch.
 
     // Add the view controller's view to the window and display.
-    [self.window addSubview:viewController.view];
-    [self.window makeKeyAndVisible];
+    [window addSubview:viewController.view];
+    [window makeKeyAndVisible];
 
     return YES;
 }

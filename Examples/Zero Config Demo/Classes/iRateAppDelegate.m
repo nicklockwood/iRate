@@ -17,24 +17,24 @@
 @synthesize viewController;
 
 
+//absolutely no configuration whatsoever!
+//the app details are retrieved directly
+//from iTunes using the app's bundle ID
+
+
 #pragma mark -
 #pragma mark Application lifecycle
 
 + (void)initialize
 {
-	//set the app and bundle ID. normally you wouldn't need to do this
-    //but we need to test with an app that's actually on the store
-	[iRate sharedInstance].appStoreID = 355313284;
-    [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks";
-	
-    //enable debug mode
+    //ok, we'll enable debug mode just so
+    //you can see something without waiting for
+    //ten days, but in the real app, you don't need this
     [iRate sharedInstance].debug = YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
-    // Override point for customization after application launch.
-
     // Add the view controller's view to the window and display.
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
@@ -45,6 +45,12 @@
 #pragma mark -
 #pragma mark Memory management
 
+- (void)dealloc
+{
+    [viewController release];
+    [window release];
+    [super dealloc];
+}
 
 
 @end

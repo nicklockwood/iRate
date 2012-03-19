@@ -24,7 +24,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* iRateAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRateAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* iRateAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRateAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* iRate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iRate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* ZeroConfig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZeroConfig.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* iRateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = iRateViewController.xib; sourceTree = "<group>"; };
@@ -32,8 +32,8 @@
 		28D7ACF60DDB3853001CB0EB /* iRateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRateViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* iRateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRateViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* iRate_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate_Prefix.pch; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* iRate-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iRate-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* ZeroConfig_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; path = ZeroConfig_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* ZeroConfig-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; path = "ZeroConfig-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		B205F2171462A82C00B69B0D /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		B205F2181462A82C00B69B0D /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,7 +66,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* iRate.app */,
+				1D6058910D05DD3D006BFB54 /* ZeroConfig.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,8 +87,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107310486CEB800E47090 /* iRate-Info.plist */,
-				32CA4F630368D1EE00C91783 /* iRate_Prefix.pch */,
+				8D1107310486CEB800E47090 /* ZeroConfig-Info.plist */,
+				32CA4F630368D1EE00C91783 /* ZeroConfig_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -127,9 +127,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* iRate */ = {
+		1D6058900D05DD3D006BFB54 /* ZeroConfig */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iRate" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "ZeroConfig" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -139,9 +139,9 @@
 			);
 			dependencies = (
 			);
-			name = iRate;
+			name = ZeroConfig;
 			productName = iVersion;
-			productReference = 1D6058910D05DD3D006BFB54 /* iRate.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* ZeroConfig.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -152,7 +152,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iRate" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ZeroConfig" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -166,7 +166,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* iRate */,
+				1D6058900D05DD3D006BFB54 /* ZeroConfig */,
 			);
 		};
 /* End PBXProject section */
@@ -207,9 +207,9 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = iRate_Prefix.pch;
-				INFOPLIST_FILE = "iRate-Info.plist";
-				PRODUCT_NAME = iRate;
+				GCC_PREFIX_HEADER = ZeroConfig_Prefix.pch;
+				INFOPLIST_FILE = "ZeroConfig-Info.plist";
+				PRODUCT_NAME = ZeroConfig;
 			};
 			name = Debug;
 		};
@@ -219,9 +219,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = iRate_Prefix.pch;
-				INFOPLIST_FILE = "iRate-Info.plist";
-				PRODUCT_NAME = iRate;
+				GCC_PREFIX_HEADER = ZeroConfig_Prefix.pch;
+				INFOPLIST_FILE = "ZeroConfig-Info.plist";
+				PRODUCT_NAME = ZeroConfig;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -256,7 +256,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "iRate" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "ZeroConfig" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -265,7 +265,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iRate" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ZeroConfig" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
