@@ -45,7 +45,7 @@ static NSString *const iRateUseCountKey = @"iRateUseCount";
 static NSString *const iRateEventCountKey = @"iRateEventCount";
 
 static NSString *const iRateMacAppStoreBundleID = @"com.apple.appstore";
-static NSString *const iRateAppLookupURL = @"http://itunes.apple.com/lookup?";
+static NSString *const iRateAppLookupURLFormat = @"http://itunes.apple.com/lookup?country=%@";
 
 //note, these don't link directly to the review page - there doesn't seem to be a way to do that
 static NSString *const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
@@ -71,6 +71,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 @synthesize appStoreID;
 @synthesize appStoreGenre;
+@synthesize appStoreCountry;
 @synthesize applicationName;
 @synthesize applicationVersion;
 @synthesize applicationBundleID;
@@ -167,6 +168,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                                      name:NSApplicationDidFinishLaunchingNotification
                                                    object:nil];
 #endif
+        
+        //get country
+        self.appStoreCountry = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
         
         //application version (use short version preferentially)
         self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -333,6 +337,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     AH_RELEASE(appStoreGenre);
+    AH_RELEASE(appStoreCountry);
     AH_RELEASE(applicationName);
     AH_RELEASE(applicationVersion);
     AH_RELEASE(applicationBundleID);
@@ -463,7 +468,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         @autoreleasepool
         {
             //first check iTunes
-            NSString *iTunesServiceURL = [NSString stringWithFormat:iRateAppLookupURL];
+            NSString *iTunesServiceURL = [NSString stringWithFormat:iRateAppLookupURLFormat, appStoreCountry];
             if (appStoreID)
             {
                 iTunesServiceURL = [iTunesServiceURL stringByAppendingFormat:@"&id=%i", appStoreID];

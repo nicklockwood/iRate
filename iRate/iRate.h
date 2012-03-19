@@ -118,6 +118,7 @@ extern NSString *const iRateAppStoreGenreGame;
     
     NSUInteger appStoreID;
     NSString *appStoreGenre;
+    NSString *appStoreCountry;
     NSString *applicationName;
     NSString *applicationVersion;
     NSString *applicationBundleID;
@@ -147,6 +148,7 @@ extern NSString *const iRateAppStoreGenreGame;
 
 //application details - these are set automatically
 @property (nonatomic, copy) NSString *appStoreGenre;
+@property (nonatomic, copy) NSString *appStoreCountry;
 @property (nonatomic, copy) NSString *applicationName;
 @property (nonatomic, copy) NSString *applicationVersion;
 @property (nonatomic, copy) NSString *applicationBundleID;

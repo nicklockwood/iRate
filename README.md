@@ -60,6 +60,10 @@ This should match the iTunes app ID of your application, which you can get from 
 
 This is the type of app, used to determine the default text for the rating dialog. This is set automatically by calling an iTunes service, so you shouldn't need to set it manually for most purposes. If you do wish to override this value, setting it to the `iRateAppStoreGenreGame` constant will cause iRate to use the "game" version of the rating dialog, and setting it to any other value will use the "app" version of the rating dialog.
 
+    @property (nonatomic, copy) NSString *appStoreCountry;
+
+This is the two-letter country code used to specify which iTunes store to check. It is set automatically from the device locale preferences, so shouldn't need to be changed in most cases. You can override this to point to the US store, or another specific store if you prefer.
+
     @property (nonatomic, copy) NSString *applicationName;
 
 This is the name of the app displayed in the iRate alert. It is set automatically from the application's info.plist, but you may wish to override it with a shorter or longer version.
