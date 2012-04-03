@@ -1,6 +1,9 @@
-Version 1.4.1 beta
+Version 1.4.1
 
-- Added Russian and Polish localisations
+- Added logic to prevent UIAlertView collapsing in landscape mode
+- Added Russian, Polish and Traditional Chinese localisations
+- Improved Japanese localisation
+- Now handles nil cancel button text correctly
 
 Version 1.4
 

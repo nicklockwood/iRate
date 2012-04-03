@@ -26,7 +26,7 @@
     //but we need to test with an app that's actually on the store
 	[iRate sharedInstance].appStoreID = 355313284;
     [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks";
-	
+    
     //enable debug mode
     [iRate sharedInstance].debug = YES;
 }

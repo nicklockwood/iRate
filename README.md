@@ -33,7 +33,7 @@ To install iRate into your app, drag the iRate.h, .m and .bundle files into your
 
 To enable iRate in your application you need to instantiate and configure iRate *before* the app has finished launching. The easiest way to do this is to add the iRate configuration code in your AppDelegate's initialize method, like this:
 
-As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the Application's bundle ID to look it up on the App Store.
+As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the Application's bundle ID to look the app ID up on the App Store.
 
 **Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app.
 
@@ -218,7 +218,7 @@ This is called when the user asks to be reminded to rate the app. This is useful
 Localisation
 ---------------
 
-The defaults strings for iRate are already localised for English, French, German, Italian, Spanish and Japanese.
+The defaults strings for iRate are already localised for English, French, German, Italian, Spanish, Japanese, Traditional Chinese, Russian and Polish.
 
 It is not recommended that you modify the strings files in the iRate.bundle, as it will complicate updating to newer versions of iRate. If you do want to edit the files, or open them so you can copy the keys into your own strings file, you should note that the iRate strings files have actually been compiled as binary plists, so you'll need to open them in Xcode and use the Open As > Property List option, or they will appear as gibberish.
 

@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.4.1 beta
+//  Version 1.4.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -112,9 +112,9 @@ extern NSString *const iRateAppStoreGenreGame;
 @interface iRate : NSObject
 
 //required for 32-bit Macs
-#ifdef __i386__
+#ifdef __i386
 {
-    @private
+@private
     
     NSUInteger appStoreID;
     NSString *appStoreGenre;
