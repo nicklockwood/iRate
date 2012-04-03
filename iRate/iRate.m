@@ -645,6 +645,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    //consider cancel button presence
+    if (alertView.cancelButtonIndex == -1) {
+        ++buttonIndex;
+    }
+
     if (buttonIndex == alertView.cancelButtonIndex)
     {
         //log event
