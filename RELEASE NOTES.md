@@ -1,3 +1,7 @@
+Version 1.4.1 beta
+
+- Added Russian and Polish localisations
+
 Version 1.4
 
 - Included localisation for French, German, Italian, Spanish and Japanese

@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4
+//  Version 1.4.1 beta
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -432,9 +432,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return nil;
 }
 
-- (void)setAppStoreIDOnMainThread:(NSString *)bundleID
+- (void)setAppStoreIDOnMainThread:(NSString *)appStoreIDString
 {
-    self.appStoreID = [bundleID longLongValue];
+    self.appStoreID = [appStoreIDString longLongValue];
 }
 
 - (void)connectionSucceeded
