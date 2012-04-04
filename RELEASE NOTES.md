@@ -1,3 +1,9 @@
+Version 1.4.2
+
+- Added Hebrew localisation
+- Fixed issue with UIAlertView label resizing
+- Fixed some compiler warnings
+
 Version 1.4.1
 
 - Added logic to prevent UIAlertView collapsing in landscape mode

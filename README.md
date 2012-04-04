@@ -218,7 +218,7 @@ This is called when the user asks to be reminded to rate the app. This is useful
 Localisation
 ---------------
 
-The defaults strings for iRate are already localised for English, French, German, Italian, Spanish, Japanese, Traditional Chinese, Russian and Polish.
+The defaults strings for iRate are already localised for English, French, German, Italian, Spanish, Japanese, Traditional Chinese, Russian, Polish and Hebrew.
 
 It is not recommended that you modify the strings files in the iRate.bundle, as it will complicate updating to newer versions of iRate. If you do want to edit the files, or open them so you can copy the keys into your own strings file, you should note that the iRate strings files have actually been compiled as binary plists, so you'll need to open them in Xcode and use the Open As > Property List option, or they will appear as gibberish.
 

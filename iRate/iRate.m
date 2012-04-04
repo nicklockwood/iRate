@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4.1
+//  Version 1.4.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -463,7 +463,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                     
                     if (c <= 0xffff)
                     {
-                        value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C", c]];
+                        value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C", (unichar)c]];
                     }
                     else
                     {
@@ -714,6 +714,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 offset = label.frame.size.height - frame.size.height;
                 frame.size.height = label.frame.size.height;
             }
+        }
+        else if ([view isKindOfClass:[UITextView class]])
+        {
+            view.alpha = 0.0f;
         }
         else if ([view isKindOfClass:[UIControl class]])
         {
