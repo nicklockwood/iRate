@@ -624,7 +624,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                             defaultButton:rateButtonLabel
                                           alternateButton:cancelButtonLabel
                                               otherButton:nil
-                                informativeTextWithFormat:self.message];    
+                                informativeTextWithFormat:@"%@", self.message];
         
         if (remindButtonLabel)
         {
@@ -695,17 +695,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [[UIApplication sharedApplication] openURL:self.ratingsURL];
 }
 
-- (void)resizeAlert
+- (void)resizeAlertView:(UIAlertView *)alertView
 {
     CGFloat offset = 0.0f;
-    UIAlertView *alertView = visibleAlert;
     for (UIView *view in alertView.subviews)
     {
         CGRect frame = view.frame;
         if ([view isKindOfClass:[UILabel class]])
         {
             UILabel *label = (UILabel *)view;
-            if ([label.text isEqualToString:self.message])
+            if ([label.text isEqualToString:alertView.message])
             {
                 label.alpha = 1.0f;
                 label.lineBreakMode = UILineBreakModeWordWrap;
@@ -733,12 +732,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)didRotate
 {
-    [self performSelectorOnMainThread:@selector(resizeAlert) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(resizeAlertView:) withObject:visibleAlert waitUntilDone:NO];
 }
 
 - (void)willPresentAlertView:(UIAlertView *)alertView
 {
-    [self resizeAlert];
+    [self resizeAlertView:alertView];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
