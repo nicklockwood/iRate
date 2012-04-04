@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4
+//  Version 1.4.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -161,6 +161,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                                          name:UIApplicationWillEnterForegroundNotification
                                                        object:nil];
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didRotate)
+                                                     name:UIDeviceOrientationDidChangeNotification
+                                                   object:nil];
 #else
         //register for mac application events
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -421,10 +426,57 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             {
                 NSString *value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
                 value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                while ([value hasPrefix:@"\""] && ![value hasSuffix:@"\""])
+                {
+                    if (valueEnd.location == NSNotFound)
+                    {
+                        break;
+                    }
+                    NSInteger newStart = valueEnd.location + 1;
+                    valueEnd = [json rangeOfString:@"," options:0 range:NSMakeRange(newStart, [json length] - newStart)];
+                    value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
+                    value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                }
+                
                 value = [value stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
                 value = [value stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"];
+                value = [value stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
                 value = [value stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
                 value = [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+                value = [value stringByReplacingOccurrencesOfString:@"\\r" withString:@"\r"];
+                value = [value stringByReplacingOccurrencesOfString:@"\\t" withString:@"\t"];
+                value = [value stringByReplacingOccurrencesOfString:@"\\f" withString:@"\f"];
+                value = [value stringByReplacingOccurrencesOfString:@"\\b" withString:@"\f"];
+                
+                while (YES)
+                {
+                    NSRange unicode = [value rangeOfString:@"\\u"];
+                    if (unicode.location == NSNotFound)
+                    {
+                        break;
+                    }
+                    
+                    uint32_t c = 0;
+                    NSString *hex = [value substringWithRange:NSMakeRange(unicode.location + 2, 4)];
+                    NSScanner *scanner = [NSScanner scannerWithString:hex];
+                    [scanner scanHexInt:&c];
+                    
+                    if (c <= 0xffff)
+                    {
+                        value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C", c]];
+                    }
+                    else
+                    {
+                        //convert character to surrogate pair
+                        uint16_t x = (uint16_t)c;
+                        uint16_t u = (c >> 16) & ((1 << 5) - 1);
+                        uint16_t w = (uint16_t)u - 1;
+                        unichar high = 0xd800 | (w << 6) | x >> 10;
+                        unichar low = (uint16_t)(0xdc00 | (x & ((1 << 10) - 1)));
+                        
+                        value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C%C", high, low]];
+                    }
+                }
                 return value;
             }
         }
@@ -432,9 +484,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return nil;
 }
 
-- (void)setAppStoreIDOnMainThread:(NSString *)bundleID
+- (void)setAppStoreIDOnMainThread:(NSString *)appStoreIDString
 {
-    self.appStoreID = [bundleID longLongValue];
+    self.appStoreID = [appStoreIDString longLongValue];
 }
 
 - (void)connectionSucceeded
@@ -634,7 +686,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 
 #pragma mark -
-#pragma mark UIAlertViewDelegate methods
+#pragma mark UIAlertView methods
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
@@ -643,8 +695,55 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [[UIApplication sharedApplication] openURL:self.ratingsURL];
 }
 
+- (void)resizeAlert
+{
+    CGFloat offset = 0.0f;
+    UIAlertView *alertView = visibleAlert;
+    for (UIView *view in alertView.subviews)
+    {
+        CGRect frame = view.frame;
+        if ([view isKindOfClass:[UILabel class]])
+        {
+            UILabel *label = (UILabel *)view;
+            if ([label.text isEqualToString:self.message])
+            {
+                label.alpha = 1.0f;
+                label.lineBreakMode = UILineBreakModeWordWrap;
+                label.numberOfLines = 0;
+                [label sizeToFit];
+                offset = label.frame.size.height - frame.size.height;
+                frame.size.height = label.frame.size.height;
+            }
+        }
+        else if ([view isKindOfClass:[UIControl class]])
+        {
+            frame.origin.y += offset;
+        }
+        view.frame = frame;
+    }
+    CGRect frame = alertView.frame;
+    frame.origin.y -= roundf(offset/2.0f);
+    frame.size.height += offset;
+    alertView.frame = frame;
+}
+
+- (void)didRotate
+{
+    [self performSelectorOnMainThread:@selector(resizeAlert) withObject:nil waitUntilDone:NO];
+}
+
+- (void)willPresentAlertView:(UIAlertView *)alertView
+{
+    [self resizeAlert];
+}
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    //consider cancel button presence
+    if (alertView.cancelButtonIndex == -1) {
+        ++buttonIndex;
+    }
+
     if (buttonIndex == alertView.cancelButtonIndex)
     {
         //log event
