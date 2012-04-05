@@ -86,6 +86,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize rateButtonLabel;
 @synthesize ratingsURL;
 @synthesize onlyPromptIfLatestVersion;
+@synthesize onlyPromptIfMainWindowIsAvailable;
 @synthesize promptAtLaunch;
 @synthesize debug;
 @synthesize delegate;
@@ -196,6 +197,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //usage settings - these have sensible defaults
         onlyPromptIfLatestVersion = YES;
+        onlyPromptIfMainWindowIsAvailable = YES;
         promptAtLaunch = YES;
         usesUntilPrompt = 10;
         eventsUntilPrompt = 10;
@@ -614,7 +616,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #else
 
         //only show when main window is available
-        if (![[NSApplication sharedApplication] mainWindow])
+        if (onlyPromptIfMainWindowIsAvailable && ![[NSApplication sharedApplication] mainWindow])
         {
             [self performSelector:@selector(promptForRating) withObject:nil afterDelay:0.5];
             return;
