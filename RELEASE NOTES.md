@@ -1,3 +1,7 @@
+Version 1.4.3
+
+- It is now possible again to use debug to test the iRate message for apps that are not yet on the App Store. 
+
 Version 1.4.2
 
 - Added Hebrew localisation

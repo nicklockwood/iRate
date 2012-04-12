@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4.2
+//  Version 1.4.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -538,7 +538,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 
                 //check bundle ID matches
                 NSString *bundleID = [self valueForKey:@"bundleId" inJSON:json];
-                if (bundleID && [bundleID isEqualToString:applicationBundleID])
+                if ((bundleID && [bundleID isEqualToString:applicationBundleID]) || debug)
                 {
                     //get genre  
                     if (!appStoreGenre)
@@ -576,7 +576,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             {
                 [self performSelectorOnMainThread:@selector(connectionError:) withObject:error waitUntilDone:YES];
             }
-            else if (appStoreID)
+            else if (appStoreID || debug)
             {
                 //show prompt
                 [self performSelectorOnMainThread:@selector(connectionSucceeded) withObject:nil waitUntilDone:YES];

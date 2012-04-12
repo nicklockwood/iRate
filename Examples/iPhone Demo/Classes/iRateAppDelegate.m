@@ -22,11 +22,11 @@
 
 + (void)initialize
 {
-	//set the app and bundle ID. normally you wouldn't need to do this
-    //but we need to test with an app that's actually on the store
-	[iRate sharedInstance].appStoreID = 355313284;
-    [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks";
-    
+    //set the bundle ID. normally you wouldn't need to do this
+    //as it is picked up automatically from your Info.plist file
+    //but we want to test with an app that's actually on the store
+    [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks-lite";
+	
     //enable debug mode
     [iRate sharedInstance].debug = YES;
 }
