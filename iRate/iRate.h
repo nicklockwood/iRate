@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.4.3
+//  Version 1.4.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -34,7 +34,7 @@
 //
 //  ARC Helper
 //
-//  Version 1.2.2
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 05/01/2012.
 //  Copyright 2012 Charcoal Design
@@ -51,6 +51,7 @@
 #define AH_RELEASE(x) (void)(x)
 #define AH_AUTORELEASE(x) (x)
 #define AH_SUPER_DEALLOC (void)(0)
+#define __AH_BRIDGE __bridge
 #else
 #define __AH_WEAK
 #define AH_WEAK assign
@@ -58,6 +59,7 @@
 #define AH_RELEASE(x) [(x) release]
 #define AH_AUTORELEASE(x) [(x) autorelease]
 #define AH_SUPER_DEALLOC [super dealloc]
+#define __AH_BRIDGE
 #endif
 #endif
 
@@ -86,6 +88,7 @@
 //  ARC Helper ends
 
 
+#import <Availability.h>
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <UIKit/UIKit.h>
 #else
