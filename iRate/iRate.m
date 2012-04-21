@@ -697,26 +697,47 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)resizeAlertView:(UIAlertView *)alertView
 {
+    NSInteger imageCount = 0;
     CGFloat offset = 0.0f;
+    CGFloat messageOffset = 0.0f;
     for (UIView *view in alertView.subviews)
     {
         CGRect frame = view.frame;
         if ([view isKindOfClass:[UILabel class]])
         {
             UILabel *label = (UILabel *)view;
-            if ([label.text isEqualToString:alertView.message])
+            if ([label.text isEqualToString:alertView.title])
+            {
+                [label sizeToFit];
+                offset = label.frame.size.height - fmax(0.0f, 50.0f - label.frame.size.height);
+                if (label.frame.size.height > frame.size.height)
+                {
+                    offset = label.frame.size.height - frame.size.height;
+                    messageOffset = label.frame.size.height - frame.size.height;
+                    frame.size.height = label.frame.size.height;
+                }
+            }
+            else if ([label.text isEqualToString:alertView.message])
             {
                 label.alpha = 1.0f;
                 label.lineBreakMode = UILineBreakModeWordWrap;
                 label.numberOfLines = 0;
                 [label sizeToFit];
-                offset = label.frame.size.height - frame.size.height;
+                offset += label.frame.size.height - frame.size.height;
+                frame.origin.y += messageOffset;
                 frame.size.height = label.frame.size.height;
             }
         }
         else if ([view isKindOfClass:[UITextView class]])
         {
             view.alpha = 0.0f;
+        }
+        else if ([view isKindOfClass:[UIImageView class]])
+        {
+            if (imageCount++ > 0)
+            {
+                view.alpha = 0.0f;
+            }
         }
         else if ([view isKindOfClass:[UIControl class]])
         {

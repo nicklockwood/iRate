@@ -2,6 +2,7 @@ Version 1.4.4
 
 - Added Turkish localisation
 - Improved German translation
+- Fixed alert layout for long app names
 
 Version 1.4.3
 
