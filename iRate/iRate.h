@@ -136,6 +136,7 @@ extern NSString *const iRateAppStoreGenreGame;
     NSString *rateButtonLabel;
     NSURL *ratingsURL;
     BOOL onlyPromptIfLatestVersion;
+    BOOL onlyPromptIfMainWindowIsAvailable;
     BOOL promptAtLaunch;
     BOOL debug;
     id<iRateDelegate> __AH_WEAK delegate;
@@ -171,6 +172,7 @@ extern NSString *const iRateAppStoreGenreGame;
 
 //debugging and prompt overrides
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
+@property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
 @property (nonatomic, assign) BOOL promptAtLaunch;
 @property (nonatomic, assign) BOOL debug;
 
