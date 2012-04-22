@@ -1,3 +1,8 @@
+Version 1.4.5
+
+- Improved German, Spanish, Japanese, Russian and Polish translations
+- Added onlyPromptIfMainWindowIsAvailable option
+
 Version 1.4.4
 
 - Added Turkish localisation

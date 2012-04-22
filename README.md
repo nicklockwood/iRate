@@ -112,6 +112,10 @@ The button label for the button the user presses if they don't want to rate the 
 
 Set this to NO to enabled the rating prompt to be displayed even if the user is not running the latest version of the app. This defaults to YES because that way users won't leave bad reviews due to bugs that you've already fixed, etc.
 
+    @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
+
+This setting is applicable to Mac OS only. By default, on Mac OS the iRate alert is displayed as sheet on the main window. Some applications do not have a main window, so this approach doesn't work. For such applications, set this property to NO to allow the iRate alert to be displayed as a regular modal window.
+
     @property (nonatomic, assign) BOOL promptAtLaunch;
 
 Set this to NO to disable the rating prompt appearing automatically when the application launches or returns from the background. The rating criteria will continue to be tracked, but the prompt will not be displayed automatically while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt.
