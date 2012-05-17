@@ -488,7 +488,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)setAppStoreIDOnMainThread:(NSString *)appStoreIDString
 {
-    self.appStoreID = [appStoreIDString longLongValue];
+    self.appStoreID = (NSUInteger)[appStoreIDString longLongValue];
 }
 
 - (void)connectionSucceeded
