@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4.5
+//  Version 1.4.6 beta
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -63,6 +63,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 
 @property (nonatomic, strong) id visibleAlert;
+@property (nonatomic, assign) int previousOrientation;
 
 @end
 
@@ -91,6 +92,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize debug;
 @synthesize delegate;
 @synthesize visibleAlert;
+@synthesize previousOrientation;
 
 #pragma mark -
 #pragma mark Lifecycle methods
@@ -163,6 +165,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                                        object:nil];
         }
         
+        previousOrientation = [UIApplication sharedApplication].statusBarOrientation;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didRotate)
                                                      name:UIDeviceOrientationDidChangeNotification
@@ -755,7 +758,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)didRotate
 {
-    [self performSelectorOnMainThread:@selector(resizeAlertView:) withObject:visibleAlert waitUntilDone:NO];
+    if (previousOrientation != [UIApplication sharedApplication].statusBarOrientation)
+    {
+        previousOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        [self performSelectorOnMainThread:@selector(resizeAlertView:) withObject:visibleAlert waitUntilDone:NO];
+    }
 }
 
 - (void)willPresentAlertView:(UIAlertView *)alertView

@@ -1,3 +1,8 @@
+Version 1.4.6 beta
+
+- Fixed odd glitch where shaking device would cause UIAlertview to slowly shrink
+- Added Korean translation
+
 Version 1.4.5
 
 - Improved German, Spanish, Japanese, Russian and Polish translations

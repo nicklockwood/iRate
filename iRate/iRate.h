@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.4.5
+//  Version 1.4.6 beta
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -34,7 +34,7 @@
 //
 //  ARC Helper
 //
-//  Version 1.3
+//  Version 1.3.1
 //
 //  Created by Nick Lockwood on 05/01/2012.
 //  Copyright 2012 Charcoal Design
@@ -65,9 +65,10 @@
 
 //  Weak reference support
 
+#import <Availability.h>
 #ifndef AH_WEAK
 #if defined __IPHONE_OS_VERSION_MIN_REQUIRED
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_4_3
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000
 #define __AH_WEAK __weak
 #define AH_WEAK weak
 #else
@@ -75,7 +76,7 @@
 #define AH_WEAK unsafe_unretained
 #endif
 #elif defined __MAC_OS_X_VERSION_MIN_REQUIRED
-#if __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_6
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
 #define __AH_WEAK __weak
 #define AH_WEAK weak
 #else
@@ -88,7 +89,6 @@
 //  ARC Helper ends
 
 
-#import <Availability.h>
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #import <UIKit/UIKit.h>
 #else
@@ -141,6 +141,7 @@ extern NSString *const iRateAppStoreGenreGame;
     BOOL debug;
     id<iRateDelegate> __AH_WEAK delegate;
     id visibleAlert;
+    int previousOrientation;
 }
 #endif
 
