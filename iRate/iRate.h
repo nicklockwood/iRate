@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.4.6 beta
+//  Version 1.4.6
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -135,6 +135,7 @@ extern NSString *const iRateAppStoreGenreGame;
     NSString *remindButtonLabel;
     NSString *rateButtonLabel;
     NSURL *ratingsURL;
+    BOOL disableAlertViewResizing;
     BOOL onlyPromptIfLatestVersion;
     BOOL onlyPromptIfMainWindowIsAvailable;
     BOOL promptAtLaunch;
@@ -172,6 +173,7 @@ extern NSString *const iRateAppStoreGenreGame;
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
 //debugging and prompt overrides
+@property (nonatomic, assign) BOOL disableAlertViewResizing;
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
 @property (nonatomic, assign) BOOL promptAtLaunch;

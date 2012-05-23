@@ -108,6 +108,10 @@ The button label for the button the user presses if they do want to rate the app
 
 The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to nil if you don't want to display the remind me button - e.g. if you don't have space on screen.
 
+    @property (nonatomic, assign) BOOL disableAlertViewResizing;
+
+On iOS, iRate includes some logic to resize the alert view to ensure that your rating message is visible in both portrait and landscape mode, and that it doesn't scroll or become truncated. The code to do this is a rather nasty hack, so if your alert text is very short and/or your app only needs to function in portrait mode on iPhone, you may wish to set this property to YES, which may help make your app more robust against future iOS updates. Try the *Resizing Disabled* example for a demonstration of the effect.
+
     @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 
 Set this to NO to enabled the rating prompt to be displayed even if the user is not running the latest version of the app. This defaults to YES because that way users won't leave bad reviews due to bugs that you've already fixed, etc.

@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4.6 beta
+//  Version 1.4.6
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -86,6 +86,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize remindButtonLabel;
 @synthesize rateButtonLabel;
 @synthesize ratingsURL;
+@synthesize disableAlertViewResizing;
 @synthesize onlyPromptIfLatestVersion;
 @synthesize onlyPromptIfMainWindowIsAvailable;
 @synthesize promptAtLaunch;
@@ -167,7 +168,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         previousOrientation = [UIApplication sharedApplication].statusBarOrientation;
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didRotate)
+                                                 selector:@selector(willRotate)
                                                      name:UIDeviceOrientationDidChangeNotification
                                                    object:nil];
 #else
@@ -702,58 +703,65 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)resizeAlertView:(UIAlertView *)alertView
 {
-    NSInteger imageCount = 0;
-    CGFloat offset = 0.0f;
-    CGFloat messageOffset = 0.0f;
-    for (UIView *view in alertView.subviews)
+    if (!disableAlertViewResizing)
     {
-        CGRect frame = view.frame;
-        if ([view isKindOfClass:[UILabel class]])
+        NSInteger imageCount = 0;
+        CGFloat offset = 0.0f;
+        CGFloat messageOffset = 0.0f;
+        for (UIView *view in alertView.subviews)
         {
-            UILabel *label = (UILabel *)view;
-            if ([label.text isEqualToString:alertView.title])
+            CGRect frame = view.frame;
+            if ([view isKindOfClass:[UILabel class]])
             {
-                [label sizeToFit];
-                offset = label.frame.size.height - fmax(0.0f, 50.0f - label.frame.size.height);
-                if (label.frame.size.height > frame.size.height)
+                UILabel *label = (UILabel *)view;
+                if ([label.text isEqualToString:alertView.title])
                 {
-                    offset = label.frame.size.height - frame.size.height;
-                    messageOffset = label.frame.size.height - frame.size.height;
+                    [label sizeToFit];
+                    offset = label.frame.size.height - fmax(0.0f, 45.f - label.frame.size.height);
+                    if (label.frame.size.height > frame.size.height)
+                    {
+                        offset = messageOffset = label.frame.size.height - frame.size.height;
+                        frame.size.height = label.frame.size.height;
+                    }
+                }
+                else if ([label.text isEqualToString:alertView.message])
+                {
+                    label.alpha = 1.0f;
+                    label.lineBreakMode = UILineBreakModeWordWrap;
+                    label.numberOfLines = 0;
+                    [label sizeToFit];
+                    offset += label.frame.size.height - frame.size.height;
+                    frame.origin.y += messageOffset;
                     frame.size.height = label.frame.size.height;
                 }
             }
-            else if ([label.text isEqualToString:alertView.message])
-            {
-                label.alpha = 1.0f;
-                label.lineBreakMode = UILineBreakModeWordWrap;
-                label.numberOfLines = 0;
-                [label sizeToFit];
-                offset += label.frame.size.height - frame.size.height;
-                frame.origin.y += messageOffset;
-                frame.size.height = label.frame.size.height;
-            }
-        }
-        else if ([view isKindOfClass:[UITextView class]])
-        {
-            view.alpha = 0.0f;
-        }
-        else if ([view isKindOfClass:[UIImageView class]])
-        {
-            if (imageCount++ > 0)
+            else if ([view isKindOfClass:[UITextView class]])
             {
                 view.alpha = 0.0f;
             }
+            else if ([view isKindOfClass:[UIImageView class]])
+            {
+                if (imageCount++ > 0)
+                {
+                    view.alpha = 0.0f;
+                }
+            }
+            else if ([view isKindOfClass:[UIControl class]])
+            {
+                frame.origin.y += offset;
+            }
+            view.frame = frame;
         }
-        else if ([view isKindOfClass:[UIControl class]])
-        {
-            frame.origin.y += offset;
-        }
-        view.frame = frame;
+        CGRect frame = alertView.frame;
+        frame.origin.y -= roundf(offset/2.0f);
+        frame.size.height += offset;
+        alertView.frame = frame;
     }
-    CGRect frame = alertView.frame;
-    frame.origin.y -= roundf(offset/2.0f);
-    frame.size.height += offset;
-    alertView.frame = frame;
+}
+
+- (void)willRotate
+{
+    [self performSelectorOnMainThread:@selector(didRotate) withObject:nil waitUntilDone:NO];
 }
 
 - (void)didRotate
@@ -761,7 +769,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (previousOrientation != [UIApplication sharedApplication].statusBarOrientation)
     {
         previousOrientation = [UIApplication sharedApplication].statusBarOrientation;
-        [self performSelectorOnMainThread:@selector(resizeAlertView:) withObject:visibleAlert waitUntilDone:NO];
+        [self resizeAlertView:visibleAlert];
     }
 }
 

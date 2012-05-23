@@ -1,6 +1,8 @@
-Version 1.4.6 beta
+Version 1.4.6
 
 - Fixed odd glitch where shaking device would cause UIAlertview to slowly shrink
+- Added disableAlertViewResizing option (see README for details)
+- Added Resizing Disabled example project
 - Added Korean translation
 
 Version 1.4.5
