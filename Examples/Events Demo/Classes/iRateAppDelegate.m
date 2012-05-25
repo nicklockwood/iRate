@@ -27,9 +27,13 @@
     //but we want to test with an app that's actually on the store
     [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks-lite";
 	[iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+
+    //set events count (default is 10)
+    [iRate sharedInstance].eventsUntilPrompt = 5;    
     
-    //enable debug mode
-    [iRate sharedInstance].debug = YES;
+    //disable minimum day limit and reminder periods
+    [iRate sharedInstance].daysUntilPrompt = 0;
+    [iRate sharedInstance].remindPeriod = 0;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -41,6 +45,15 @@
     [window makeKeyAndVisible];
 
     return YES;
+}
+
+#pragma mark -
+#pragma mark iRate delegate methods
+
+- (void)iRateUserDidRequestReminderToRateApp
+{
+    //reset event count after every 5 (for demo purposes)
+    [iRate sharedInstance].eventCount = 0;
 }
 
 #pragma mark -

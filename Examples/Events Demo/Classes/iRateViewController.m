@@ -1,0 +1,24 @@
+//
+//  iRateViewController.m
+//  iRate
+//
+//  Created by Nick Lockwood on 26/01/2011.
+//  Copyright 2011 Charcoal Design. All rights reserved.
+//
+
+#import "iRateViewController.h"
+#import "iRate.h"
+
+@implementation iRateViewController
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
+
+- (IBAction)logEvent
+{
+    [[iRate sharedInstance] logEvent:NO];
+}
+
+@end

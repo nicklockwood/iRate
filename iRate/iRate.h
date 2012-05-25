@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.4.6
+//  Version 1.4.7
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -119,30 +119,30 @@ extern NSString *const iRateAppStoreGenreGame;
 {
 @private
     
-    NSUInteger appStoreID;
-    NSString *appStoreGenre;
-    NSString *appStoreCountry;
-    NSString *applicationName;
-    NSString *applicationVersion;
-    NSString *applicationBundleID;
-    NSUInteger usesUntilPrompt;
-    NSUInteger eventsUntilPrompt;
-    float daysUntilPrompt;
-    float remindPeriod;
-    NSString *messageTitle;
-    NSString *message;
-    NSString *cancelButtonLabel;
-    NSString *remindButtonLabel;
-    NSString *rateButtonLabel;
-    NSURL *ratingsURL;
-    BOOL disableAlertViewResizing;
-    BOOL onlyPromptIfLatestVersion;
-    BOOL onlyPromptIfMainWindowIsAvailable;
-    BOOL promptAtLaunch;
-    BOOL debug;
-    id<iRateDelegate> __AH_WEAK delegate;
-    id visibleAlert;
-    int previousOrientation;
+    NSUInteger _appStoreID;
+    NSString *_appStoreGenre;
+    NSString *_appStoreCountry;
+    NSString *_applicationName;
+    NSString *_applicationVersion;
+    NSString *_applicationBundleID;
+    NSUInteger _usesUntilPrompt;
+    NSUInteger _eventsUntilPrompt;
+    float _daysUntilPrompt;
+    float _remindPeriod;
+    NSString *_messageTitle;
+    NSString *_message;
+    NSString *_cancelButtonLabel;
+    NSString *_remindButtonLabel;
+    NSString *_rateButtonLabel;
+    NSURL *_ratingsURL;
+    BOOL _disableAlertViewResizing;
+    BOOL _onlyPromptIfLatestVersion;
+    BOOL _onlyPromptIfMainWindowIsAvailable;
+    BOOL _promptAtLaunch;
+    BOOL _debug;
+    id<iRateDelegate> __AH_WEAK _delegate;
+    id _visibleAlert;
+    int _previousOrientation;
 }
 #endif
 

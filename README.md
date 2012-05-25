@@ -152,7 +152,7 @@ The number of times the current version of the app has been used (launched).
 
     @property (nonatomic, assign) NSUInteger eventCount;
 
-The number of significant application events that have been recorded since the current version was installed. This is incremented by the logEvent method, but can also be manipulated directly.
+The number of significant application events that have been recorded since the current version was installed. This is incremented by the logEvent method, but can also be manipulated directly. Check out the *Events Demo* to see how this os used. 
 
     @property (nonatomic, assign) BOOL declinedThisVersion;
 

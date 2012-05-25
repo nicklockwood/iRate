@@ -1,3 +1,8 @@
+Version 1.4.7
+
+- Fixed a bug where advanced properties set in the delegate methods might be subsequently overridden by iRate
+- Added Events Demo example
+
 Version 1.4.6
 
 - Fixed odd glitch where shaking device would cause UIAlertview to slowly shrink
