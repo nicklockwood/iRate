@@ -34,18 +34,19 @@
 #import "iRate.h"
 
 
-NSString *const iRateAppStoreGenreGame = @"Games";
+NSString *const iRateAppStoreGenreGame          = @"Games";
 
-static NSString *const iRateRatedVersionKey = @"iRateRatedVersionChecked";
-static NSString *const iRateDeclinedVersionKey = @"iRateDeclinedVersion";
-static NSString *const iRateLastRemindedKey = @"iRateLastReminded";
-static NSString *const iRateLastVersionUsedKey = @"iRateLastVersionUsed";
-static NSString *const iRateFirstUsedKey = @"iRateFirstUsed";
-static NSString *const iRateUseCountKey = @"iRateUseCount";
-static NSString *const iRateEventCountKey = @"iRateEventCount";
+static NSString *const iRateUserDefaultsKey     = @"iRate";
+static NSString *const iRateRatedVersionKey     = @"iRateRatedVersionChecked";
+static NSString *const iRateDeclinedVersionKey  = @"iRateDeclinedVersion";
+static NSString *const iRateLastRemindedKey     = @"iRateLastReminded";
+static NSString *const iRateLastVersionUsedKey  = @"iRateLastVersionUsed";
+static NSString *const iRateFirstUsedKey        = @"iRateFirstUsed";
+static NSString *const iRateUseCountKey         = @"iRateUseCount";
+static NSString *const iRateEventCountKey       = @"iRateEventCount";
 
 static NSString *const iRateMacAppStoreBundleID = @"com.apple.appstore";
-static NSString *const iRateAppLookupURLFormat = @"http://itunes.apple.com/lookup?country=%@";
+static NSString *const iRateAppLookupURLFormat  = @"http://itunes.apple.com/lookup?country=%@";
 
 //note, these don't link directly to the review page - there doesn't seem to be a way to do that
 static NSString *const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%i";
@@ -64,6 +65,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 @property (nonatomic, strong) id visibleAlert;
 @property (nonatomic, assign) int previousOrientation;
+@property (nonatomic, strong) NSMutableDictionary *iRateUserDefaults;
+
+- (void)synchronize_iRateUserDefaults;
 
 @end
 
@@ -94,6 +98,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize delegate = _delegate;
 @synthesize visibleAlert = _visibleAlert;
 @synthesize previousOrientation = _previousOrientation;
+@synthesize iRateUserDefaults;
 
 #pragma mark -
 #pragma mark Lifecycle methods
@@ -200,13 +205,13 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.applicationBundleID = [[NSBundle mainBundle] bundleIdentifier];
         
         //usage settings - these have sensible defaults
-        self.onlyPromptIfLatestVersion = YES;
-        self.onlyPromptIfMainWindowIsAvailable = YES;
-        self.promptAtLaunch = YES;
-        self.usesUntilPrompt = 10;
-        self.eventsUntilPrompt = 10;
-        self.daysUntilPrompt = 10.0f;
-        self.remindPeriod = 1.0f;
+        self.onlyPromptIfLatestVersion          = YES;
+        self.onlyPromptIfMainWindowIsAvailable  = YES;
+        self.promptAtLaunch                     = YES;
+        self.usesUntilPrompt                    = 10;
+        self.eventsUntilPrompt                  = 10;
+        self.daysUntilPrompt                    = 10.0f;
+        self.remindPeriod                       = 1.0f;
         
         //message text, you may wish to customise these, e.g. for localisation
         self.messageTitle = nil; //set lazily so that appname can be included
@@ -251,12 +256,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
     if ([self.appStoreGenre isEqualToString:iRateAppStoreGenreGame])
     {
-         return [NSString stringWithFormat:[self localizedStringForKey:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!"], self.applicationName];
+        return [NSString stringWithFormat:[self localizedStringForKey:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!"], self.applicationName];
     }
     else
     {
         return [NSString stringWithFormat:[self localizedStringForKey:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!"], self.applicationName];
-
+        
     }   
 }
 
@@ -277,70 +282,79 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 }
 
+
+- (void)synchronize_iRateUserDefaults
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:self.iRateUserDefaults forKey:iRateUserDefaultsKey];
+    [defaults synchronize];
+}
+
 - (NSDate *)firstUsed
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:iRateFirstUsedKey];
+    return [self.iRateUserDefaults objectForKey:iRateFirstUsedKey];
 }
 
 - (void)setFirstUsed:(NSDate *)date
 {
-    [[NSUserDefaults standardUserDefaults] setObject:date forKey:iRateFirstUsedKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.iRateUserDefaults setObject:date forKey:iRateFirstUsedKey];
+    [self synchronize_iRateUserDefaults];
 }
 
 - (NSDate *)lastReminded
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:iRateLastRemindedKey];
+    return [self.iRateUserDefaults objectForKey:iRateLastRemindedKey];
 }
 
 - (void)setLastReminded:(NSDate *)date
 {
-    [[NSUserDefaults standardUserDefaults] setObject:date forKey:iRateLastRemindedKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.iRateUserDefaults setObject:date forKey:iRateLastRemindedKey];
+    [self synchronize_iRateUserDefaults];
 }
 
 - (NSUInteger)usesCount
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:iRateUseCountKey];
+    return [[self.iRateUserDefaults objectForKey:iRateUseCountKey] integerValue];
 }
 
 - (void)setUsesCount:(NSUInteger)count
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:count forKey:iRateUseCountKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.iRateUserDefaults setObject:[NSNumber numberWithInt:count] forKey:iRateUseCountKey];
+    [self synchronize_iRateUserDefaults];
 }
 
 - (NSUInteger)eventCount;
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
+    return [[self.iRateUserDefaults objectForKey:iRateEventCountKey] integerValue];
 }
 
 - (void)setEventCount:(NSUInteger)count
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:count forKey:iRateEventCountKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.iRateUserDefaults setObject:[NSNumber numberWithInt:count] forKey:iRateEventCountKey];
+    [self synchronize_iRateUserDefaults];
 }
 
 - (BOOL)declinedThisVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey] isEqualToString:self.applicationVersion];
+    return [[self.iRateUserDefaults objectForKey:iRateDeclinedVersionKey] isEqualToString:self.applicationVersion];
 }
 
 - (void)setDeclinedThisVersion:(BOOL)declined
 {
-    [[NSUserDefaults standardUserDefaults] setObject:(declined? self.applicationVersion: nil) forKey:iRateDeclinedVersionKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.iRateUserDefaults setObject:(declined? self.applicationVersion: nil) forKey:iRateDeclinedVersionKey];
+    [self synchronize_iRateUserDefaults];
 }
 
 - (BOOL)ratedThisVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateRatedVersionKey] isEqualToString:self.applicationVersion];
+    return [[self.iRateUserDefaults objectForKey:iRateRatedVersionKey] isEqualToString:self.applicationVersion];
 }
 
 - (void)setRatedThisVersion:(BOOL)rated
 {
-    [[NSUserDefaults standardUserDefaults] setObject:(rated? self.applicationVersion: nil) forKey:iRateRatedVersionKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.iRateUserDefaults setObject:(rated ? self.applicationVersion: nil) forKey:iRateRatedVersionKey];
+    [self synchronize_iRateUserDefaults];
 }
 
 - (void)dealloc
@@ -600,9 +614,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     if (!self.visibleAlert)
     {
-    
+        
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-    
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
                                                         message:self.message
                                                        delegate:self
@@ -616,9 +630,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.visibleAlert = alert;
         [self.visibleAlert show];
         AH_RELEASE(alert);
-
+        
 #else
-
+        
         //only show when main window is available
         if (self.onlyPromptIfMainWindowIsAvailable && ![[NSApplication sharedApplication] mainWindow])
         {
@@ -641,7 +655,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                       modalDelegate:self
                                      didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
                                         contextInfo:nil];
-
+        
 #endif
         
     }
@@ -651,16 +665,20 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     //check if this is a new version
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
+    
+    NSString *lastVersion = [[defaults dictionaryForKey:iRateUserDefaultsKey] objectForKey:iRateLastVersionUsedKey];
+    if (lastVersion && ![lastVersion isEqualToString:self.applicationVersion])
     {
         //reset counts
-        [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
-        [defaults setObject:[NSDate date] forKey:iRateFirstUsedKey];
-        [defaults setInteger:0 forKey:iRateUseCountKey];
-        [defaults setInteger:0 forKey:iRateEventCountKey];
-        [defaults setObject:nil forKey:iRateLastRemindedKey];
+        [self.iRateUserDefaults setObject:self.applicationVersion       forKey:iRateLastVersionUsedKey];
+        [self.iRateUserDefaults setObject:[NSDate date]                 forKey:iRateFirstUsedKey];
+        [self.iRateUserDefaults setObject:[NSNumber numberWithInt:0]    forKey:iRateUseCountKey];
+        [self.iRateUserDefaults setObject:[NSNumber numberWithInt:0]    forKey:iRateEventCountKey];
+        [self.iRateUserDefaults setObject:[NSDate date]                 forKey:iRateLastRemindedKey];
+        
+        [defaults setObject:self.iRateUserDefaults forKey:iRateUserDefaultsKey];
         [defaults synchronize];
-
+        
         //inform about app update
         if ([self.delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)])
         {
@@ -784,7 +802,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (alertView.cancelButtonIndex == -1) {
         ++buttonIndex;
     }
-
+    
     if (buttonIndex == alertView.cancelButtonIndex)
     {        
         //ignore this version
@@ -870,7 +888,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             {
                 [self.delegate iRateUserDidDeclineToRateApp];
             }
-
+            
             break;
         }
         case NSAlertDefaultReturn:
@@ -914,6 +932,21 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         [self promptIfNetworkAvailable];
     }
+}
+
+
+#pragma mark - Getter
+
+- (NSMutableDictionary *)iRateUserDefaults
+{
+    if (nil == iRateUserDefaults) {
+        iRateUserDefaults = [NSMutableDictionary dictionary];
+        [self.iRateUserDefaults setObject:[NSDate date]                 forKey:iRateFirstUsedKey];
+        [self.iRateUserDefaults setObject:[NSNumber numberWithInt:0]    forKey:iRateUseCountKey];
+        [self.iRateUserDefaults setObject:[NSNumber numberWithInt:0]    forKey:iRateEventCountKey];
+        [self.iRateUserDefaults setObject:[NSDate date]                 forKey:iRateLastRemindedKey];
+    }
+    return iRateUserDefaults;
 }
 
 @end
