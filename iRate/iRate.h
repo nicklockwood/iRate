@@ -143,6 +143,7 @@ extern NSString *const iRateAppStoreGenreGame;
     id<iRateDelegate> __AH_WEAK _delegate;
     id _visibleAlert;
     int _previousOrientation;
+    BOOL _currentlyChecking;
 }
 #endif
 
