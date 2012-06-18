@@ -1,3 +1,9 @@
+Version 1.4.8
+
+- Added explicit 60-second timeout for connectivity check
+- iRate will now no longer spawn multiple download threads if closed and re-opened whilst performing a check
+- Added portuguese translation
+
 Version 1.4.7
 
 - Fixed a bug where advanced properties set in the delegate methods might be subsequently overridden by iRate
