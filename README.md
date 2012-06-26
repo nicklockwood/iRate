@@ -35,7 +35,7 @@ To enable iRate in your application you need to instantiate and configure iRate 
 
 As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the Application's bundle ID to look the app ID up on the App Store.
 
-**Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app.
+**Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app. Also, if you are creating a sandboxed Mac app and your app does not request the network access permission then you will need to set the appStoreID because it cannot be retrieved from the iTunes service. 
 
 If you do wish to customise iRate, the best time to do this is *before* the app has finished launching. The easiest way to do this is to add the iRate configuration code in your AppDelegate's `initialize` method, like this:
 
@@ -54,7 +54,7 @@ To configure iRate, there are a number of properties of the iRate class that can
 
     @property (nonatomic, assign) NSUInteger appStoreID;
 
-This should match the iTunes app ID of your application, which you can get from iTunes connect after setting up your app. This value is not normally necessary and is generally only required if you have the aforementioned conflict between bundle IDs for your Mac and iOS apps.
+This should match the iTunes app ID of your application, which you can get from iTunes connect after setting up your app. This value is not normally necessary and is generally only required if you have the aforementioned conflict between bundle IDs for your Mac and iOS apps, or in the case of Sandboxed Mac apps, if your app does not have network permission because it won't be able to fetch the appStoreID automatically using iTunes services.
 
     @property (nonatomic, copy) NSString *appStoreGenre;
 
@@ -182,11 +182,11 @@ Returns YES if the prompt criteria have been met, and NO if they have not. You c
 
     - (void)promptForRating;
 
-This method will immediately trigger the rating prompt without checking that the  app store is available, and without calling the iRateShouldShouldPromptForRating delegate method. Note that this method depends on the `appStoreID` and `applicationGenre` properties, which is only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set these properties yourself beforehand, or use the `promptIfNetworkAvailable` method instead.
+This method will immediately trigger the rating prompt without checking that the  app store is available, and without calling the iRateShouldShouldPromptForRating delegate method. Note that this method depends on the `appStoreID` and `applicationGenre` properties, which are only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set these properties yourself beforehand, or use the `promptIfNetworkAvailable` method instead.
 
     - (void)promptIfNetworkAvailable;
 
-This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it.
+This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the appStoreID or iRate cannot function.
 
     - (void)openRatingsPageInAppStore;
 
@@ -200,7 +200,7 @@ The iRateDelegate protocol provides the following methods that can be used inter
 
     - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
 
-This method is called if iRate cannot connect to the App Store, usually because the network connection is down.
+This method is called if iRate cannot connect to the App Store, usually because the network connection is down. This may also fire if your app does not have access to the network due to Sandbox permissions, in which case you will need to manually set the appStoreID so that iRate can still function.
 
     - (void)iRateDidDetectAppUpdate;
 

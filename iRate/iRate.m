@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4.8
+//  Version 1.4.9
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -140,7 +140,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         
         //retain bundle
-        bundle = AH_RETAIN(bundle);
+        bundle = [bundle ah_retain];
     }
     
     //return localised string
@@ -349,19 +349,19 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    AH_RELEASE(_appStoreGenre);
-    AH_RELEASE(_appStoreCountry);
-    AH_RELEASE(_applicationName);
-    AH_RELEASE(_applicationVersion);
-    AH_RELEASE(_applicationBundleID);
-    AH_RELEASE(_messageTitle);
-    AH_RELEASE(_message);
-    AH_RELEASE(_cancelButtonLabel);
-    AH_RELEASE(_remindButtonLabel);
-    AH_RELEASE(_rateButtonLabel);
-    AH_RELEASE(_ratingsURL);
-    AH_RELEASE(_visibleAlert);
-    AH_SUPER_DEALLOC;
+    [_appStoreGenre release];
+    [_appStoreCountry release];
+    [_applicationName release];
+    [_applicationVersion release];
+    [_applicationBundleID release];
+    [_messageTitle release];
+    [_message release];
+    [_cancelButtonLabel release];
+    [_remindButtonLabel release];
+    [_rateButtonLabel release];
+    [_ratingsURL release];
+    [_visibleAlert release];
+    [super ah_dealloc];
 }
 
 #pragma mark -
@@ -586,15 +586,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 }
                 
                 //release json
-                AH_RELEASE(json);
+                [json release];
             }
             
-            if (error)
+            if (error && !(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && self.appStoreID))
             {
-                if(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && self.appStoreID)
-                    [self performSelectorOnMainThread:@selector(connectionSucceeded) withObject:nil waitUntilDone:YES];
-                else
-                    [self performSelectorOnMainThread:@selector(connectionError:) withObject:error waitUntilDone:YES];
+                [self performSelectorOnMainThread:@selector(connectionError:) withObject:error waitUntilDone:YES];
             }
             else if (self.appStoreID || self.debug)
             {
@@ -633,7 +630,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         self.visibleAlert = alert;
         [self.visibleAlert show];
-        AH_RELEASE(alert);
+        [alert release];
 
 #else
 
@@ -853,7 +850,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     while (GetNextProcess(&psn) == noErr)
     {
         CFDictionaryRef cfDict = ProcessInformationCopyDictionary(&psn,  kProcessDictionaryIncludeAllInformationMask);
-        NSString *bundleID = [(__bridge NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
+        NSString *bundleID = [(__bridge NSDictionary *)cfDict objectForKey:(__bridge NSString *)kCFBundleIdentifierKey];
         if ([iRateMacAppStoreBundleID isEqualToString:bundleID])
         {
             //open app page

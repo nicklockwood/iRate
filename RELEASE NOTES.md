@@ -1,3 +1,8 @@
+Version 1.4.9
+
+- Added support for sandboxed Mac App Store apps with no network access
+- Updated ARC Helper library
+
 Version 1.4.8
 
 - Added explicit 60-second timeout for connectivity check
