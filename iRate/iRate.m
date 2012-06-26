@@ -591,7 +591,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             
             if (error)
             {
-                [self performSelectorOnMainThread:@selector(connectionError:) withObject:error waitUntilDone:YES];
+                if(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && self.appStoreID)
+                    [self performSelectorOnMainThread:@selector(connectionSucceeded) withObject:nil waitUntilDone:YES];
+                else
+                    [self performSelectorOnMainThread:@selector(connectionError:) withObject:error waitUntilDone:YES];
             }
             else if (self.appStoreID || self.debug)
             {
@@ -850,7 +853,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     while (GetNextProcess(&psn) == noErr)
     {
         CFDictionaryRef cfDict = ProcessInformationCopyDictionary(&psn,  kProcessDictionaryIncludeAllInformationMask);
-        NSString *bundleID = [(NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
+        NSString *bundleID = [(__bridge NSDictionary *)cfDict objectForKey:(NSString *)kCFBundleIdentifierKey];
         if ([iRateMacAppStoreBundleID isEqualToString:bundleID])
         {
             //open app page
