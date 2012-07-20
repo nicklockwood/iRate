@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.4.9
+//  Version 1.5
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -85,7 +85,7 @@ __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_7))
 #endif
 
 
-extern NSString *const iRateAppStoreGenreGame;
+extern NSUInteger const iRateAppStoreGameGenreID;
 
 
 @protocol iRateDelegate <NSObject>
@@ -109,7 +109,7 @@ extern NSString *const iRateAppStoreGenreGame;
 @private
     
     NSUInteger _appStoreID;
-    NSString *_appStoreGenre;
+    NSUInteger _appStoreGenreID;
     NSString *_appStoreCountry;
     NSString *_applicationName;
     NSString *_applicationVersion;
@@ -143,7 +143,7 @@ extern NSString *const iRateAppStoreGenreGame;
 @property (nonatomic, assign) NSUInteger appStoreID;
 
 //application details - these are set automatically
-@property (nonatomic, copy) NSString *appStoreGenre;
+@property (nonatomic, assign) NSUInteger appStoreGenreID;
 @property (nonatomic, copy) NSString *appStoreCountry;
 @property (nonatomic, copy) NSString *applicationName;
 @property (nonatomic, copy) NSString *applicationVersion;

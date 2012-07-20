@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.4.9
+//  Version 1.5
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -34,7 +34,7 @@
 #import "iRate.h"
 
 
-NSString *const iRateAppStoreGenreGame = @"Games";
+NSUInteger const iRateAppStoreGameGenreID = 6014;
 
 static NSString *const iRateRatedVersionKey = @"iRateRatedVersionChecked";
 static NSString *const iRateDeclinedVersionKey = @"iRateDeclinedVersion";
@@ -45,9 +45,10 @@ static NSString *const iRateUseCountKey = @"iRateUseCount";
 static NSString *const iRateEventCountKey = @"iRateEventCount";
 
 static NSString *const iRateMacAppStoreBundleID = @"com.apple.appstore";
-static NSString *const iRateAppLookupURLFormat = @"http://itunes.apple.com/lookup?country=%@";
+static NSString *const iRateAppLookupURLFormat = @"http://itunes.apple.com/%@/lookup";
 
 static NSString *const iRateiOSAppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%u";
+static NSString *const iRateiOS6AppStoreURLFormat = @"itms-apps://ax.itunes.apple.com/app/id%u";
 static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%u";
 
 
@@ -72,7 +73,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @implementation iRate
 
 @synthesize appStoreID = _appStoreID;
-@synthesize appStoreGenre = _appStoreGenre;
+@synthesize appStoreGenreID = _appStoreGenreID;
 @synthesize appStoreCountry = _appStoreCountry;
 @synthesize applicationName = _applicationName;
 @synthesize applicationVersion = _applicationVersion;
@@ -251,7 +252,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         return _message;
     }
-    if ([self.appStoreGenre isEqualToString:iRateAppStoreGenreGame])
+    if (self.appStoreGenreID == iRateAppStoreGameGenreID)
     {
          return [NSString stringWithFormat:[self localizedStringForKey:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!"], self.applicationName];
     }
@@ -270,7 +271,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     
-    return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, (unsigned int)self.appStoreID]];
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 6.0)
+    {
+        return [NSURL URLWithString:[NSString stringWithFormat:iRateiOS6AppStoreURLFormat, (unsigned int)self.appStoreID]];
+    }
+    else
+    {
+        return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, (unsigned int)self.appStoreID]];
+    }
     
 #else
     
@@ -349,7 +357,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_appStoreGenre release];
     [_appStoreCountry release];
     [_applicationName release];
     [_applicationVersion release];
@@ -537,11 +544,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             NSString *iTunesServiceURL = [NSString stringWithFormat:iRateAppLookupURLFormat, self.appStoreCountry];
             if (self.appStoreID)
             {
-                iTunesServiceURL = [iTunesServiceURL stringByAppendingFormat:@"&id=%u", (unsigned int)self.appStoreID];
+                iTunesServiceURL = [iTunesServiceURL stringByAppendingFormat:@"?id=%u", (unsigned int)self.appStoreID];
             }
             else 
             {
-                iTunesServiceURL = [iTunesServiceURL stringByAppendingFormat:@"&bundleId=%@", self.applicationBundleID];
+                iTunesServiceURL = [iTunesServiceURL stringByAppendingFormat:@"?bundleId=%@", self.applicationBundleID];
             }
             
             NSError *error = nil;
@@ -558,9 +565,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 if ((bundleID && [bundleID isEqualToString:self.applicationBundleID]) || self.debug)
                 {
                     //get genre  
-                    if (!self.appStoreGenre)
+                    if (self.appStoreGenreID == 0)
                     {
-                        [self performSelectorOnMainThread:@selector(setAppStoreGenre:) withObject:[self valueForKey:@"primaryGenreName" inJSON:json] waitUntilDone:YES];
+                        _appStoreGenreID = [[self valueForKey:@"primaryGenreId" inJSON:json] integerValue];
                     }
                     
                     //get app id

@@ -43,7 +43,7 @@ If you do wish to customise iRate, the best time to do this is *before* the app 
 	{
 		//configure iRate
 		[iRate sharedInstance].appStoreID = 355313284;
-		[iRate sharedInstance].appStoreGenre = iRateAppStoreGenreGame;
+		[iRate sharedInstance].appStoreGenreID = iRateAppStoreGameGenreID;
 	}
 
 
@@ -56,13 +56,13 @@ To configure iRate, there are a number of properties of the iRate class that can
 
 This should match the iTunes app ID of your application, which you can get from iTunes connect after setting up your app. This value is not normally necessary and is generally only required if you have the aforementioned conflict between bundle IDs for your Mac and iOS apps, or in the case of Sandboxed Mac apps, if your app does not have network permission because it won't be able to fetch the appStoreID automatically using iTunes services.
 
-    @property (nonatomic, copy) NSString *appStoreGenre;
+    @property (nonatomic, assign) NSUInteger appStoreGenreID;
 
-This is the type of app, used to determine the default text for the rating dialog. This is set automatically by calling an iTunes service, so you shouldn't need to set it manually for most purposes. If you do wish to override this value, setting it to the `iRateAppStoreGenreGame` constant will cause iRate to use the "game" version of the rating dialog, and setting it to any other value will use the "app" version of the rating dialog.
+This is the type of app, used to determine the default text for the rating dialog. This is set automatically by calling an iTunes service, so you shouldn't need to set it manually for most purposes. If you do wish to override this value, setting it to the `iRateAppStoreGameGenreID` constant will cause iRate to use the "game" version of the rating dialog, and setting it to any other value will use the "app" version of the rating dialog.
 
     @property (nonatomic, copy) NSString *appStoreCountry;
 
-This is the two-letter country code used to specify which iTunes store to check. It is set automatically from the device locale preferences, so shouldn't need to be changed in most cases. You can override this to point to the US store, or another specific store if you prefer.
+This is the two-letter country code used to specify which iTunes store to check. It is set automatically from the device locale preferences, so shouldn't need to be changed in most cases. You can override this to point to the US store, or another specific store if you prefer, which may be a good idea if your app is only available in certain countries.
 
     @property (nonatomic, copy) NSString *applicationName;
 
@@ -70,7 +70,7 @@ This is the name of the app displayed in the iRate alert. It is set automaticall
 
     @property (nonatomic, copy) NSString *applicationBundleID;
 
-This is the application bundle ID, used to retrieve the `appStoreID` and `appStoreGenre` from iTunes. This is set automatically from the app's info.plist, so you shouldn't need to change it except for testing purposes.
+This is the application bundle ID, used to retrieve the `appStoreID` and `appStoreGenreID` from iTunes. This is set automatically from the app's info.plist, so you shouldn't need to change it except for testing purposes.
 
     @property (nonatomic, assign) float daysUntilPrompt;
 
@@ -136,7 +136,7 @@ If the default iRate behaviour doesn't meet your requirements, you can implement
 
     @property (nonatomic, strong) NSURL *ratingsURL;
 
-The URL that the app will direct the user to so they can write a rating for the app. If you are implementing your own rating prompt, you should probably use the `openRatingsPageInAppStore` method instead, especially on Mac OS, as the process for opening the Mac app store is more complex than merely opening the URL.
+The URL that the app will direct the user to so they can write a rating for the app. This is set to the correct value for the given platform automatically. On iOS 5 and below this takes users directly to the ratings page, but on iOS 6 and Mac OS it takes users to the main app page (if there is a way to directly link to the ratings page on those platforms, I've yet to find it). If you are implementing your own rating prompt, you should probably use the `openRatingsPageInAppStore` method instead, especially on Mac OS, as the process for opening the Mac app store is more complex than merely opening the URL.
 
     @property (nonatomic, strong) NSDate *firstUsed;
 

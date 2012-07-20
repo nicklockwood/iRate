@@ -1,3 +1,9 @@
+Version 1.5
+
+- Added support for iOS6. Currently it does not appear to be possible to take users directly to the ratings page on iOS6, but iRate will now at least open the app store on the app page without an error.
+- Fixed bug in the app store country selection logic
+- Changed appStoreGenre to appStoreGenreID, as this is not locale-specific
+
 Version 1.4.9
 
 - Added support for sandboxed Mac App Store apps with no network access
