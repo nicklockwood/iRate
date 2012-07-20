@@ -553,7 +553,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             
             NSError *error = nil;
             NSURLResponse *response = nil;
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:iTunesServiceURL] cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:REQUEST_TIMEOUT];
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:iTunesServiceURL] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:REQUEST_TIMEOUT];
             NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
             if (data)
             {
