@@ -152,11 +152,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
         
         //register for iphone application events
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationLaunched:)
-                                                     name:UIApplicationDidFinishLaunchingNotification
-                                                   object:nil];
-        
         if (&UIApplicationWillEnterForegroundNotification)
         {
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -170,12 +165,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                                  selector:@selector(willRotate)
                                                      name:UIDeviceOrientationDidChangeNotification
                                                    object:nil];
-#else
-        //register for mac application events
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationLaunched:)
-                                                     name:NSApplicationDidFinishLaunchingNotification
-                                                   object:nil];
+        
 #endif
         
         //get country
@@ -213,6 +203,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.cancelButtonLabel = [self localizedStringForKey:@"No, Thanks"];
         self.remindButtonLabel = [self localizedStringForKey:@"Remind Me Later"];
         self.rateButtonLabel = [self localizedStringForKey:@"Rate It Now"];
+        
+        //app launched
+        [self performSelectorOnMainThread:@selector(applicationLaunched) withObject:nil waitUntilDone:NO];
     }
     return self;
 }
@@ -665,7 +658,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
 }
 
-- (void)applicationLaunched:(NSNotification *)notification
+- (void)applicationLaunched
 {
     //check if this is a new version
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
