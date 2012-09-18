@@ -101,10 +101,15 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #pragma mark -
 #pragma mark Lifecycle methods
 
+#ifndef IRATE_AUTOLOAD_ENABLED
+#define IRATE_AUTOLOAD_ENABLED 1
+#endif
+#if IRATE_AUTOLOAD_ENABLED
 + (void)load
 {
     [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
 }
+#endif
 
 + (iRate *)sharedInstance
 {

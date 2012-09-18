@@ -84,6 +84,9 @@ __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_7))
 #import <Cocoa/Cocoa.h>
 #endif
 
+// To disable instantiation of iRate shared instance on +load, paste this in your .pch.
+// This may be useful when you enable iRate conditionally at runtime or via compile flags.
+// #define IRATE_AUTOLOAD_ENABLED 0
 
 extern NSUInteger const iRateAppStoreGameGenreID;
 
