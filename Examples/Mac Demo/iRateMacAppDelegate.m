@@ -22,8 +22,8 @@
     [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.RainbowBlocksLite";
     [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
 
-    //enable debug mode
-    [iRate sharedInstance].debug = YES;
+    //enable preview mode
+    [iRate sharedInstance].previewMode = YES;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

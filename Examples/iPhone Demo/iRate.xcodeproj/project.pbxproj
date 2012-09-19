@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0162D10B160A09750043113D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0162D10A160A09750043113D /* Default-568h@2x.png */; };
 		01E880F815165AB900BFF881 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01E880F715165AB900BFF881 /* iRate.bundle */; };
 		1D3623260D0F684500981E51 /* iRateAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* iRateAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0162D10A160A09750043113D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		01E880F715165AB900BFF881 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* iRateAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRateAppDelegate.h; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0162D10A160A09750043113D /* Default-568h@2x.png */,
 				2899E5210DE3E06400AC0155 /* iRateViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 			);
@@ -179,6 +182,7 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* iRateViewController.xib in Resources */,
 				01E880F815165AB900BFF881 /* iRate.bundle in Resources */,
+				0162D10B160A09750043113D /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +213,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iRate_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "iRate-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				PRODUCT_NAME = iRate;

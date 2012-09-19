@@ -23,8 +23,8 @@
     //but we want to test with an app that's actually on the store
     [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.RainbowBlocksLite";
 	
-    //enable debug mode
-    [iRate sharedInstance].debug = YES;
+    //enable preview mode
+    [iRate sharedInstance].previewMode = YES;
     
     //prevent automatic prompt
     [iRate sharedInstance].promptAtLaunch = NO;

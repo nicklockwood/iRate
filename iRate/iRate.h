@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.5.1
+//  Version 1.5.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -86,6 +86,16 @@ __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_7))
 
 
 extern NSUInteger const iRateAppStoreGameGenreID;
+extern NSString *const iRateErrorDomain;
+
+
+typedef enum
+{
+    iRateErrorBundleIdDoesNotMatchAppStore = 1,
+    iRateErrorApplicationNotFoundOnAppStore,
+    iRateErrorApplicationIsNotLatestVersion
+}
+iRateErrorCode;
 
 
 @protocol iRateDelegate <NSObject>
@@ -106,7 +116,7 @@ extern NSUInteger const iRateAppStoreGameGenreID;
 //required for 32-bit Macs
 #ifdef __i386
 {
-@private
+    @private
     
     NSUInteger _appStoreID;
     NSUInteger _appStoreGenreID;
@@ -125,10 +135,12 @@ extern NSUInteger const iRateAppStoreGameGenreID;
     NSString *_rateButtonLabel;
     NSURL *_ratingsURL;
     BOOL _disableAlertViewResizing;
+    BOOL _promptAgainForEachNewVersion;
     BOOL _onlyPromptIfLatestVersion;
     BOOL _onlyPromptIfMainWindowIsAvailable;
     BOOL _promptAtLaunch;
-    BOOL _debug;
+    BOOL _verboseLogging;
+    BOOL _previewMode;
     id<iRateDelegate> __ah_weak _delegate;
     id _visibleAlert;
     int _previousOrientation;
@@ -164,10 +176,12 @@ extern NSUInteger const iRateAppStoreGameGenreID;
 
 //debugging and prompt overrides
 @property (nonatomic, assign) BOOL disableAlertViewResizing;
+@property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
 @property (nonatomic, assign) BOOL promptAtLaunch;
-@property (nonatomic, assign) BOOL debug;
+@property (nonatomic, assign) BOOL verboseLogging;
+@property (nonatomic, assign) BOOL previewMode;
 
 //advanced properties for implementing custom behaviour
 @property (nonatomic, strong) NSURL *ratingsURL;
@@ -176,7 +190,9 @@ extern NSUInteger const iRateAppStoreGameGenreID;
 @property (nonatomic, assign) NSUInteger usesCount;
 @property (nonatomic, assign) NSUInteger eventCount;
 @property (nonatomic, assign) BOOL declinedThisVersion;
+@property (nonatomic, readonly) BOOL declinedAnyVersion;
 @property (nonatomic, assign) BOOL ratedThisVersion;
+@property (nonatomic, readonly) BOOL ratedAnyVersion;
 @property (nonatomic, ah_weak) id<iRateDelegate> delegate;
 
 //manually control behaviour

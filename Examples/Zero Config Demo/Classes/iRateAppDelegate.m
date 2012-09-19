@@ -27,10 +27,10 @@
 
 + (void)initialize
 {
-    //ok, we'll enable debug mode just so
+    //ok, we'll enable preview mode just so
     //you can see something without waiting for
     //ten days, but in the real app, you don't need this
-    [iRate sharedInstance].debug = YES;
+    [iRate sharedInstance].previewMode = YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

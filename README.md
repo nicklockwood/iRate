@@ -7,8 +7,8 @@ iRate is a library to help you promote your iPhone and Mac App Store apps by pro
 Supported OS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 5.1 / Mac OS 10.8 (Xcode 4.4, Apple LLVM compiler 4.0)
-* Earliest supported deployment target - iOS 4.3 / Mac OS 10.7
+* Supported build target - iOS 6.0 / Mac OS 10.8 (Xcode 4.5, Apple LLVM compiler 4.1)
+* Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
 * Earliest compatible deployment target - iOS 3.0 / Mac OS 10.6
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -31,7 +31,7 @@ Installation
 
 To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised copy.
 
-As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the Application's bundle ID to look the app ID up on the App Store.
+As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
 
 **Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app. Also, if you are creating a sandboxed Mac app and your app does not request the network access permission then you will need to set the appStoreID because it cannot be retrieved from the iTunes service. 
 
@@ -110,6 +110,10 @@ The button label for the button the user presses if they don't want to rate the 
 
 On iOS, iRate includes some logic to resize the alert view to ensure that your rating message is visible in both portrait and landscape mode, and that it doesn't scroll or become truncated. The code to do this is a rather nasty hack, so if your alert text is very short and/or your app only needs to function in portrait mode on iPhone, you may wish to set this property to YES, which may help make your app more robust against future iOS updates. Try the *Resizing Disabled* example for a demonstration of the effect.
 
+    @property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
+    
+Because iTunes ratings are version-specific, you ideally want users to rate each new version of your app. However, it's debatable whether many users will actually do this, and if you update frequently this may get annoying. Set `promptAgainForEachNewVersion` to `NO`, and iRate won't prompt the user again each time they install an update if they've already rated the app. It will still prompt them each new version if they have *not* rated the app, but you can override this using the `iRateShouldShouldPromptForRating` delegate method if you wish.
+
     @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 
 Set this to NO to enabled the rating prompt to be displayed even if the user is not running the latest version of the app. This defaults to YES because that way users won't leave bad reviews due to bugs that you've already fixed, etc.
@@ -122,7 +126,11 @@ This setting is applicable to Mac OS only. By default, on Mac OS the iRate alert
 
 Set this to NO to disable the rating prompt appearing automatically when the application launches or returns from the background. The rating criteria will continue to be tracked, but the prompt will not be displayed automatically while this setting is in effect. You can use this option if you wish to manually control display of the rating prompt.
 
-    @property (nonatomic, assign) BOOL debug;
+    @property (nonatomic, assign) BOOL verboseLogging;
+
+This option will cause iRate to send detailed logs to the console about the prompt decision process. If your app is not correctly prompting for a rating when you would expect it to, this will help you figure out why. Verbose logging is enabled by default on debug builds, and disabled on release and deployment builds.
+
+    @property (nonatomic, assign) BOOL previewMode;
 
 If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use or whether it's the latest version. Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).
 
@@ -156,9 +164,17 @@ The number of significant application events that have been recorded since the c
 
 This flag indicates whether the user has declined to rate the current version (YES) or not (NO).
 
+    @property (nonatomic, assign) BOOL declinedAnyVersion;
+
+This flag indicates whether the user has declined to rate any previous version of the app (YES) or not (NO). This is not currently used by the iRate prompting logic, but may be useful for implementing your own rules using the `iRateShouldPromptForRating` delegate method.
+
     @property (nonatomic, assign) BOOL ratedThisVersion;
 
 This flag indicates whether the user has already rated the current version (YES) or not (NO).
+
+    @property (nonatomic, readonly) BOOL ratedAnyVersion;
+
+This (readonly) flag indicates whether the user has previously rated any version of the app (YES) or not (NO).
 
     @property (nonatomic, assign) id<iRateDelegate> delegate;
 
@@ -245,9 +261,9 @@ If you want to override some of the localised strings but leave the others intac
 Example Projects
 ---------------
 
-When you build and run the basic Mac or iPhone example project for the first time, it will show an alert asking you to rate the app. This is because the debug option is set.
+When you build and run the basic Mac or iPhone example project for the first time, it will show an alert asking you to rate the app. This is because the previewMode option is set.
 
-Disable the debug option and play with the other settings to see how the app behaves in practice.
+Disable the previewMode option and play with the other settings to see how the app behaves in practice.
 
 
 Advanced Example

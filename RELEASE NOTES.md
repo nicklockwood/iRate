@@ -1,3 +1,11 @@
+Version 1.5.2
+
+- Restored App Store deep link on iOS6 (didn't work in beta, but now does)
+- Added promptAgainForEachNewVersion option to enable/disable prompting each time the app is updated
+- Added verboseLogging option to make it easier to diagnose why a new version isn't being correctly detected
+- Renamed debug property to previewMode as this better describes its function
+- Add Simplified Chinese localisation
+
 Version 1.5.1
 
 - Fixed crash on iOS 4.x and Mac OS 10.6.x when compiled using Xcode 4.4
