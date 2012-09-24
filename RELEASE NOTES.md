@@ -1,3 +1,7 @@
+Version 1.5.3
+
+- Corrected minor spelling mistake in German translation
+
 Version 1.5.2
 
 - Restored App Store deep link on iOS6 (didn't work in beta, but now does)
