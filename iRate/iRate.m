@@ -1,15 +1,14 @@
 //
 //  iRate.m
 //
-//  Version 1.5.3
+//  Version 1.5.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
 //
 //  Distributed under the permissive zlib license
-//  Get the latest version from either of these locations:
+//  Get the latest version from here:
 //
-//  http://charcoaldesign.co.uk/source/cocoa#irate
 //  https://github.com/nicklockwood/iRate
 //
 //  This software is provided 'as-is', without any express or implied
@@ -863,9 +862,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 }
                 else if ([label.text isEqualToString:alertView.message])
                 {
-                    label.alpha = 1.0f;
+                    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
+                    label.lineBreakMode = NSLineBreakByWordWrapping;
+#else  
                     label.lineBreakMode = UILineBreakModeWordWrap;
+#endif
                     label.numberOfLines = 0;
+                    label.alpha = 1.0f;
                     [label sizeToFit];
                     offset += label.frame.size.height - frame.size.height;
                     frame.origin.y += messageOffset;

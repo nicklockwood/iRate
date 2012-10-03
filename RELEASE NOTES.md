@@ -1,3 +1,7 @@
+Version 1.5.4
+
+- Fixed deprecation warning in iOS 6
+
 Version 1.5.3
 
 - Corrected minor spelling mistake in German translation
