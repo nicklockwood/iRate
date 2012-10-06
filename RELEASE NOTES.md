@@ -1,6 +1,9 @@
 Version 1.5.4
 
+- Added new localisation system (see README for details)
 - Fixed deprecation warning in iOS 6
+- Improved Spanish translation
+- Improved German translation
 
 Version 1.5.3
 

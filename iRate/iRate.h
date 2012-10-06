@@ -88,6 +88,15 @@ extern NSUInteger const iRateAppStoreGameGenreID;
 extern NSString *const iRateErrorDomain;
 
 
+//localisation string file keys
+static NSString *const iRateMessageTitleKey = @"iRateMessageTitle";
+static NSString *const iRateAppMessageKey = @"iRateAppMessage";
+static NSString *const iRateGameMessageKey = @"iRateGameMessage";
+static NSString *const iRateCancelButtonKey = @"iRateCancelButton";
+static NSString *const iRateRemindButtonKey = @"iRateRemindButton";
+static NSString *const iRateRateButtonKey = @"iRateRateButton";
+
+
 typedef enum
 {
     iRateErrorBundleIdDoesNotMatchAppStore = 1,
@@ -166,7 +175,7 @@ iRateErrorCode;
 @property (nonatomic, assign) float daysUntilPrompt;
 @property (nonatomic, assign) float remindPeriod;
 
-//message text, you may wish to customise these, e.g. for localisation
+//message text, you may wish to customise these
 @property (nonatomic, copy) NSString *messageTitle;
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, copy) NSString *cancelButtonLabel;

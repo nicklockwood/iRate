@@ -118,32 +118,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return sharedInstance;
 }
 
-- (NSString *)localizedStringForKey:(NSString *)key
+- (NSString *)localizedStringForKey:(NSString *)key withDefault:(NSString *)defaultString
 {
     static NSBundle *bundle = nil;
     if (bundle == nil)
     {
-        //get localisation bundle
         NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRate" ofType:@"bundle"];
-        bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
-        
-        //get correct lproj folder as this doesn't always happen automatically
-        for (NSString *language in [NSLocale preferredLanguages])
-        {
-            if ([[bundle localizations] containsObject:language])
-            {
-                bundlePath = [bundle pathForResource:language ofType:@"lproj"];
-                bundle = [NSBundle bundleWithPath:bundlePath];
-                break;
-            }
-        }
-        
-        //retain bundle
-        bundle = [bundle ah_retain];
+        bundle = [[NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle] ah_retain];
     }
-    
-    //return localised string
-    return [bundle localizedStringForKey:key value:nil table:nil];
+    defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
+    return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
 }
 
 - (iRate *)init
@@ -213,9 +197,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         //message text, you may wish to customise these, e.g. for localisation
         self.messageTitle = nil; //set lazily so that appname can be included
         self.message = nil; //set lazily so that appname can be included
-        self.cancelButtonLabel = [self localizedStringForKey:@"No, Thanks"];
-        self.remindButtonLabel = [self localizedStringForKey:@"Remind Me Later"];
-        self.rateButtonLabel = [self localizedStringForKey:@"Rate It Now"];
+        self.cancelButtonLabel = [self localizedStringForKey:iRateCancelButtonKey withDefault:@"No, Thanks"];
+        self.remindButtonLabel = [self localizedStringForKey:iRateRemindButtonKey withDefault:@"Remind Me Later"];
+        self.rateButtonLabel = [self localizedStringForKey:iRateRateButtonKey withDefault:@"Rate It Now"];
         
         //app launched
         [self performSelectorOnMainThread:@selector(applicationLaunched) withObject:nil waitUntilDone:NO];
@@ -241,28 +225,17 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (NSString *)messageTitle
 {
-    if (_messageTitle)
-    {
-        return _messageTitle;
-    }
-    return [NSString stringWithFormat:[self localizedStringForKey:@"Rate %@"], self.applicationName];
+    return [_messageTitle ?: [self localizedStringForKey:iRateMessageTitleKey withDefault:@"Rate %@"] stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
 - (NSString *)message
 {
-    if (_message)
+    NSString *message = _message;
+    if (!message)
     {
-        return _message;
+        message = (self.appStoreGenreID == iRateAppStoreGameGenreID)? [self localizedStringForKey:iRateGameMessageKey withDefault:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"]: [self localizedStringForKey:iRateAppMessageKey withDefault:@"If you enjoy using %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"];
     }
-    if (self.appStoreGenreID == iRateAppStoreGameGenreID)
-    {
-         return [NSString stringWithFormat:[self localizedStringForKey:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!"], self.applicationName];
-    }
-    else
-    {
-        return [NSString stringWithFormat:[self localizedStringForKey:@"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!"], self.applicationName];
-
-    }   
+    return [message stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
 - (NSURL *)ratingsURL

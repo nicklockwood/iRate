@@ -9,7 +9,7 @@ Supported OS & SDK Versions
 
 * Supported build target - iOS 6.0 / Mac OS 10.8 (Xcode 4.5, Apple LLVM compiler 4.1)
 * Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
-* Earliest compatible deployment target - iOS 3.0 / Mac OS 10.6
+* Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
@@ -29,7 +29,7 @@ iRate uses threading internally to avoid blocking the UI, but none of the iRate 
 Installation
 --------------
 
-To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised copy.
+To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text.
 
 As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
 
@@ -76,11 +76,11 @@ This is the number of days the user must have had the app installed before they 
 
     @property (nonatomic, assign) NSUInteger usesUntilPrompt;
 
-This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoids the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again, only to be immediately prompted to rate it. The minimum use count ensures that only frequent users are prompted. The prompt will appear only after the specified number of days AND uses has been reached. This defaults to 10 uses.
+This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoids the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again, only to be immediately prompted to rate it. The minimum use count ensures that only frequent users are prompted. The prompt will appear only after the specified number of days AND uses has been reached. This defaults to 10 events. This defaults to 10 uses.
 
     @property (nonatomic, assign) NSUInteger eventsUntilPrompt;
 
-For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly, or a game where the user can't write an informed review until they've reached a particular level. In this case you can manually log significant events and have the prompt appear after a predetermined number of these events. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however once the day threshold is reached, the prompt will appear if either the event threshold OR uses threshold is reached. This defaults to 10 events.
+For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly, or a game where the user can't write an informed review until they've reached a particular level. In this case you can manually log significant events and have the prompt appear after a predetermined number of these events. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however once the day threshold is reached, the prompt will appear if EITHER the event threshold OR uses threshold is reached. This defaults to 10 events.
 
     @property (nonatomic, assign) float remindPeriod;
 
@@ -88,11 +88,12 @@ How long the app should wait before reminding a user to rate after they select t
 
     @property (nonatomic, copy) NSString *messageTitle;
 
-The title displayed for the rating prompt.
+The title displayed for the rating prompt. If you don't want to display a title then set this to `@""`;
+
 
     @property (nonatomic, copy) NSString *message;
 
-The rating prompt message. This should be polite and courteous, but not too wordy.
+The rating prompt message. This should be polite and courteous, but not too wordy. If you don't want to display a message then set this to `@""`;
 
     @property (nonatomic, copy) NSString *cancelButtonLabel;
 
@@ -240,16 +241,21 @@ This is called when the user asks to be reminded to rate the app. This is useful
 Localisation
 ---------------
 
-The defaults strings for iRate are already localised for English, French, German, Italian, Spanish, Japanese, Traditional Chinese, Russian, Polish and Hebrew.
+The default strings for iRate are already localised for many languages. In a change from previous releases, iRate will now only use localisations that are enabled in your application, so if your app only supports English, French and Spanish, iRate will automatically be localised for those languages, but not for German, even though iRate includes a German language file.
 
-It is not recommended that you modify the strings files in the iRate.bundle, as it will complicate updating to newer versions of iRate. If you do want to edit the files, or open them so you can copy the keys into your own strings file, you should note that the iRate strings files have actually been compiled as binary plists, so you'll need to open them in Xcode and use the Open As > Property List option, or they will appear as gibberish.
+To add multi-language support to your project, add a Localizable.strings file to your project resources, then add additional Localizations in the Project > Info panel in Xcode.
 
-If you want to add an additional language, or replace all the built-in strings, the simplest option is to remove the iRate.bundle from your project and then add the iRate keys directly to your own Localizable.strings file.
+It is not recommended that you modify the strings files in the iRate.bundle, as it will complicate updating to newer versions of iRate. The exception to this is if you would like to submit additional languages or improvements or corrections to the localisations in the iRate project on github (which are greatly appreciated). If you do add additional langauges to the iRate.bundle, remember to add that language to the demo project as well or the strings won't be picked up. 
 
-If you want to override some of the localised strings but leave the others intact, you can provide localised values for any or all of the message strings by setting the keys directly in code using NSLocalizedString(...), e.g.
+If you want to add an additional language for iRate in your app without submitting them back to the github project, you can add these strings directly to the appropriate Localizable.strings file in your project folder. If you wish to replace some or all of the default iRate strings, the simplest option is to copy just those strings into your own Localizable.strings file and then modify them. iRate will automatically use strings in the main application bundle in preference to the ones in the iRate bundle so you can override any string in this way.
+
+If you do not want to use *any* of the default localisations, you can omit the iRate.bundle altogether. Note that if you only want to support a subset of languages that iRate supports, it is not neccesary to delete the other strings files from iRate.bundle as it will only use the languages that your app already supports.
+
+The old method of overriding iRate's default strings by using individual setter methods (see below) is still supported, however the recommended approach is now to add those strings to your project's Localizable.strings file, which will be detected automatically by iRate.
 
     + (void)initialize
     {
+        //overriding the default iRate strings
         [iRate sharedInstance].messageTitle = NSLocalizedString(@"Rate MyApp", @"iRate message title");
         [iRate sharedInstance].message = NSLocalizedString(@"If you like MyApp, please take the time, etc", @"iRate message");
         [iRate sharedInstance].cancelButtonLabel = NSLocalizedString(@"No, Thanks", @"iRate decline button");
