@@ -127,6 +127,7 @@ iRateErrorCode;
     NSUInteger _usesUntilPrompt;
     NSUInteger _eventsUntilPrompt;
     float _daysUntilPrompt;
+    float _usageFrequencyForPrompt;
     float _remindPeriod;
     NSString *_messageTitle;
     NSString *_message;
@@ -165,6 +166,7 @@ iRateErrorCode;
 @property (nonatomic, assign) NSUInteger usesUntilPrompt;
 @property (nonatomic, assign) NSUInteger eventsUntilPrompt;
 @property (nonatomic, assign) float daysUntilPrompt;
+@property (nonatomic, assign) float usageFrequencyForPrompt;
 @property (nonatomic, assign) float remindPeriod;
 
 //message text, you may wish to customise these, e.g. for localisation
