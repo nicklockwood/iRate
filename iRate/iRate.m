@@ -53,6 +53,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 
 #define SECONDS_IN_A_DAY 86400.0
+#define SECONDS_IN_A_WEEK 604800.0
 #define MAC_APP_STORE_REFRESH_DELAY 5.0
 #define REQUEST_TIMEOUT 60.0
 
@@ -79,6 +80,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize applicationVersion = _applicationVersion;
 @synthesize applicationBundleID = _applicationBundleID;
 @synthesize daysUntilPrompt = _daysUntilPrompt;
+@synthesize usesPerWeekForPrompt = _usesPerWeekForPrompt;
 @synthesize usesUntilPrompt = _usesUntilPrompt;
 @synthesize eventsUntilPrompt = _eventsUntilPrompt;
 @synthesize remindPeriod = _remindPeriod;
@@ -183,6 +185,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.usesUntilPrompt = 10;
         self.eventsUntilPrompt = 10;
         self.daysUntilPrompt = 10.0f;
+        self.usesPerWeekForPrompt = 0.0f;
         self.remindPeriod = 1.0f;
         self.verboseLogging = NO;
         self.previewMode = NO;
@@ -305,6 +308,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (float)usesPerWeek
+{
+    return (float)self.usesCount / ([[NSDate date] timeIntervalSinceDate:self.firstUsed] / SECONDS_IN_A_WEEK);
+}
+
 - (BOOL)declinedThisVersion
 {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey] isEqualToString:self.applicationVersion];
@@ -411,7 +419,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
     
     //check for first launch
-    else if (self.daysUntilPrompt > 0.0f && self.firstUsed == nil)
+    else if ((self.daysUntilPrompt > 0.0f || self.usesPerWeekForPrompt) && self.firstUsed == nil)
     {
         if (self.verboseLogging)
         {
@@ -425,7 +433,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         if (self.verboseLogging)
         {
-            NSLog(@"iRate did not prompt for rating because the last prompt was less than %g days ago", self.daysUntilPrompt);
+            NSLog(@"iRate did not prompt for rating because the app was first used less than %g days ago", self.daysUntilPrompt);
         }
         return NO;
     }
@@ -435,12 +443,21 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         if (self.verboseLogging)
         {
-            NSLog(@"iRate did not prompt for rating because the app has only been used %i/%i times and only %i/%i events have been logged",
-                  (int)self.usesCount, (int)self.usesUntilPrompt, (int)self.eventCount, (int)self.eventsUntilPrompt);
+            NSLog(@"iRate did not prompt for rating because the app has only been used %i times and only %i events have been logged", (int)self.usesCount, (int)self.eventCount);
         }
         return NO;
     }
     
+    //check if usage frequency is high enough
+    else if (self.usesPerWeek < self.usesPerWeekForPrompt)
+    {
+        if (self.verboseLogging)
+        {
+            NSLog(@"iRate did not prompt for rating because the app has only been used %g times per week on average since it was installed", self.usesPerWeek);
+        }
+        return NO;
+    }
+
     //check if within the reminder period
     else if (self.lastReminded != nil && [[NSDate date] timeIntervalSinceDate:self.lastReminded] < self.remindPeriod * SECONDS_IN_A_DAY)
     {

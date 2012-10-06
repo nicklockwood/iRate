@@ -1,6 +1,7 @@
 Version 1.5.4
 
 - Added new localisation system (see README for details)
+- Added usesPerWeekForPrompt setting
 - Fixed deprecation warning in iOS 6
 - Improved Spanish translation
 - Improved German translation

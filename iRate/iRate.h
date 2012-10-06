@@ -88,7 +88,7 @@ extern NSUInteger const iRateAppStoreGameGenreID;
 extern NSString *const iRateErrorDomain;
 
 
-//localisation string file keys
+//localisation string keys
 static NSString *const iRateMessageTitleKey = @"iRateMessageTitle";
 static NSString *const iRateAppMessageKey = @"iRateAppMessage";
 static NSString *const iRateGameMessageKey = @"iRateGameMessage";
@@ -135,6 +135,7 @@ iRateErrorCode;
     NSUInteger _usesUntilPrompt;
     NSUInteger _eventsUntilPrompt;
     float _daysUntilPrompt;
+    float _usesPerWeekForPrompt;
     float _remindPeriod;
     NSString *_messageTitle;
     NSString *_message;
@@ -173,6 +174,7 @@ iRateErrorCode;
 @property (nonatomic, assign) NSUInteger usesUntilPrompt;
 @property (nonatomic, assign) NSUInteger eventsUntilPrompt;
 @property (nonatomic, assign) float daysUntilPrompt;
+@property (nonatomic, assign) float usesPerWeekForPrompt;
 @property (nonatomic, assign) float remindPeriod;
 
 //message text, you may wish to customise these
@@ -197,6 +199,7 @@ iRateErrorCode;
 @property (nonatomic, strong) NSDate *lastReminded;
 @property (nonatomic, assign) NSUInteger usesCount;
 @property (nonatomic, assign) NSUInteger eventCount;
+@property (nonatomic, readonly) float usesPerWeek;
 @property (nonatomic, assign) BOOL declinedThisVersion;
 @property (nonatomic, readonly) BOOL declinedAnyVersion;
 @property (nonatomic, assign) BOOL ratedThisVersion;

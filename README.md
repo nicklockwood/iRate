@@ -82,6 +82,10 @@ This is the minimum number of times the user must launch the app before they are
 
 For some apps, launches are not a good metric for usage. For example the app might be a daemon that runs constantly, or a game where the user can't write an informed review until they've reached a particular level. In this case you can manually log significant events and have the prompt appear after a predetermined number of these events. Like the usesUntilPrompt setting, the prompt will appear only after the specified number of days AND events, however once the day threshold is reached, the prompt will appear if EITHER the event threshold OR uses threshold is reached. This defaults to 10 events.
 
+    @property (nonatomic, assign) float usesPerWeekForPrompt;
+
+If you are less concerned with the total number of times the app is used, but would prefer to use the *frequency* of times the app is used, you can use the `usesPerWeekForPrompt` property to set a minimum threshold for the number of times the user must launch the app per week (on average) for the prompt to be shown. Note that this is the average since the app was installed, so if the user goes for a long period without running the app, it may throw off the average. The default value is zero.
+
     @property (nonatomic, assign) float remindPeriod;
 
 How long the app should wait before reminding a user to rate after they select the "remind me later" option (measured in days). A value of zero means the app will remind the user next launch. Note that this value supersedes the other criteria, so the app won't prompt for a rating during the reminder period, even if a new version is released in the meantime.  This defaults to 1 day.
@@ -160,6 +164,10 @@ The number of times the current version of the app has been used (launched).
     @property (nonatomic, assign) NSUInteger eventCount;
 
 The number of significant application events that have been recorded since the current version was installed. This is incremented by the logEvent method, but can also be manipulated directly. Check out the *Events Demo* to see how this os used. 
+
+    @property (nonatomic, readonly) float usesPerWeek;
+
+The average number of times per week that the current version of the app has been used (launched).
 
     @property (nonatomic, assign) BOOL declinedThisVersion;
 
