@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.5.4
+//  Version 1.5.5
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -143,6 +143,7 @@ iRateErrorCode;
     NSString *_remindButtonLabel;
     NSString *_rateButtonLabel;
     NSURL *_ratingsURL;
+    BOOL _useAllAvailableLanguages;
     BOOL _disableAlertViewResizing;
     BOOL _promptAgainForEachNewVersion;
     BOOL _onlyPromptIfLatestVersion;
@@ -185,6 +186,7 @@ iRateErrorCode;
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
 //debugging and prompt overrides
+@property (nonatomic, assign) BOOL useAllAvailableLanguages;
 @property (nonatomic, assign) BOOL disableAlertViewResizing;
 @property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;

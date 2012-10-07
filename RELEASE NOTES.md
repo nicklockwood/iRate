@@ -1,3 +1,7 @@
+Version 1.5.5
+
+- Reverted to the 1.5.3 localisation behaviour, whereby iRate will use all available localisations even in apps that are not localised. To revert to the 1.5.4 behaviour, set the useAllAvailableLanguages option to NO.
+
 Version 1.5.4
 
 - Added new localisation system (see README for details)

@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.5.4
+//  Version 1.5.5
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -90,6 +90,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @synthesize remindButtonLabel = _remindButtonLabel;
 @synthesize rateButtonLabel = _rateButtonLabel;
 @synthesize ratingsURL = _ratingsURL;
+@synthesize useAllAvailableLanguages = _useAllAvailableLanguages;
 @synthesize disableAlertViewResizing = _disableAlertViewResizing;
 @synthesize onlyPromptIfLatestVersion = _onlyPromptIfLatestVersion;
 @synthesize onlyPromptIfMainWindowIsAvailable = _onlyPromptIfMainWindowIsAvailable;
@@ -127,6 +128,19 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRate" ofType:@"bundle"];
         bundle = [[NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle] ah_retain];
+        if (self.useAllAvailableLanguages)
+        {
+            //manually select the desired lproj folder
+            for (NSString *language in [NSLocale preferredLanguages])
+            {
+                if ([[bundle localizations] containsObject:language])
+                {
+                    bundlePath = [bundle pathForResource:language ofType:@"lproj"];
+                    bundle = [NSBundle bundleWithPath:bundlePath];
+                    break;
+                }
+            }
+        }
     }
     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
@@ -177,6 +191,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.applicationBundleID = [[NSBundle mainBundle] bundleIdentifier];
         
         //usage settings - these have sensible defaults
+        self.useAllAvailableLanguages = YES;
         self.disableAlertViewResizing = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
@@ -196,13 +211,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.verboseLogging = YES;
         
 #endif
-        
-        //message text, you may wish to customise these, e.g. for localisation
-        self.messageTitle = nil; //set lazily so that appname can be included
-        self.message = nil; //set lazily so that appname can be included
-        self.cancelButtonLabel = [self localizedStringForKey:iRateCancelButtonKey withDefault:@"No, Thanks"];
-        self.remindButtonLabel = [self localizedStringForKey:iRateRemindButtonKey withDefault:@"Remind Me Later"];
-        self.rateButtonLabel = [self localizedStringForKey:iRateRateButtonKey withDefault:@"Rate It Now"];
         
         //app launched
         [self performSelectorOnMainThread:@selector(applicationLaunched) withObject:nil waitUntilDone:NO];
@@ -231,6 +239,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [_messageTitle ?: [self localizedStringForKey:iRateMessageTitleKey withDefault:@"Rate %@"] stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
+- (void)setMessageTitle:(NSString *)messageTitle
+{
+    [_messageTitle autorelease];
+    _messageTitle = [messageTitle ?: @"" ah_retain];
+}
+
 - (NSString *)message
 {
     NSString *message = _message;
@@ -239,6 +253,33 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         message = (self.appStoreGenreID == iRateAppStoreGameGenreID)? [self localizedStringForKey:iRateGameMessageKey withDefault:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"]: [self localizedStringForKey:iRateAppMessageKey withDefault:@"If you enjoy using %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"];
     }
     return [message stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
+}
+
+- (void)setMessage:(NSString *)message
+{
+    [_message autorelease];
+    _message = [message ?: @"" ah_retain];
+}
+
+- (NSString *)cancelButtonLabel
+{
+    return _cancelButtonLabel ?: [self localizedStringForKey:iRateCancelButtonKey withDefault:@"No, Thanks"];
+}
+
+- (NSString *)rateButtonLabel
+{
+    return _rateButtonLabel ?: [self localizedStringForKey:iRateRateButtonKey withDefault:@"Rate It Now"];
+}
+
+- (NSString *)remindButtonLabel
+{
+    return [_remindButtonLabel length]? _remindButtonLabel: [self localizedStringForKey:iRateRemindButtonKey withDefault:@"Remind Me Later"];
+}
+
+- (void)setRemindButtonLabel:(NSString *)remindButtonLabel
+{
+    [_remindButtonLabel autorelease];
+    _remindButtonLabel = [remindButtonLabel ?: @"" ah_retain];
 }
 
 - (NSURL *)ratingsURL
