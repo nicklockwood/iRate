@@ -111,6 +111,10 @@ The button label for the button the user presses if they do want to rate the app
 
 The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to nil if you don't want to display the remind me button - e.g. if you don't have space on screen.
 
+    @property (nonatomic, assign) BOOL useAllAvailableLanguages;
+
+By default, iRate will use all available languages in the iRate.bundle, even if used in an app that does not support localisation. If you would prefer to restrict iRate to only use the same set of languages that your application already supports, set this property to NO. (Defaults to YES).
+
     @property (nonatomic, assign) BOOL disableAlertViewResizing;
 
 On iOS, iRate includes some logic to resize the alert view to ensure that your rating message is visible in both portrait and landscape mode, and that it doesn't scroll or become truncated. The code to do this is a rather nasty hack, so if your alert text is very short and/or your app only needs to function in portrait mode on iPhone, you may wish to set this property to YES, which may help make your app more robust against future iOS updates. Try the *Resizing Disabled* example for a demonstration of the effect.
@@ -249,15 +253,15 @@ This is called when the user asks to be reminded to rate the app. This is useful
 Localisation
 ---------------
 
-The default strings for iRate are already localised for many languages. In a change from previous releases, iRate will now only use localisations that are enabled in your application, so if your app only supports English, French and Spanish, iRate will automatically be localised for those languages, but not for German, even though iRate includes a German language file.
+The default strings for iRate are already localised for many languages. By default, iRate will use all the localisations in the iRate.bundle even in an app that is not localised, or which is only localised to a subset of the languages that iRate supports.
 
-To add multi-language support to your project, add a Localizable.strings file to your project resources, then add additional Localizations in the Project > Info panel in Xcode.
+If you would prefer iRate to only use the localisations that are enabled in your application (so that if your app only supports English, French and Spanish, iRate will automatically be localised for those languages, but not for German, even though iRate includes a German language file), set the `useAllAvailableLanguages` option to NO.
 
 It is not recommended that you modify the strings files in the iRate.bundle, as it will complicate updating to newer versions of iRate. The exception to this is if you would like to submit additional languages or improvements or corrections to the localisations in the iRate project on github (which are greatly appreciated). If you do add additional langauges to the iRate.bundle, remember to add that language to the demo project as well or the strings won't be picked up. 
 
 If you want to add an additional language for iRate in your app without submitting them back to the github project, you can add these strings directly to the appropriate Localizable.strings file in your project folder. If you wish to replace some or all of the default iRate strings, the simplest option is to copy just those strings into your own Localizable.strings file and then modify them. iRate will automatically use strings in the main application bundle in preference to the ones in the iRate bundle so you can override any string in this way.
 
-If you do not want to use *any* of the default localisations, you can omit the iRate.bundle altogether. Note that if you only want to support a subset of languages that iRate supports, it is not neccesary to delete the other strings files from iRate.bundle as it will only use the languages that your app already supports.
+If you do not want to use *any* of the default localisations, you can omit the iRate.bundle altogether. Note that if you only want to support a subset of languages that iRate supports, it is not neccesary to delete the other strings files from iRate.bundle - just set `useAllAvailableLanguages` to NO, and iRate will only use the languages that your app already supports.
 
 The old method of overriding iRate's default strings by using individual setter methods (see below) is still supported, however the recommended approach is now to add those strings to your project's Localizable.strings file, which will be detected automatically by iRate.
 

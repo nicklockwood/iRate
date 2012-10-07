@@ -1,4 +1,4 @@
-Version 1.5.4
+Version 1.6
 
 - Added new localisation system (see README for details)
 - Added usesPerWeekForPrompt setting
