@@ -1,3 +1,7 @@
+Version 1.6.1
+
+- Fixed typo in Italian strings file
+
 Version 1.6
 
 - Added new localisation system (see README for details)
