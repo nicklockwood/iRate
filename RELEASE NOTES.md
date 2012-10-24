@@ -1,3 +1,8 @@
+Version 1.6.2
+
+- Fixed broken ratings URL (Apple changed it)
+- Added Danish translation
+
 Version 1.6.1
 
 - Fixed typo in Italian strings file
