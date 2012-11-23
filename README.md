@@ -31,7 +31,9 @@ Installation
 
 To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text.
 
-As of version 1.4, iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
+If you wish to take advantage of the in-app product page feature in iOS 6 then you will need to include the Storekit framework in your project. iRate will automatically detect this if present and will display the app page directly in the app instead of linking out to the App Store app.
+
+iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
 
 **Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app. Also, if you are creating a sandboxed Mac app and your app does not request the network access permission then you will need to set the appStoreID because it cannot be retrieved from the iTunes service. 
 
@@ -130,6 +132,10 @@ Set this to NO to enabled the rating prompt to be displayed even if the user is 
     @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
 
 This setting is applicable to Mac OS only. By default, on Mac OS the iRate alert is displayed as sheet on the main window. Some applications do not have a main window, so this approach doesn't work. For such applications, set this property to NO to allow the iRate alert to be displayed as a regular modal window.
+
+    @property (nonatomic, assign) BOOL displayAppUsingStorekitIfAvailable;
+
+By default, if iRate is running on iOS 6 and the StoreKit framework is included in the project, when the user agrees to rate the app, the ratings page will be displayed directly within the app instead of linking to the App Store app. If you don't want that, set this property to NO.
 
     @property (nonatomic, assign) BOOL promptAtLaunch;
 

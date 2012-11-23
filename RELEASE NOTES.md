@@ -1,3 +1,10 @@
+Version 1.7 beta
+
+- On iOS 6, iRate can now use the StoreKit APIs to display the product page directly within the app. To enable this feature you will need to add the StoreKit framework to your project.
+- Moved the ARCHelper macros out of the header file so that they do not affect other code in the project that is not ARC compliant
+- Dropped support for 32-bit Macs running Snow Leopard
+- Added Swedish translation
+
 Version 1.6.2
 
 - Fixed broken ratings URL (Apple changed it)

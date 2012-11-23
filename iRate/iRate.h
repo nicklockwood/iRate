@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.6.2
+//  Version 1.7 beta
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -30,51 +30,19 @@
 //  3. This notice may not be removed or altered from any source distribution.
 //
 
-//
-//  ARC Helper
-//
-//  Version 2.1
-//
-//  Created by Nick Lockwood on 05/01/2012.
-//  Copyright 2012 Charcoal Design
-//
-//  Distributed under the permissive zlib license
-//  Get the latest version from here:
-//
-//  https://gist.github.com/1563325
-//
 
-#ifndef ah_retain
-#if __has_feature(objc_arc)
-#define ah_retain self
-#define ah_dealloc self
-#define release self
-#define autorelease self
-#else
-#define ah_retain retain
-#define ah_dealloc dealloc
-#define __bridge
-#endif
-#endif
-
-//  Weak delegate support
-
-#ifndef ah_weak
 #import <Availability.h>
-#if (__has_feature(objc_arc)) && \
-((defined __IPHONE_OS_VERSION_MIN_REQUIRED && \
-__IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0) || \
-(defined __MAC_OS_X_VERSION_MIN_REQUIRED && \
-__MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_7))
-#define ah_weak weak
-#define __ah_weak __weak
+#undef weak_delegate
+#undef __weak_delegate
+#if __has_feature(objc_arc_weak) && \
+(!(defined __MAC_OS_X_VERSION_MIN_REQUIRED) || \
+__MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_8)
+#define weak_delegate weak
+#define __weak_delegate __weak
 #else
-#define ah_weak unsafe_unretained
-#define __ah_weak __unsafe_unretained
+#define weak_delegate unsafe_unretained
+#define __weak_delegate __unsafe_unretained
 #endif
-#endif
-
-//  ARC Helper ends
 
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -121,43 +89,6 @@ iRateErrorCode;
 
 @interface iRate : NSObject
 
-//required for 32-bit Macs
-#ifdef __i386
-{
-    @private
-    
-    NSUInteger _appStoreID;
-    NSUInteger _appStoreGenreID;
-    NSString *_appStoreCountry;
-    NSString *_applicationName;
-    NSString *_applicationVersion;
-    NSString *_applicationBundleID;
-    NSUInteger _usesUntilPrompt;
-    NSUInteger _eventsUntilPrompt;
-    float _daysUntilPrompt;
-    float _usesPerWeekForPrompt;
-    float _remindPeriod;
-    NSString *_messageTitle;
-    NSString *_message;
-    NSString *_cancelButtonLabel;
-    NSString *_remindButtonLabel;
-    NSString *_rateButtonLabel;
-    NSURL *_ratingsURL;
-    BOOL _useAllAvailableLanguages;
-    BOOL _disableAlertViewResizing;
-    BOOL _promptAgainForEachNewVersion;
-    BOOL _onlyPromptIfLatestVersion;
-    BOOL _onlyPromptIfMainWindowIsAvailable;
-    BOOL _promptAtLaunch;
-    BOOL _verboseLogging;
-    BOOL _previewMode;
-    id<iRateDelegate> __ah_weak _delegate;
-    id _visibleAlert;
-    int _previousOrientation;
-    BOOL _currentlyChecking;
-}
-#endif
-
 + (iRate *)sharedInstance;
 
 //app store ID - this is only needed if your
@@ -191,6 +122,7 @@ iRateErrorCode;
 @property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
+@property (nonatomic, assign) BOOL displayAppUsingStorekitIfAvailable;
 @property (nonatomic, assign) BOOL promptAtLaunch;
 @property (nonatomic, assign) BOOL verboseLogging;
 @property (nonatomic, assign) BOOL previewMode;
@@ -206,7 +138,7 @@ iRateErrorCode;
 @property (nonatomic, readonly) BOOL declinedAnyVersion;
 @property (nonatomic, assign) BOOL ratedThisVersion;
 @property (nonatomic, readonly) BOOL ratedAnyVersion;
-@property (nonatomic, ah_weak) id<iRateDelegate> delegate;
+@property (nonatomic, weak_delegate) id<iRateDelegate> delegate;
 
 //manually control behaviour
 - (BOOL)shouldPromptForRating;
