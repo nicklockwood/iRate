@@ -17,7 +17,9 @@ NOTE: 'Supported' means that the library has been tested with this version. 'Com
 ARC Compatibility
 ------------------
 
-iRate makes use of the ARC Helper library to automatically work with both ARC and non-ARC projects through conditional compilation. There is no need to exclude iRate files from the ARC validation process, or to convert iRate using the ARC conversion tool.
+As of version 1.7, iRate requires ARC. If you wish to use iRate in a non-ARC project, just add the -fobjc-arc compiler flag to the iRate.m class. To do this, go to the Build Phases tab in your target settings, open the Compile Sources group, double-click iRate.m in the list and type -fobjc-arc into the popover.
+
+If you wish to convert your whole project to ARC, comment out the #error line in iRate.m, then run the Edit > Refactor > Convert to Objective-C ARC... tool in Xcode and make sure all files that you wish to use ARC for (including iRate.m) are checked.
 
 
 Thread Safety
@@ -29,9 +31,7 @@ iRate uses threading internally to avoid blocking the UI, but none of the iRate 
 Installation
 --------------
 
-To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text.
-
-If you wish to take advantage of the in-app product page feature in iOS 6 then you will need to include the Storekit framework in your project. iRate will automatically detect this if present and will display the app page directly in the app instead of linking out to the App Store app.
+To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text. On iOS you will also need to add the StoreKit framework.
 
 iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
 
@@ -135,7 +135,7 @@ This setting is applicable to Mac OS only. By default, on Mac OS the iRate alert
 
     @property (nonatomic, assign) BOOL displayAppUsingStorekitIfAvailable;
 
-By default, if iRate is running on iOS 6 and the StoreKit framework is included in the project, when the user agrees to rate the app, the ratings page will be displayed directly within the app instead of linking to the App Store app. If you don't want that, set this property to NO.
+By default, if iRate is running on iOS 6 or above then when the user agrees to rate the app, the ratings page will be displayed directly within the app instead of linking to the App Store app. If you don't want that, set this property to NO.
 
     @property (nonatomic, assign) BOOL promptAtLaunch;
 
@@ -223,7 +223,7 @@ This method will check if the app store is available, and if it is, it will disp
 
     - (void)openRatingsPageInAppStore;
 
-This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, depending on which platform is running. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods. You should use this method instead of the ratingsURL property if you are running on Mac OS as the process for launching the Mac app store is more complex than merely opening the URL. Note that this method depends on the `appStoreID` which is only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set the `appStoreID` property yourself beforehand.
+This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, or directly within the app, depending on which platform and OS version is running. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods. You should use this method to open the ratings page instead of the ratingsURL property, as the process for launching the app store is more complex than merely opening the URL in many cases. Note that this method depends on the `appStoreID` which is only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set the `appStoreID` property yourself beforehand.
 
 
 Delegate methods
@@ -254,6 +254,10 @@ This is called when the user declines to rate the app. This is useful if you wan
     - (void)iRateUserDidRequestReminderToRateApp;
 
 This is called when the user asks to be reminded to rate the app. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation.
+
+    - (BOOL)iRateShouldopenAppStore;
+    
+This method is called immediately before iRate attempts to open the app store, either via a URL or using the StoreKit in-app product view controller. Return NO if you wish to implement your own ratings page display logic.
 
 
 Localisation

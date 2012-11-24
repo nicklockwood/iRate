@@ -45,12 +45,6 @@
 #pragma mark -
 #pragma mark Memory management
 
-- (void)dealloc
-{
-    [viewController release];
-    [window release];
-    [super dealloc];
-}
 
 
 @end

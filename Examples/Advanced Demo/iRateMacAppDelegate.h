@@ -12,9 +12,9 @@
 
 @interface iRateMacAppDelegate : NSObject <NSApplicationDelegate, iRateDelegate>
 
-@property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSProgressIndicator *progressIndicator;
-@property (assign) IBOutlet NSTextField *label;
+@property (weak) IBOutlet NSWindow *window;
+@property (weak) IBOutlet NSProgressIndicator *progressIndicator;
+@property (weak) IBOutlet NSTextField *label;
 
 - (IBAction)promptForRating:(id)sender;
 
