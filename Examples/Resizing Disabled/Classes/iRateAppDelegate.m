@@ -29,7 +29,7 @@
 	
     //enable preview mode
     [iRate sharedInstance].previewMode = YES;
-    
+
     //max out the text
     [iRate sharedInstance].message = @"This long message demonstrates how the UIAlertView switches to using a scrolling panel when the text is too long unless the disableAlertViewResizing option is set to NO. It's even worse in landscape mode - try it!";
     

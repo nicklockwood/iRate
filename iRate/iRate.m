@@ -77,10 +77,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 @implementation iRate
 
-@synthesize message = _message;
-@synthesize messageTitle = _messageTitle;
-@synthesize remindButtonLabel = _remindButtonLabel;
-
 #pragma mark -
 #pragma mark Lifecycle methods
 
@@ -218,11 +214,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [_messageTitle ?: [self localizedStringForKey:iRateMessageTitleKey withDefault:@"Rate %@"] stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
-- (void)setMessageTitle:(NSString *)messageTitle
-{
-    _messageTitle = messageTitle ?: @"";
-}
-
 - (NSString *)message
 {
     NSString *message = _message;
@@ -231,11 +222,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         message = (self.appStoreGenreID == iRateAppStoreGameGenreID)? [self localizedStringForKey:iRateGameMessageKey withDefault:@"If you enjoy playing %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"]: [self localizedStringForKey:iRateAppMessageKey withDefault:@"If you enjoy using %@, would you mind taking a moment to rate it? It won’t take more than a minute. Thanks for your support!"];
     }
     return [message stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
-}
-
-- (void)setMessage:(NSString *)message
-{
-    _message = message ?: @"";
 }
 
 - (NSString *)cancelButtonLabel
@@ -250,12 +236,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (NSString *)remindButtonLabel
 {
-    return [_remindButtonLabel length]? _remindButtonLabel: [self localizedStringForKey:iRateRemindButtonKey withDefault:@"Remind Me Later"];
-}
-
-- (void)setRemindButtonLabel:(NSString *)remindButtonLabel
-{
-    _remindButtonLabel = remindButtonLabel ?: @"";
+    return _remindButtonLabel ?: [self localizedStringForKey:iRateRemindButtonKey withDefault:@"Remind Me Later"];
 }
 
 - (NSURL *)ratingsURL
@@ -730,7 +711,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                                        delegate:(id <UIAlertViewDelegate>)self
                                               cancelButtonTitle:self.cancelButtonLabel
                                               otherButtonTitles:self.rateButtonLabel, nil];
-        if (self.remindButtonLabel)
+        if ([self.remindButtonLabel length])
         {
             [alert addButtonWithTitle:self.remindButtonLabel];
         }
@@ -753,7 +734,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                               otherButton:nil
                                 informativeTextWithFormat:@"%@", self.message];
         
-        if (self.remindButtonLabel)
+        if ([self.remindButtonLabel length])
         {
             [self.visibleAlert addButtonWithTitle:self.remindButtonLabel];
         }

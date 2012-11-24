@@ -96,7 +96,6 @@ How long the app should wait before reminding a user to rate after they select t
 
 The title displayed for the rating prompt. If you don't want to display a title then set this to `@""`;
 
-
     @property (nonatomic, copy) NSString *message;
 
 The rating prompt message. This should be polite and courteous, but not too wordy. If you don't want to display a message then set this to `@""`;
@@ -111,7 +110,7 @@ The button label for the button the user presses if they do want to rate the app
 
     @property (nonatomic, copy) NSString *remindButtonLabel;
 
-The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to nil if you don't want to display the remind me button - e.g. if you don't have space on screen.
+The button label for the button the user presses if they don't want to rate the app immediately, but do want to be reminded about it in future. Set this to `@""` if you don't want to display the remind me button - e.g. if you don't have space on screen.
 
     @property (nonatomic, assign) BOOL useAllAvailableLanguages;
 
