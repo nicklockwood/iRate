@@ -852,7 +852,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)controller
 {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
+    [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{}];
+#else
     [controller.presentingViewController dismissModalViewControllerAnimated:YES];
+#endif
 }
 
 - (void)resizeAlertView:(UIAlertView *)alertView
