@@ -39,6 +39,8 @@ iRate typically requires no configuration at all and will simply run automatical
 
 If you do wish to customise iRate, the best time to do this is *before* the app has finished launching. The easiest way to do this is to add the iRate configuration code in your AppDelegate's `initialize` method, like this:
 
+    #import "iRate.h"
+
 	+ (void)initialize
 	{
 		//configure iRate
@@ -257,6 +259,14 @@ This is called when the user asks to be reminded to rate the app. This is useful
     - (BOOL)iRateShouldopenAppStore;
     
 This method is called immediately before iRate attempts to open the app store, either via a URL or using the StoreKit in-app product view controller. Return NO if you wish to implement your own ratings page display logic.
+
+    - (void)iRateDidPresentStoreKitModal;
+    
+This method is called just after iRate presents the StoreKit in-app product view controller. It is useful if you want to implement some additional functionality, such as displaying instructions to the user for how to write a review, since the StoreKit controller doesn't open on the review page. You may also wish to pause certain functionality in your app, etc.
+    
+    - (void)iRateDidDismissStoreKitModal;
+
+This method is called when the user dismisses the StoreKit in-app product view controller. This is useful if you want to resume any functionality that you paused when the modal was displayed.
 
 
 Localisation

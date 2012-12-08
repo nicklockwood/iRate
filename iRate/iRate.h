@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.7
+//  Version 1.7.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -84,6 +84,8 @@ iRateErrorCode;
 - (void)iRateUserDidDeclineToRateApp;
 - (void)iRateUserDidRequestReminderToRateApp;
 - (BOOL)iRateShouldOpenAppStore;
+- (void)iRateDidPresentStoreKitModal;
+- (void)iRateDidDismissStoreKitModal;
 
 @end
 
