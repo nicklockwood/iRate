@@ -1,7 +1,13 @@
+Version 1.7.1
+
+- Fixed deprecation warning when targeting iOS6 as the base target
+- Added iRateDidPresentStoreKitModal and iRateDidDismissStoreKitModal delegate methods
+- Added Ukranian translation
+
 Version 1.7
 
 - On iOS 6, iRate can now use the StoreKit APIs to display the product page directly within the app.
-- iRate now requires the Storekit framework on iOS
+- iRate now requires the StoreKit framework on iOS
 - iRate now requires ARC. To use iRate in a non-ARC project, follow the instructions in the README file.
 - Dropped support for 32-bit Macs running Snow Leopard
 - Added Swedish translation

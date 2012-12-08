@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.7
+//  Version 1.7.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -838,6 +838,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         {
             //present product view controller
             [rootViewController presentViewController:productController animated:YES completion:nil];
+            if ([self.delegate respondsToSelector:@selector(iRateDidPresentStoreKitModal)])
+            {
+                [self.delegate iRateDidPresentStoreKitModal];
+            }
             return;
         }
     }
@@ -852,7 +856,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)controller
 {
-    [controller.presentingViewController dismissModalViewControllerAnimated:YES];
+    [controller.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    if ([self.delegate respondsToSelector:@selector(iRateDidDismissStoreKitModal)])
+    {
+        [self.delegate iRateDidDismissStoreKitModal];
+    }
 }
 
 - (void)resizeAlertView:(UIAlertView *)alertView
