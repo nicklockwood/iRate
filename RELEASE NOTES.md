@@ -2,6 +2,7 @@ Version 1.7.1
 
 - Fixed deprecation warning when targeting iOS6 as the base target
 - Added iRateDidPresentStoreKitModal and iRateDidDismissStoreKitModal delegate methods
+- Added additional error logging if StoreKit fails to load product info
 - Added Ukranian translation
 
 Version 1.7
