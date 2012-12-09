@@ -836,17 +836,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }];
         
         //get root view controller
-        UIViewController *rootViewController = nil;
-        id appDelegate = [[UIApplication sharedApplication] delegate];
-        if ([appDelegate respondsToSelector:@selector(viewController)])
+        UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        while (rootViewController.presentedViewController)
         {
-            rootViewController = [appDelegate valueForKey:@"viewController"];
+            rootViewController = rootViewController.presentedViewController;
         }
-        if (!rootViewController && [appDelegate respondsToSelector:@selector(window)])
-        {
-            UIWindow *window = [appDelegate valueForKey:@"window"];
-            rootViewController = window.rootViewController;
-        }
+        
         if (!rootViewController)
         {
             if (self.verboseLogging)
