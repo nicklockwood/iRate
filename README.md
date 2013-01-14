@@ -256,7 +256,7 @@ This is called when the user declines to rate the app. This is useful if you wan
 
 This is called when the user asks to be reminded to rate the app. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation.
 
-    - (BOOL)iRateShouldopenAppStore;
+    - (BOOL)iRateShouldOpenAppStore;
     
 This method is called immediately before iRate attempts to open the app store, either via a URL or using the StoreKit in-app product view controller. Return NO if you wish to implement your own ratings page display logic.
 

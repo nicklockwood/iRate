@@ -8,7 +8,6 @@
 
 #import "iRateAppDelegate.h"
 #import "iRateViewController.h"
-#import "iRate.h"
 
 
 @implementation iRateAppDelegate
@@ -21,17 +20,13 @@
 //the app details are retrieved directly
 //from iTunes using the app's bundle ID
 
+//NOTE: you won't actually see anything until you've had the example installed
+//for 10 days and launched it 10 times. You can simulate this by adjusting
+//the date on your device if you wish to verify that it works
+
 
 #pragma mark -
 #pragma mark Application lifecycle
-
-+ (void)initialize
-{
-    //ok, we'll enable preview mode just so
-    //you can see something without waiting for
-    //ten days, but in the real app, you don't need this
-    [iRate sharedInstance].previewMode = YES;
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
@@ -41,10 +36,5 @@
 
     return YES;
 }
-
-#pragma mark -
-#pragma mark Memory management
-
-
 
 @end

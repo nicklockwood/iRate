@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.7.1
+//  Version 1.7.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -366,10 +366,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     //preview mode?
     if (self.previewMode)
     {
-        if (self.verboseLogging)
-        {
-            NSLog(@"iRate preview mode is enabled - make sure you disable this for release");
-        }
+        NSLog(@"iRate preview mode is enabled - make sure you disable this for release");
         return YES;
     }
     
@@ -849,13 +846,23 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         if (!rootViewController)
         {
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            rootViewController = window.rootViewController;
+        }
+        if (!rootViewController)
+        {
             if (self.verboseLogging)
             {
-                NSLog(@"iRate couldn't find root view controller from which to display StoreKit product screen");
+                NSLog(@"iRate couldn't find root view controller from which to display StoreKit product page");
             }
         }
         else
         {
+            while (rootViewController.presentedViewController)
+            {
+                rootViewController = rootViewController.presentedViewController;
+            }
+            
             //present product view controller
             [rootViewController presentViewController:productController animated:YES completion:nil];
             if ([self.delegate respondsToSelector:@selector(iRateDidPresentStoreKitModal)])
@@ -908,12 +915,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 }
                 else if ([label.text isEqualToString:alertView.message])
                 {
-                    
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
                     label.lineBreakMode = NSLineBreakByWordWrapping;
-#else  
-                    label.lineBreakMode = UILineBreakModeWordWrap;
-#endif
                     label.numberOfLines = 0;
                     label.alpha = 1.0f;
                     [label sizeToFit];

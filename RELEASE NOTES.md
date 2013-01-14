@@ -1,3 +1,8 @@
+Version 1.7.2
+
+- Added dutch translation
+- iRate now displays the StoreKit product view controller correctly even if a modally presented view controller has been displayed
+
 Version 1.7.1
 
 - Fixed deprecation warning when targeting iOS6 as the base target
