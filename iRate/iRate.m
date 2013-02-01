@@ -90,7 +90,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     static iRate *sharedInstance = nil;
     if (sharedInstance == nil)
     {
-        sharedInstance = [[iRate alloc] init];
+        sharedInstance = [[[self class] alloc] init];
     }
     return sharedInstance;
 }
