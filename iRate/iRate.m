@@ -36,8 +36,11 @@
 
 
 #import <Availability.h>
-#if !__has_feature(objc_arc)
-#error This class requires automatic reference counting
+
+#if __has_feature(objc_arc)
+#define IRATE_RELEASE(x)
+#else
+#define IRATE_RELEASE(x) [x release]
 #endif
 
 
@@ -346,6 +349,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+#if !__has_feature(objc_arc)
+    [super dealloc];
+#endif
 }
 
 #pragma mark -
@@ -656,6 +662,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                         
                         error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorBundleIdDoesNotMatchAppStore userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Application bundle ID does not match expected value of %@", bundleID]}];
                     }
+                    IRATE_RELEASE(json);
                 }
                 else if (self.appStoreID || !self.ratingsURL)
                 {
@@ -715,6 +722,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         self.visibleAlert = alert;
         [self.visibleAlert show];
+        IRATE_RELEASE(alert);
 
 #else
 
@@ -865,6 +873,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             
             //present product view controller
             [rootViewController presentViewController:productController animated:YES completion:nil];
+            IRATE_RELEASE(productController);
             if ([self.delegate respondsToSelector:@selector(iRateDidPresentStoreKitModal)])
             {
                 [self.delegate iRateDidPresentStoreKitModal];
