@@ -1,3 +1,8 @@
+Version 1.7.3
+
+- Added Slovak, Czech and Austrian translations
+- Fixed some bugs in Cancel/Remind button disabling logic
+
 Version 1.7.2
 
 - Added dutch translation

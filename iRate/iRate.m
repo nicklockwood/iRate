@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.7.2
+//  Version 1.7.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -260,6 +260,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, (unsigned int)self.appStoreID]];
     
 #endif
+    
 }
 
 - (NSDate *)firstUsed
@@ -706,7 +707,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
                                                         message:self.message
                                                        delegate:(id <UIAlertViewDelegate>)self
-                                              cancelButtonTitle:self.cancelButtonLabel
+                                              cancelButtonTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel: nil
                                               otherButtonTitles:self.rateButtonLabel, nil];
         if ([self.remindButtonLabel length])
         {
@@ -969,11 +970,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    //consider cancel button presence
-    if (alertView.cancelButtonIndex == -1) {
-        ++buttonIndex;
-    }
-
     if (buttonIndex == alertView.cancelButtonIndex)
     {        
         //ignore this version
@@ -985,7 +981,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             [self.delegate iRateUserDidDeclineToRateApp];
         }
     }
-    else if (buttonIndex == 2)
+    else if (([self.cancelButtonLabel length] && buttonIndex == 2) ||
+             ([self.cancelButtonLabel length] == 0 && buttonIndex == 1))
     {        
         //remind later
         self.lastReminded = [NSDate date];

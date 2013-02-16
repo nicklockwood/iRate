@@ -166,7 +166,7 @@ The first date on which the user launched the current version of the app. This i
 
     @property (nonatomic, strong) NSDate *lastReminded;
 
-The date on which the user last requested to be reminded of an update.
+The date on which the user last requested to be reminded to rate the app later.
 
     @property (nonatomic, assign) NSUInteger usesCount;
 
@@ -242,7 +242,7 @@ This method is called if iRate detects that the application has been updated sin
 
     - (BOOL)iRateShouldShouldPromptForRating;
 
-This method is called immediately before the rating prompt is displayed to the user. You can use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.
+This method is called immediately before the rating prompt is displayed to the user. You can use this method to implement custom prompt logic. You can also use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.
 
     - (void)iRateUserDidAttemptToRateApp;
     
