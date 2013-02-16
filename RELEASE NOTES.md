@@ -2,6 +2,7 @@ Version 1.7.3
 
 - Added Slovak, Czech and Austrian translations
 - Fixed some bugs in Cancel/Remind button disabling logic
+- Added podspec file
 
 Version 1.7.2
 
