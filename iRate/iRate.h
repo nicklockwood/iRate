@@ -105,6 +105,7 @@ iRateErrorCode;
 //usage settings - these have sensible defaults
 @property (nonatomic, assign) NSUInteger usesUntilPrompt;
 @property (nonatomic, assign) NSUInteger eventsUntilPrompt;
+@property (nonatomic, assign) NSUInteger usesUntilRemind;
 @property (nonatomic, assign) float daysUntilPrompt;
 @property (nonatomic, assign) float usesPerWeekForPrompt;
 @property (nonatomic, assign) float remindPeriod;
