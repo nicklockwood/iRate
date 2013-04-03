@@ -7,7 +7,7 @@ iRate is a library to help you promote your iPhone and Mac App Store apps by pro
 Supported OS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 6.0 / Mac OS 10.8 (Xcode 4.5, Apple LLVM compiler 4.1)
+* Supported build target - iOS 6.1 / Mac OS 10.8 (Xcode 4.6, Apple LLVM compiler 4.2)
 * Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
@@ -243,6 +243,10 @@ This method is called if iRate detects that the application has been updated sin
     - (BOOL)iRateShouldShouldPromptForRating;
 
 This method is called immediately before the rating prompt is displayed to the user. You can use this method to implement custom prompt logic. You can also use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.
+
+    - (void)iRateDidPromptForRating;
+
+This method is called immediately before the rating prompt is displayed. This is useful if you use analytics to track what percentage of users see the prompt and then go to the app store. This can help you fine tune the circumstances around when/how you show the prompt.
 
     - (void)iRateUserDidAttemptToRateApp;
     

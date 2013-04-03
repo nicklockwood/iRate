@@ -1,3 +1,9 @@
+Version 1.7.4
+
+- Added Arabic translation
+- Improved French translation
+- Added delegate method for tracking when prompt gets shown
+
 Version 1.7.3
 
 - Added Slovak, Czech and Austrian translations

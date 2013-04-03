@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.7.3
+//  Version 1.7.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -743,8 +743,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #endif
 
-        // Let delegate know that you prompted for a rating
-        if ([self.delegate respondsToSelector:@selector(iRateDidPromptForRating)]) {
+        //inform about prompt
+        if ([self.delegate respondsToSelector:@selector(iRateDidPromptForRating)])
+        {
             [self.delegate iRateDidPromptForRating];
         }
     }

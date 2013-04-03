@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.7.3
+//  Version 1.7.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -74,15 +74,10 @@ iRateErrorCode;
 @protocol iRateDelegate <NSObject>
 @optional
 
-/**
- * Useful if you use event tracking to track what percentage of users see the prompt and then go
- * to the app store. This can help you fine tune the circumstances around when/how you show the prompt.
- */
-- (void)iRateDidPromptForRating;
-
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
 - (void)iRateDidDetectAppUpdate;
 - (BOOL)iRateShouldPromptForRating;
+- (void)iRateDidPromptForRating;
 - (void)iRateUserDidAttemptToRateApp;
 - (void)iRateUserDidDeclineToRateApp;
 - (void)iRateUserDidRequestReminderToRateApp;
