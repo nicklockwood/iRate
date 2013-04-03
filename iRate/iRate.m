@@ -716,7 +716,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         self.visibleAlert = alert;
         [self.visibleAlert show];
-
 #else
 
         //only show when main window is available
@@ -743,7 +742,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                         contextInfo:nil];
 
 #endif
-        
+
+        // Let delegate know that you prompted for a rating
+        if ([self.delegate respondsToSelector:@selector(iRateDidPromptForRating)]) {
+            [self.delegate iRateDidPromptForRating];
+        }
     }
 }
 

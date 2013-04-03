@@ -74,6 +74,12 @@ iRateErrorCode;
 @protocol iRateDelegate <NSObject>
 @optional
 
+/**
+ * Useful if you use event tracking to track what percentage of users see the prompt and then go
+ * to the app store. This can help you fine tune the circumstances around when/how you show the prompt.
+ */
+- (void)iRateDidPromptForRating;
+
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
 - (void)iRateDidDetectAppUpdate;
 - (BOOL)iRateShouldPromptForRating;
