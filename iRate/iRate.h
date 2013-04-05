@@ -148,4 +148,10 @@ iRateErrorCode;
 - (void)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;
 
+//call there methods if you need default iRate's behavior when user chooses
+//something from your custom dialog
+- (void)userDoesNotWantToRate;
+- (void)userWantsToRate;
+- (void)userAsksToRemind;
+
 @end

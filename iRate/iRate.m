@@ -975,44 +975,17 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == alertView.cancelButtonIndex)
-    {        
-        //ignore this version
-        self.declinedThisVersion = YES;
-        
-        //log event
-        if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
-        {
-            [self.delegate iRateUserDidDeclineToRateApp];
-        }
+    {
+        [self userDoesNotWantToRate];
     }
     else if (([self.cancelButtonLabel length] && buttonIndex == 2) ||
              ([self.cancelButtonLabel length] == 0 && buttonIndex == 1))
-    {        
-        //remind later
-        self.lastReminded = [NSDate date];
-        
-        //log event
-        if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
-        {
-            [self.delegate iRateUserDidRequestReminderToRateApp];
-        }
+    {
+        [self userAsksToRemind];
     }
     else
     {
-        //mark as rated
-        self.ratedThisVersion = YES;
-        
-        //log event
-        if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
-        {
-            [self.delegate iRateUserDidAttemptToRateApp];
-        }
-        
-        if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore)] || [_delegate iRateShouldOpenAppStore])
-        {
-            //go to ratings page
-            [self openRatingsPageInAppStore];
-        }
+        [self userWantsToRate];
     }
     
     //release alert
@@ -1060,45 +1033,17 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         case NSAlertAlternateReturn:
         {
-            //ignore this version
-            self.declinedThisVersion = YES;
-            
-            //log event
-            if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
-            {
-                [self.delegate iRateUserDidDeclineToRateApp];
-            }
-
+            [self userDoesNotWantToRate];
             break;
         }
         case NSAlertDefaultReturn:
         {
-            //mark as rated
-            self.ratedThisVersion = YES;
-            
-            //log event
-            if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
-            {
-                [self.delegate iRateUserDidAttemptToRateApp];
-            }
-            
-            if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore)] || [_delegate iRateShouldOpenAppStore])
-            {
-                //launch mac app store
-                [self openRatingsPageInAppStore];
-            }
+            [self userWantsToRate];
             break;
         }
         default:
         {
-            //remind later
-            self.lastReminded = [NSDate date];
-            
-            //log event
-            if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
-            {
-                [self.delegate iRateUserDidRequestReminderToRateApp];
-            }
+            [self userAsksToRemind];
         }
     }
     
@@ -1115,6 +1060,50 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         [self promptIfNetworkAvailable];
     }
+}
+
+#pragma mark - User's actions
+
+- (void)userDoesNotWantToRate
+{
+  //ignore this version
+  self.declinedThisVersion = YES;
+
+  //log event
+  if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
+  {
+    [self.delegate iRateUserDidDeclineToRateApp];
+  }
+}
+
+- (void)userWantsToRate
+{
+  //mark as rated
+  self.ratedThisVersion = YES;
+
+  //log event
+  if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
+  {
+    [self.delegate iRateUserDidAttemptToRateApp];
+  }
+
+  if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore)] || [_delegate iRateShouldOpenAppStore])
+  {
+    //go to ratings page
+    [self openRatingsPageInAppStore];
+  }
+}
+
+- (void)userAsksToRemind
+{
+  //remind later
+  self.lastReminded = [NSDate date];
+
+  //log event
+  if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
+  {
+    [self.delegate iRateUserDidRequestReminderToRateApp];
+  }
 }
 
 @end
