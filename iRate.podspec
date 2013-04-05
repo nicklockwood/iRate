@@ -7,6 +7,7 @@ Pod::Spec.new do |s|
   s.authors  = 'Nick Lockwood'
   s.source   = { :git => 'https://github.com/nicklockwood/iRate.git', :tag => '1.7.4' }
   s.source_files = 'iRate'
+  s.framework    = 'StoreKit'
   s.requires_arc = true
   s.ios.deployment_target = '4.3'
   s.osx.deployment_target = '10.6'
