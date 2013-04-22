@@ -72,6 +72,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @property (nonatomic, assign) int previousOrientation;
 @property (nonatomic, assign) BOOL currentlyChecking;
 
+- (UIViewController *)rootViewControllerForPresentation;
+
 @end
 
 
@@ -800,6 +802,36 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
+- (UIViewController *)rootViewControllerForPresentation
+{
+    UIViewController *rootViewController = nil;
+    
+    if ([self.delegate respondsToSelector:@selector(iRateViewControllerForPresentation)])
+    {
+        rootViewController = [self.delegate iRateViewControllerForPresentation];
+    }
+    else
+    {
+        id appDelegate = [[UIApplication sharedApplication] delegate];
+        if ([appDelegate respondsToSelector:@selector(viewController)])
+        {
+            rootViewController = [appDelegate valueForKey:@"viewController"];
+        }
+        if (!rootViewController && [appDelegate respondsToSelector:@selector(window)])
+        {
+            UIWindow *window = [appDelegate valueForKey:@"window"];
+            rootViewController = window.rootViewController;
+        }
+        if (!rootViewController)
+        {
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            rootViewController = window.rootViewController;
+        }
+    }
+    
+    return rootViewController;
+}
+
 - (void)openRatingsPageInAppStore
 {
     if (_displayAppUsingStorekitIfAvailable && [SKStoreProductViewController class])
@@ -837,23 +869,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             }
         }];
         
-        //get root view controller
-        UIViewController *rootViewController = nil;
-        id appDelegate = [[UIApplication sharedApplication] delegate];
-        if ([appDelegate respondsToSelector:@selector(viewController)])
-        {
-            rootViewController = [appDelegate valueForKey:@"viewController"];
-        }
-        if (!rootViewController && [appDelegate respondsToSelector:@selector(window)])
-        {
-            UIWindow *window = [appDelegate valueForKey:@"window"];
-            rootViewController = window.rootViewController;
-        }
-        if (!rootViewController)
-        {
-            UIWindow *window = [UIApplication sharedApplication].keyWindow;
-            rootViewController = window.rootViewController;
-        }
+        UIViewController *rootViewController;
+        rootViewController = [self rootViewControllerForPresentation];
+        
         if (!rootViewController)
         {
             if (self.verboseLogging)
