@@ -1,3 +1,9 @@
+Version 1.7.5
+
+- Improved Arabic translation
+- Improved podspec file
+- Removed .DS_Store file
+
 Version 1.7.4
 
 - Added Arabic translation
