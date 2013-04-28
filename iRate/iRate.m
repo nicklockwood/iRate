@@ -296,7 +296,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (NSUInteger)eventCount;
+- (NSUInteger)eventCount
 {
     return [[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
 }
