@@ -781,7 +781,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
-- (void)applicationWillEnterForeground:(NSNotification *)notification
+- (void)applicationWillEnterForeground:(NSNotification __unused *)notification
 {
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
