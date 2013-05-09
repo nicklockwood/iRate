@@ -309,7 +309,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (float)usesPerWeek
 {
-    return (float)self.usesCount / ([[NSDate date] timeIntervalSinceDate:self.firstUsed] / SECONDS_IN_A_WEEK);
+    return (float)self.usesCount / (float)([[NSDate date] timeIntervalSinceDate:self.firstUsed] / SECONDS_IN_A_WEEK);
 }
 
 - (BOOL)declinedThisVersion
@@ -325,7 +325,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (BOOL)declinedAnyVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey] length];
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey] length] > 0;
 }
 
 - (BOOL)ratedThisVersion
@@ -341,7 +341,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (BOOL)ratedAnyVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateRatedVersionKey] length];
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateRatedVersionKey] length] > 0;
 }
 
 - (void)dealloc
@@ -515,7 +515,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                         uint16_t x = (uint16_t)c;
                         uint16_t u = (c >> 16) & ((1 << 5) - 1);
                         uint16_t w = (uint16_t)u - 1;
-                        unichar high = 0xd800 | (w << 6) | x >> 10;
+                        unichar high = 0xd800 | (unichar) (w << 6) | x >> 10;
                         unichar low = (uint16_t)(0xdc00 | (x & ((1 << 10) - 1)));
                         
                         value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C%C", high, low]];
@@ -911,7 +911,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 if ([label.text isEqualToString:alertView.title])
                 {
                     [label sizeToFit];
-                    offset = label.frame.size.height - fmax(0.0f, 45.f - label.frame.size.height);
+                    offset = label.frame.size.height - fmaxf(0.0f, 45.f - label.frame.size.height);
                     if (label.frame.size.height > frame.size.height)
                     {
                         offset = messageOffset = label.frame.size.height - frame.size.height;
