@@ -85,6 +85,11 @@ iRateErrorCode;
 - (void)iRateDidPresentStoreKitModal;
 - (void)iRateDidDismissStoreKitModal;
 
+/**
+ By default, iRate grabs rootViewController off your App Delegate. Instead you can return any arbitrary viewController here.
+ */
+- (UIViewController *)iRateViewControllerForPresentation;
+
 @end
 
 
