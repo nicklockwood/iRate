@@ -1,3 +1,9 @@
+Version 1.8 beta
+
+- No longer requires StoreKit by default (see README for details)
+- Improved Czech translation
+- Urdu support
+
 Version 1.7.5
 
 - Improved Arabic translation

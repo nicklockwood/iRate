@@ -31,7 +31,7 @@ iRate uses threading internally to avoid blocking the UI, but none of the iRate 
 Installation
 --------------
 
-To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text. On iOS you will also need to add the StoreKit framework.
+To install iRate into your app, drag the iRate.h, .m and .bundle files into your project. You can omit the .bundle if you are not interested in localised text. If you are using the IRATE_USE_STOREKIT option (iOS only), you will also need to add the StoreKit framework.
 
 iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
 
@@ -80,7 +80,7 @@ This is the number of days the user must have had the app installed before they 
 
     @property (nonatomic, assign) NSUInteger usesUntilPrompt;
 
-This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoids the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again, only to be immediately prompted to rate it. The minimum use count ensures that only frequent users are prompted. The prompt will appear only after the specified number of days AND uses has been reached. This defaults to 10 events. This defaults to 10 uses.
+This is the minimum number of times the user must launch the app before they are prompted to rate it. This avoids the scenario where a user runs the app once, doesn't look at it for weeks and then launches it again, only to be immediately prompted to rate it. The minimum use count ensures that only frequent users are prompted. The prompt will appear only after the specified number of days AND uses has been reached. This defaults to 10 uses.
 
     @property (nonatomic, assign) NSUInteger eventsUntilPrompt;
 
@@ -133,10 +133,6 @@ Set this to NO to enabled the rating prompt to be displayed even if the user is 
     @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
 
 This setting is applicable to Mac OS only. By default, on Mac OS the iRate alert is displayed as sheet on the main window. Some applications do not have a main window, so this approach doesn't work. For such applications, set this property to NO to allow the iRate alert to be displayed as a regular modal window.
-
-    @property (nonatomic, assign) BOOL displayAppUsingStorekitIfAvailable;
-
-By default, if iRate is running on iOS 6 or above then when the user agrees to rate the app, the ratings page will be displayed directly within the app instead of linking to the App Store app. If you don't want that, set this property to NO.
 
     @property (nonatomic, assign) BOOL promptAtLaunch;
 
@@ -271,6 +267,20 @@ This method is called just after iRate presents the StoreKit in-app product view
     - (void)iRateDidDismissStoreKitModal;
 
 This method is called when the user dismisses the StoreKit in-app product view controller. This is useful if you want to resume any functionality that you paused when the modal was displayed.
+
+
+StoreKit support
+------------------
+
+By default, iRate will open the ratings page by launching the App Store app. Optionally, on iOS 6 or above you can set iRate to display the app page without leaving the app by using the StoreKit framework. To enable this feature, set the following macro value in your prefix.pch file:
+
+    #define IRATE_USE_STOREKIT 1
+    
+Or, alternatively, you can add `IRATE_USE_STOREKIT=1` as a preprocessor macro. Note the following caveats to using Storekit:
+
+1. iRate cannot open the ratings page directly in StoreKit, it can only open the app details page. The user will have to tap the ratings tab before rating.
+
+2. There have been some isolated cases of Apple rejecting apps that link against the StoreKit framework but do not offer in-app purchases. If your app does not already use StoreKit, enabling this feature of iRate is at your own risk.
 
 
 Localisation

@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.7.4
+//  Version 1.8 beta
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -46,6 +46,11 @@ __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_8)
 #import <UIKit/UIKit.h>
 #else
 #import <Cocoa/Cocoa.h>
+#endif
+
+
+#if IRATE_USE_STOREKIT
+#import <StoreKit/StoreKit.h>
 #endif
 
 
@@ -123,7 +128,6 @@ iRateErrorCode;
 @property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
-@property (nonatomic, assign) BOOL displayAppUsingStorekitIfAvailable;
 @property (nonatomic, assign) BOOL promptAtLaunch;
 @property (nonatomic, assign) BOOL verboseLogging;
 @property (nonatomic, assign) BOOL previewMode;

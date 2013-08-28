@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.7.4
+//  Version 1.8 beta
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -32,7 +32,6 @@
 
 
 #import "iRate.h"
-#import <StoreKit/StoreKit.h>
 
 
 #import <Availability.h>
@@ -101,29 +100,18 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (bundle == nil)
     {
         NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRate" ofType:@"bundle"];
-        bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
         if (self.useAllAvailableLanguages)
         {
-            // give Locale preference
-            NSString *localeIdentifier = [[NSLocale currentLocale] localeIdentifier];
-            if ([[bundle localizations] containsObject:localeIdentifier])
+            for (NSString *language in [@[[[NSLocale currentLocale] localeIdentifier]] arrayByAddingObjectsFromArray:[NSLocale preferredLanguages]])
             {
-                bundlePath = [bundle pathForResource:localeIdentifier ofType:@"lproj"];
-                bundle = [NSBundle bundleWithPath:bundlePath];
-            }
-            else {
-                //manually select the desired lproj folder
-                for (NSString *language in [NSLocale preferredLanguages])
+                if ([[bundle localizations] containsObject:language])
                 {
-                    if ([[bundle localizations] containsObject:language])
-                    {
-                        bundlePath = [bundle pathForResource:language ofType:@"lproj"];
-                        bundle = [NSBundle bundleWithPath:bundlePath];
-                        break;
-                    }
+                    bundlePath = [bundle pathForResource:language ofType:@"lproj"];
+                    break;
                 }
             }
         }
+        bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
     }
     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
@@ -178,7 +166,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.disableAlertViewResizing = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
-        self.displayAppUsingStorekitIfAvailable = YES;
         self.promptAgainForEachNewVersion = YES;
         self.promptAtLaunch = YES;
         self.usesUntilPrompt = 10;
@@ -811,7 +798,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)openRatingsPageInAppStore
 {
-    if (_displayAppUsingStorekitIfAvailable && [SKStoreProductViewController class])
+    
+#if IRATE_USE_STOREKIT
+    
+    if ([SKStoreProductViewController class])
     {
         if (self.verboseLogging)
         {
@@ -886,6 +876,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             return;
         }
     }
+    
+#endif
 
     if (self.verboseLogging)
     {
@@ -895,7 +887,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [[UIApplication sharedApplication] openURL:self.ratingsURL];
 }
 
-- (void)productViewControllerDidFinish:(SKStoreProductViewController *)controller
+- (void)productViewControllerDidFinish:(UIViewController *)controller
 {
     [controller.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     if ([self.delegate respondsToSelector:@selector(iRateDidDismissStoreKitModal)])
