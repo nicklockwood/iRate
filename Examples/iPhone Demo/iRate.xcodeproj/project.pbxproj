@@ -266,6 +266,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -282,6 +283,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};

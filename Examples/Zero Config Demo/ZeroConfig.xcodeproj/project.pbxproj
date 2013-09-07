@@ -220,6 +220,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "ZeroConfig-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = ZeroConfig;
 			};
 			name = Debug;
@@ -234,6 +235,7 @@
 				GCC_PREFIX_HEADER = ZeroConfig_Prefix.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "ZeroConfig-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = ZeroConfig;
 				VALIDATE_PRODUCT = YES;
 			};

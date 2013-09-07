@@ -1,3 +1,32 @@
+Version 1.8 beta
+
+- No longer requires StoreKit by default (see README for details)
+- Improved Czech translation
+- Urdu support
+
+Version 1.7.5
+
+- Improved Arabic translation
+- Improved podspec file
+- Removed .DS_Store file
+
+Version 1.7.4
+
+- Added Arabic translation
+- Improved French translation
+- Added delegate method for tracking when prompt gets shown
+
+Version 1.7.3
+
+- Added Slovak, Czech and Austrian translations
+- Fixed some bugs in Cancel/Remind button disabling logic
+- Added podspec file
+
+Version 1.7.2
+
+- Added dutch translation
+- iRate now displays the StoreKit product view controller correctly even if a modally presented view controller has been displayed
+
 Version 1.7.1
 
 - Fixed deprecation warning when targeting iOS6 as the base target
