@@ -55,8 +55,8 @@ static NSString *const iRateEventCountKey = @"iRateEventCount";
 static NSString *const iRateMacAppStoreBundleID = @"com.apple.appstore";
 static NSString *const iRateAppLookupURLFormat = @"http://itunes.apple.com/%@/lookup";
 
-static NSString *const iRateiOSAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%u";
-static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%u";
+static NSString *const iRateiOSAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%u&at=%@&ct=%@";
+static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.com/app/id%u?at=%@&ct=%@";
 
 
 #define SECONDS_IN_A_DAY 86400.0
@@ -247,13 +247,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSLog(@"iRate could not find the App Store ID for this application. If the application is not intended for App Store release then you must specify a custom ratingsURL.");
     }
     
+    NSString *affiliateToken = self.affiliateToken ? : @"";
+    NSString *campaignName = self.campaignName ? [self.campaignName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] : @"";
+    
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     
-    return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, (unsigned int)self.appStoreID]];
+    return [NSURL URLWithString:[NSString stringWithFormat:iRateiOSAppStoreURLFormat, (unsigned int)self.appStoreID, affiliateToken, campaignName]];
     
 #else
     
-    return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, (unsigned int)self.appStoreID]];
+    return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, (unsigned int)self.appStoreID, affiliateToken, campaignName]];
     
 #endif
     

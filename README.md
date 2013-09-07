@@ -146,6 +146,18 @@ This option will cause iRate to send detailed logs to the console about the prom
 
 If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use or whether it's the latest version. Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).
 
+Affiliate linking
+--------------
+
+You can use the following optional properties to add [affiliate linking](http://www.apple.com/itunes/affiliates/). Currently, only [PHG](http://www.apple.com/itunes/affiliates/resources/documentation/basic_affiliate_link_guidelines_for_the_phg_network.html) is supported.
+
+    @property (nonatomic, strong) NSString *affiliateToken;
+
+Your affiliate token (`at` parameter). 
+
+    @property (nonatomic, strong) NSURL *campaignName;
+
+The campaign name (`ct` parameter).
 
 Advanced properties
 --------------
