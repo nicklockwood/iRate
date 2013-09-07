@@ -132,6 +132,10 @@ iRateErrorCode;
 @property (nonatomic, assign) BOOL verboseLogging;
 @property (nonatomic, assign) BOOL previewMode;
 
+//affiliate linking - see: http://www.apple.com/itunes/affiliates/resources/documentation/basic_affiliate_link_guidelines_for_the_phg_network.html
+@property (nonatomic, copy) NSString *affiliateToken;
+@property (nonatomic, copy) NSString *campaignName;
+
 //advanced properties for implementing custom behaviour
 @property (nonatomic, strong) NSURL *ratingsURL;
 @property (nonatomic, strong) NSDate *firstUsed;
