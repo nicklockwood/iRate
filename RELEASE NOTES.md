@@ -1,8 +1,10 @@
 Version 1.8 beta
 
+- App store link works on iOS 7 (had to link to app home page instead of directly to reviews page for now - hopefully an alternative direct link can be found)
 - No longer requires StoreKit by default (see README for details)
 - Improved Czech translation
 - Urdu support
+- Now complies with the -Wextra warning level
 
 Version 1.7.5
 

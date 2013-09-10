@@ -10,7 +10,7 @@
 
 @implementation iRateViewController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+- (BOOL)shouldAutorotateToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
 }
