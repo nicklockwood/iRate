@@ -78,9 +78,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 @implementation iRate
 
-#pragma mark -
-#pragma mark Lifecycle methods
-
 + (void)load
 {
     [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
@@ -124,7 +121,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if ((self = [super init]))
     {
         
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if TARGET_OS_IPHONE
         
         //register for iphone application events
         if (&UIApplicationWillEnterForegroundNotification)
@@ -165,7 +162,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //default settings
         self.useAllAvailableLanguages = YES;
-        self.disableAlertViewResizing = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
         self.promptAgainForEachNewVersion = YES;
@@ -178,7 +174,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.verboseLogging = NO;
         self.previewMode = NO;
         
-#ifdef DEBUG
+#if DEBUG
         
         //enable verbose logging in debug mode
         self.verboseLogging = YES;
@@ -196,13 +192,13 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (_delegate == nil)
     {
         
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-        
-        _delegate = (id<iRateDelegate>)[[UIApplication sharedApplication] delegate];
+#if TARGET_OS_IPHONE
+#define APP_CLASS UIApplication      
 #else
-        _delegate = (id<iRateDelegate>)[[NSApplication sharedApplication] delegate];
+#define APP_CLASS NSApplication  
 #endif
         
+        _delegate = (id<iRateDelegate>)[[APP_CLASS sharedApplication] delegate];
     }
     return _delegate;
 }
@@ -249,7 +245,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSLog(@"iRate could not find the App Store ID for this application. If the application is not intended for App Store release then you must specify a custom ratingsURL.");
     }
     
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if TARGET_OS_IPHONE
     
     return [NSURL URLWithString:[NSString stringWithFormat:([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)? iRateiOS7AppStoreURLFormat: iRateiOSAppStoreURLFormat, @(self.appStoreID)]];
     
@@ -346,9 +342,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-#pragma mark -
-#pragma mark Methods
 
 - (void)incrementUseCount
 {
@@ -700,7 +693,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (!self.visibleAlert)
     {
     
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if TARGET_OS_IPHONE
     
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
                                                         message:self.message
@@ -777,7 +770,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
 }
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+#if TARGET_OS_IPHONE
 
 - (void)applicationWillEnterForeground:(NSNotification __unused *)notification
 {
@@ -790,13 +783,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
     }
 }
-
-#endif
-
-#pragma mark -
-#pragma mark UIAlertView methods
-
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 - (void)openRatingsPageInAppStore
 {
@@ -886,7 +872,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)resizeAlertView:(UIAlertView *)alertView
 {
-    if (!self.disableAlertViewResizing && [[UIDevice currentDevice].systemVersion floatValue] < 7.0f)
+    if ([[UIDevice currentDevice].systemVersion floatValue] < 7.0f)
     {
         NSInteger imageCount = 0;
         CGFloat offset = 0.0f;

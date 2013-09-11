@@ -118,10 +118,6 @@ The button label for the button the user presses if they don't want to rate the 
 
 By default, iRate will use all available languages in the iRate.bundle, even if used in an app that does not support localisation. If you would prefer to restrict iRate to only use the same set of languages that your application already supports, set this property to NO. (Defaults to YES).
 
-    @property (nonatomic, assign) BOOL disableAlertViewResizing;
-
-On iOS, iRate includes some logic to resize the alert view to ensure that your rating message is visible in both portrait and landscape mode, and that it doesn't scroll or become truncated. The code to do this is a rather nasty hack, so if your alert text is very short and/or your app only needs to function in portrait mode on iPhone, you may wish to set this property to YES, which may help make your app more robust against future iOS updates. Try the *Resizing Disabled* example for a demonstration of the effect.
-
     @property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
     
 Because iTunes ratings are version-specific, you ideally want users to rate each new version of your app. However, it's debatable whether many users will actually do this, and if you update frequently this may get annoying. Set `promptAgainForEachNewVersion` to `NO`, and iRate won't prompt the user again each time they install an update if they've already rated the app. It will still prompt them each new version if they have *not* rated the app, but you can override this using the `iRateShouldShouldPromptForRating` delegate method if you wish.
