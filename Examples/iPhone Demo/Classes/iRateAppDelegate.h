@@ -8,12 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class iRateViewController;
-
 @interface iRateAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
-@property (nonatomic, strong) IBOutlet iRateViewController *viewController;
 
 @end
 
