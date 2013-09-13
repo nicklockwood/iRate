@@ -5,6 +5,7 @@ Version 1.8 beta
 - Fixed Czech and Austrian German locales for iOS 7
 - Removed disableAlertViewResizing property (no longer needed)
 - Improved Czech translation
+- Improved French translation
 - Urdu support
 - Now complies with the -Wextra warning level
 

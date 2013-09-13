@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.8 beta 3
+//  Version 1.8 beta 4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -148,7 +148,7 @@ iRateErrorCode;
 - (BOOL)shouldPromptForRating;
 - (void)promptForRating;
 - (void)promptIfNetworkAvailable;
-- (void)openRatingsPageInAppStore;
+- (BOOL)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;
 
 @end

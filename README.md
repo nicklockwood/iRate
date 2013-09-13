@@ -214,9 +214,9 @@ This method will immediately trigger the rating prompt without checking that the
 
 This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the appStoreID or iRate cannot function.
 
-    - (void)openRatingsPageInAppStore;
+    - (BOOL)openRatingsPageInAppStore;
 
-This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, or directly within the app, depending on which platform and OS version is running. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods. You should use this method to open the ratings page instead of the ratingsURL property, as the process for launching the app store is more complex than merely opening the URL in many cases. Note that this method depends on the `appStoreID` which is only retrieved after polling the iTunes server, so if you intend to call this method directly, you will need to set the `appStoreID` property yourself beforehand.
+This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, or directly within the app, depending on which platform and OS version is running. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call any delegate methods. You should use this method to open the ratings page instead of the ratingsURL property, as the process for launching the app store is more complex than merely opening the URL in many cases. Note that this method depends on the `appStoreID` which is only retrieved after polling the iTunes server, and will return NO if that property is not yet set. If you intend to call this method without first doing an update check, you will need to set the `appStoreID` property yourself beforehand.
 
 
 Delegate methods
