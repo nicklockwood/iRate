@@ -8,6 +8,7 @@ Version 1.8 beta
 - Improved Czech translation
 - Improved French translation
 - Urdu support
+- Fixed bug in alertview resizing for iOS 6 and below
 - Now complies with the -Wextra warning level
 
 Version 1.7.5

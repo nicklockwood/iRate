@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.8 beta 5
+//  Version 1.8 beta 6
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -939,13 +939,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 UILabel *label = (UILabel *)view;
                 if ([label.text isEqualToString:alertView.title])
                 {
+                    CGFloat height = label.frame.size.height;
                     [label sizeToFit];
-                    offset = label.frame.size.height - fmax(0.0f, 45.f - label.frame.size.height);
-                    if (label.frame.size.height > frame.size.height)
-                    {
-                        offset = messageOffset = label.frame.size.height - frame.size.height;
-                        frame.size.height = label.frame.size.height;
-                    }
+                    offset = messageOffset = label.frame.size.height - height;
+                    frame.size.height = label.frame.size.height;
                 }
                 else if ([label.text isEqualToString:alertView.message])
                 {
