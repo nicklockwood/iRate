@@ -1,6 +1,7 @@
 Version 1.8 beta
 
 - App store link works on iOS 7 (had to link to app home page instead of directly to reviews page for now - hopefully an alternative direct link can be found)
+- Now uses NSJSONSerializer if available (iOS 4.x will still use the old parser)
 - No longer requires StoreKit by default (see README for details)
 - Fixed Czech and Austrian German locales for iOS 7
 - Removed disableAlertViewResizing property (no longer needed)
