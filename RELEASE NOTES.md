@@ -1,4 +1,4 @@
-Version 1.8 beta
+Version 1.8
 
 - App store link works on iOS 7 (had to link to app home page instead of directly to reviews page for now - hopefully an alternative direct link can be found)
 - Now uses NSJSONSerializer if available (iOS 4.x will still use the old parser)

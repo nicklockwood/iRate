@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.8 beta 6
+//  Version 1.8
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
