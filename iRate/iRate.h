@@ -146,6 +146,7 @@ iRateErrorCode;
 //manually control behaviour
 - (BOOL)shouldPromptForRating;
 - (void)promptForRating;
+- (void)promptIfNeeded;
 - (void)promptIfNetworkAvailable;
 - (BOOL)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;

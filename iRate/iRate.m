@@ -724,6 +724,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
 }
 
+- (void)promptIfNeeded
+{
+    if ([self shouldPromptForRating])
+    {
+        [self promptIfNetworkAvailable];
+    }
+}
+
 - (void)promptIfNetworkAvailable
 {
     if (!self.checkingForPrompt)
@@ -809,9 +817,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
     
     [self incrementUseCount];
-    if (self.promptAtLaunch && [self shouldPromptForRating])
+    if (self.promptAtLaunch)
     {
-        [self promptIfNetworkAvailable];
+        [self promptIfNeeded];
     }
 }
 
@@ -822,9 +830,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
         [self incrementUseCount];
-        if (self.promptAtLaunch && [self shouldPromptForRating])
+        if (self.promptAtLaunch)
         {
-            [self promptIfNetworkAvailable];
+            [self promptIfNeeded];
         }
     }
 }
@@ -1147,9 +1155,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (void)logEvent:(BOOL)deferPrompt
 {
     [self incrementEventCount];
-    if (!deferPrompt && [self shouldPromptForRating])
+    if (!deferPrompt)
     {
-        [self promptIfNetworkAvailable];
+        [self promptIfNeeded];
     }
 }
 
