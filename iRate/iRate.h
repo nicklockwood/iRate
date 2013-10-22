@@ -74,20 +74,21 @@ typedef enum
 }
 iRateErrorCode;
 
+@class iRate;
 
 @protocol iRateDelegate <NSObject>
 @optional
 
-- (void)iRateCouldNotConnectToAppStore:(NSError *)error;
-- (void)iRateDidDetectAppUpdate;
-- (BOOL)iRateShouldPromptForRating;
-- (void)iRateDidPromptForRating;
-- (void)iRateUserDidAttemptToRateApp;
-- (void)iRateUserDidDeclineToRateApp;
-- (void)iRateUserDidRequestReminderToRateApp;
-- (BOOL)iRateShouldOpenAppStore;
-- (void)iRateDidPresentStoreKitModal;
-- (void)iRateDidDismissStoreKitModal;
+- (void)iRateCouldNotConnectToAppStore:(iRate*)sender withError:(NSError *)error;
+- (void)iRateDidDetectAppUpdate:(iRate*)sender;
+- (BOOL)iRateShouldPromptForRating:(iRate*)sender;
+- (void)iRateDidPromptForRating:(iRate*)sender;
+- (void)iRateUserDidAttemptToRateApp:(iRate*)sender;
+- (void)iRateUserDidDeclineToRateApp:(iRate*)sender;
+- (void)iRateUserDidRequestReminderToRateApp:(iRate*)sender;
+- (BOOL)iRateShouldOpenAppStore:(id)sender;
+- (void)iRateDidPresentStoreKitModal:(iRate*)sender;
+- (void)iRateDidDismissStoreKitModal:(iRate*)sender;
 
 @end
 

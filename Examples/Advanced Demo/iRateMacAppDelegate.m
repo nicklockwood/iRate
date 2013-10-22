@@ -50,16 +50,16 @@
 #pragma mark -
 #pragma mark iVersionDelegate methods
 
-- (void)iRateCouldNotConnectToAppStore:(NSError *)error
+- (void)iRateCouldNotConnectToAppStore:(iRate*)sender withError :(NSError *)error
 {
 	[label setStringValue:[error localizedDescription]];
 	[progressIndicator stopAnimation:self];
 }
 
-- (BOOL)iRateShouldPromptForRating
+- (BOOL)iRateShouldPromptForRating:(iRate*)sender
 {
 	//don't show prompt, just open app store
-	[[iRate sharedInstance] openRatingsPageInAppStore];
+	[sender openRatingsPageInAppStore];
 	[label setStringValue:@"Connected."];
 	[progressIndicator stopAnimation:self];
 	return NO;

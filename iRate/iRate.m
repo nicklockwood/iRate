@@ -552,9 +552,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.checkingForPrompt = NO;
         
         //confirm with delegate
-        if ([self.delegate respondsToSelector:@selector(iRateShouldPromptForRating)])
+        if ([self.delegate respondsToSelector:@selector(iRateShouldPromptForRating:)])
         {
-            if (![self.delegate iRateShouldPromptForRating])
+            if (![self.delegate iRateShouldPromptForRating:self])
             {
                 if (self.verboseLogging)
                 {
@@ -585,9 +585,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
     
     //could not connect
-    if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
+    if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:withError:)])
     {
-        [self.delegate iRateCouldNotConnectToAppStore:error];
+        [self.delegate iRateCouldNotConnectToAppStore:self withError:error];
     }
 }
 
@@ -780,9 +780,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 
         //inform about prompt
-        if ([self.delegate respondsToSelector:@selector(iRateDidPromptForRating)])
+        if ([self.delegate respondsToSelector:@selector(iRateDidPromptForRating:)])
         {
-            [self.delegate iRateDidPromptForRating];
+            [self.delegate iRateDidPromptForRating:self];
         }
     }
 }
@@ -802,9 +802,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [defaults synchronize];
 
         //inform about app update
-        if ([self.delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)])
+        if ([self.delegate respondsToSelector:@selector(iRateDidDetectAppUpdate:)])
         {
-            [self.delegate iRateDidDetectAppUpdate];
+            [self.delegate iRateDidDetectAppUpdate:self];
         }        
     }
     
@@ -870,9 +870,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 }
                 
                 self.ratedThisVersion = NO;
-                if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
+                if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore: withError:)])
                 {
-                    [self.delegate iRateCouldNotConnectToAppStore:error];
+                    [self.delegate iRateCouldNotConnectToAppStore:self withError:error];
                 }
             }
         }];
@@ -896,9 +896,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             
             //present product view controller
             [rootViewController presentViewController:productController animated:YES completion:nil];
-            if ([self.delegate respondsToSelector:@selector(iRateDidPresentStoreKitModal)])
+            if ([self.delegate respondsToSelector:@selector(iRateDidPresentStoreKitModal:)])
             {
-                [self.delegate iRateDidPresentStoreKitModal];
+                [self.delegate iRateDidPresentStoreKitModal:self];
             }
             return YES;
         }
@@ -918,9 +918,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (void)productViewControllerDidFinish:(UIViewController *)controller
 {
     [controller.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-    if ([self.delegate respondsToSelector:@selector(iRateDidDismissStoreKitModal)])
+    if ([self.delegate respondsToSelector:@selector(iRateDidDismissStoreKitModal:)])
     {
-        [self.delegate iRateDidDismissStoreKitModal];
+        [self.delegate iRateDidDismissStoreKitModal:self];
     }
 }
 
@@ -1006,9 +1006,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.declinedThisVersion = YES;
         
         //log event
-        if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
+        if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp:)])
         {
-            [self.delegate iRateUserDidDeclineToRateApp];
+            [self.delegate iRateUserDidDeclineToRateApp:self];
         }
     }
     else if (([self.cancelButtonLabel length] && buttonIndex == 2) ||
@@ -1018,9 +1018,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.lastReminded = [NSDate date];
         
         //log event
-        if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
+        if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp:)])
         {
-            [self.delegate iRateUserDidRequestReminderToRateApp];
+            [self.delegate iRateUserDidRequestReminderToRateApp:self];
         }
     }
     else
@@ -1029,12 +1029,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.ratedThisVersion = YES;
         
         //log event
-        if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
+        if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp:)])
         {
-            [self.delegate iRateUserDidAttemptToRateApp];
+            [self.delegate iRateUserDidAttemptToRateApp:self];
         }
         
-        if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore)] || [_delegate iRateShouldOpenAppStore])
+        if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore:)] || [_delegate iRateShouldOpenAppStore:self])
         {
             //go to ratings page
             [self openRatingsPageInAppStore];
@@ -1100,9 +1100,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             self.declinedThisVersion = YES;
             
             //log event
-            if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)])
+            if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp:)])
             {
-                [self.delegate iRateUserDidDeclineToRateApp];
+                [self.delegate iRateUserDidDeclineToRateApp:self];
             }
 
             break;
@@ -1113,12 +1113,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             self.ratedThisVersion = YES;
             
             //log event
-            if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)])
+            if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp:)])
             {
-                [self.delegate iRateUserDidAttemptToRateApp];
+                [self.delegate iRateUserDidAttemptToRateApp:self];
             }
             
-            if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore)] || [_delegate iRateShouldOpenAppStore])
+            if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore:)] || [_delegate iRateShouldOpenAppStore:self])
             {
                 //launch mac app store
                 [self openRatingsPageInAppStore];
@@ -1131,9 +1131,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             self.lastReminded = [NSDate date];
             
             //log event
-            if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)])
+            if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp:)])
             {
-                [self.delegate iRateUserDidRequestReminderToRateApp];
+                [self.delegate iRateUserDidRequestReminderToRateApp:self];
             }
         }
     }
