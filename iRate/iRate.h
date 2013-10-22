@@ -86,7 +86,7 @@ iRateErrorCode;
 - (void)iRateUserDidAttemptToRateApp:(iRate*)sender;
 - (void)iRateUserDidDeclineToRateApp:(iRate*)sender;
 - (void)iRateUserDidRequestReminderToRateApp:(iRate*)sender;
-- (BOOL)iRateShouldOpenAppStore:(id)sender;
+- (BOOL)iRateShouldOpenAppStore:(iRate*)sender;
 - (void)iRateDidPresentStoreKitModal:(iRate*)sender;
 - (void)iRateDidDismissStoreKitModal:(iRate*)sender;
 
