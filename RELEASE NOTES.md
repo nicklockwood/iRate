@@ -5,6 +5,7 @@ Version 1.8.1
 - Removed all support for StoreKit, as Apple have disabled the StoreKit rating panel
 - Calling openRatingsPageInAppStore will now look up appStoreID automatically if not already known
 - Improved error messaging when using iRate on the iOS Simulator
+- Added Greek and Slovenian localizations
 
 Version 1.8
 
