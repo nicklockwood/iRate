@@ -118,13 +118,13 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRate" ofType:@"bundle"];
         if (self.useAllAvailableLanguages)
         {
-            NSArray *localizations = [[NSBundle bundleWithPath:bundlePath] localizations];
+            bundle = [NSBundle bundleWithPath:bundlePath];
             NSString *language = [[NSLocale preferredLanguages] count]? [NSLocale preferredLanguages][0]: @"en";
-            if (![localizations containsObject:language])
+            if (![[bundle localizations] containsObject:language])
             {
                 language = [language componentsSeparatedByString:@"-"][0];
             }
-            if ([localizations containsObject:language])
+            if ([[bundle localizations] containsObject:language])
             {
                 bundlePath = [bundle pathForResource:language ofType:@"lproj"];
             }
