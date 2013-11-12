@@ -1,3 +1,11 @@
+Version 1.8.1
+
+- Added iRateDidOpenAppStore delegate method
+- Language selection now works correctly if the user has an unsupported language
+- Removed all support for StoreKit, as Apple have disabled the StoreKit rating panel
+- Calling openRatingsPageInAppStore will now look up appStoreID automatically if not already known
+- Improved error messaging when using iRate on the iOS Simulator
+
 Version 1.8
 
 - App store link works on iOS 7 (had to link to app home page instead of directly to reviews page for now - hopefully an alternative direct link can be found)
