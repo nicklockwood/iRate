@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.8.1
+//  Version 1.8.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -614,10 +614,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)checkForConnectivityInBackground
 {
-    if ([NSThread isMainThread]) {
+    if ([NSThread isMainThread])
+    {
         [self performSelectorInBackground:@selector(checkForConnectivityInBackground) withObject:nil];
         return;
     }
+    
     @autoreleasepool
     {
         //prevent concurrent checks

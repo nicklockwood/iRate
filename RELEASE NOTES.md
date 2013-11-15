@@ -1,3 +1,7 @@
+Version 1.8.2
+
+- Fixed issue where checkForConnectivityInBackground could be called on main thread, blocking user interaction
+
 Version 1.8.1
 
 - Added iRateDidOpenAppStore delegate method

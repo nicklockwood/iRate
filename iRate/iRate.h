@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.8.1
+//  Version 1.8.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
