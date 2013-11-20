@@ -6,6 +6,3 @@
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
 #endif
-
-
-#define IRATE_USE_STOREKIT 1

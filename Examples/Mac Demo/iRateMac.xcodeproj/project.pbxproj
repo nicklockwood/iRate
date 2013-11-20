@@ -236,6 +236,13 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = iRateMac;
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-unused-macros",
+					"-Wno-direct-ivar-access",
+					"-Wno-pedantic",
+				);
 			};
 			name = Debug;
 		};
@@ -254,6 +261,13 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
 				PRODUCT_NAME = iRateMac;
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-unused-macros",
+					"-Wno-direct-ivar-access",
+					"-Wno-pedantic",
+				);
 			};
 			name = Release;
 		};

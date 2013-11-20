@@ -243,6 +243,13 @@
 				PRODUCT_NAME = iRate;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-unused-macros",
+					"-Wno-direct-ivar-access",
+					"-Wno-pedantic",
+				);
 			};
 			name = Debug;
 		};
@@ -262,6 +269,13 @@
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-unused-macros",
+					"-Wno-direct-ivar-access",
+					"-Wno-pedantic",
+				);
 			};
 			name = Release;
 		};

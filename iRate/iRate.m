@@ -479,11 +479,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         if (keyRange.location != NSNotFound)
         {
             NSInteger start = keyRange.location + keyRange.length;
-            NSRange valueStart = [json rangeOfString:@":" options:0 range:NSMakeRange(start, [json length] - start)];
+            NSRange valueStart = [json rangeOfString:@":" options:(NSStringCompareOptions)0 range:NSMakeRange(start, [json length] - start)];
             if (valueStart.location != NSNotFound)
             {
                 start = valueStart.location + 1;
-                NSRange valueEnd = [json rangeOfString:@"," options:0 range:NSMakeRange(start, [json length] - start)];
+                NSRange valueEnd = [json rangeOfString:@"," options:(NSStringCompareOptions)0 range:NSMakeRange(start, [json length] - start)];
                 if (valueEnd.location != NSNotFound)
                 {
                     NSString *value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
@@ -495,7 +495,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                             break;
                         }
                         NSInteger newStart = valueEnd.location + 1;
-                        valueEnd = [json rangeOfString:@"," options:0 range:NSMakeRange(newStart, [json length] - newStart)];
+                        valueEnd = [json rangeOfString:@"," options:(NSStringCompareOptions)0 range:NSMakeRange(newStart, [json length] - newStart)];
                         value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
                         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     }
@@ -656,7 +656,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             id json = nil;
             if ([NSJSONSerialization class])
             {
-                json = [[NSJSONSerialization JSONObjectWithData:data options:0 error:&error][@"results"] lastObject];
+                json = [[NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&error][@"results"] lastObject];
             }
             else
             {
@@ -1056,7 +1056,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [self.delegate iRateDidOpenAppStore];
 }
 
-- (void)alertDidEnd:(__unused NSAlert *)alert returnCode:(__unused NSInteger)returnCode contextInfo:(__unused void *)contextInfo
+- (void)alertDidEnd:(__unused NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(__unused void *)contextInfo
 {
     switch (returnCode)
     {
