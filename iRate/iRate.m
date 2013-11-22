@@ -343,7 +343,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (BOOL)declinedAnyVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey] length];
+    NSString *declinedVersionKey = [[NSUserDefaults standardUserDefaults] objectForKey:iRateDeclinedVersionKey];
+    return [declinedVersionKey length];
 }
 
 - (BOOL)ratedThisVersion
@@ -359,7 +360,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (BOOL)ratedAnyVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:iRateRatedVersionKey] length];
+    NSString *ratedVersionKey = [[NSUserDefaults standardUserDefaults] objectForKey:iRateRatedVersionKey];
+    return [ratedVersionKey length];
 }
 
 - (void)dealloc
@@ -474,19 +476,21 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     if ([json isKindOfClass:[NSString class]])
     {
+        NSString *jsonString = json;
+        
         //use legacy parser
-        NSRange keyRange = [json rangeOfString:[NSString stringWithFormat:@"\"%@\"", key]];
+        NSRange keyRange = [jsonString rangeOfString:[NSString stringWithFormat:@"\"%@\"", key]];
         if (keyRange.location != NSNotFound)
         {
             NSInteger start = keyRange.location + keyRange.length;
-            NSRange valueStart = [json rangeOfString:@":" options:0 range:NSMakeRange(start, [json length] - start)];
+            NSRange valueStart = [jsonString rangeOfString:@":" options:0 range:NSMakeRange(start, [jsonString length] - start)];
             if (valueStart.location != NSNotFound)
             {
                 start = valueStart.location + 1;
-                NSRange valueEnd = [json rangeOfString:@"," options:0 range:NSMakeRange(start, [json length] - start)];
+                NSRange valueEnd = [jsonString rangeOfString:@"," options:0 range:NSMakeRange(start, [jsonString length] - start)];
                 if (valueEnd.location != NSNotFound)
                 {
-                    NSString *value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
+                    NSString *value = [jsonString substringWithRange:NSMakeRange(start, valueEnd.location - start)];
                     value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     while ([value hasPrefix:@"\""] && ![value hasSuffix:@"\""])
                     {
@@ -495,8 +499,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                             break;
                         }
                         NSInteger newStart = valueEnd.location + 1;
-                        valueEnd = [json rangeOfString:@"," options:0 range:NSMakeRange(newStart, [json length] - newStart)];
-                        value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
+                        valueEnd = [jsonString rangeOfString:@"," options:0 range:NSMakeRange(newStart, [jsonString length] - newStart)];
+                        value = [jsonString substringWithRange:NSMakeRange(start, valueEnd.location - start)];
                         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     }
                     
@@ -575,13 +579,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.checkingForPrompt = NO;
         
         //confirm with delegate
-        if (![self.delegate iRateShouldPromptForRating])
-        {
-            if (self.verboseLogging)
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            if (![delegate iRateShouldPromptForRating])
             {
-                NSLog(@"iRate did not display the rating prompt because the iRateShouldPromptForRating delegate method returned NO");
+                if (self.verboseLogging)
+                {
+                    NSLog(@"iRate did not display the rating prompt because the iRateShouldPromptForRating delegate method returned NO");
+                }
+                return;
             }
-            return;
         }
         
         //prompt user
@@ -608,7 +615,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         
         //could not connect
-        [self.delegate iRateCouldNotConnectToAppStore:error];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateCouldNotConnectToAppStore:error];
+        }
     }
 }
 
@@ -813,7 +823,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 
         //inform about prompt
-        [self.delegate iRateDidPromptForRating];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateDidPromptForRating];
+        }
     }
 }
 
@@ -832,7 +845,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [defaults synchronize];
 
         //inform about app update
-        [self.delegate iRateDidDetectAppUpdate];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateDidDetectAppUpdate];
+        }
     }
     
     [self incrementUseCount];
@@ -878,7 +894,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         
         [[UIApplication sharedApplication] openURL:self.ratingsURL];
-        [self.delegate iRateDidOpenAppStore];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateDidOpenAppStore];
+        }
     }
     else
     {
@@ -894,7 +913,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
         NSLog(@"%@", message);
         NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: message}];
-        [self.delegate iRateCouldNotConnectToAppStore:error];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateCouldNotConnectToAppStore:error];
+        }
     }
 }
 
@@ -980,7 +1002,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.declinedThisVersion = YES;
         
         //log event
-        [self.delegate iRateUserDidDeclineToRateApp];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateUserDidDeclineToRateApp];
+        }
     }
     else if (([self.cancelButtonLabel length] && buttonIndex == 2) ||
              ([self.cancelButtonLabel length] == 0 && buttonIndex == 1))
@@ -989,7 +1014,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.lastReminded = [NSDate date];
         
         //log event
-        [self.delegate iRateUserDidRequestReminderToRateApp];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateUserDidRequestReminderToRateApp];
+        }
     }
     else
     {
@@ -997,12 +1025,15 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.ratedThisVersion = YES;
         
         //log event
-        [self.delegate iRateUserDidAttemptToRateApp];
-        
-        if ([self.delegate iRateShouldOpenAppStore])
-        {
-            //go to ratings page
-            [self openRatingsPageInAppStore];
+        __strong id<iRateDelegate> delegate = [self delegate];
+        if (delegate) {
+            [delegate iRateUserDidAttemptToRateApp];
+            
+            if ([delegate iRateShouldOpenAppStore])
+            {
+                //go to ratings page
+                [self openRatingsPageInAppStore];
+            }
         }
     }
     
