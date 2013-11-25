@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.8.2
+//  Version 1.8.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -29,6 +29,10 @@
 //
 //  3. This notice may not be removed or altered from any source distribution.
 //
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
 
 
 #import <Availability.h>
@@ -146,3 +150,6 @@ iRateErrorCode;
 - (void)logEvent:(BOOL)deferPrompt;
 
 @end
+
+
+#pragma GCC diagnostic pop

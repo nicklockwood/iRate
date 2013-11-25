@@ -229,6 +229,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -238,6 +239,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iRate_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				INFOPLIST_FILE = "iRate-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = iRate;
@@ -246,9 +248,6 @@
 				WARNING_CFLAGS = (
 					"-Weverything",
 					"-Wno-objc-missing-property-synthesis",
-					"-Wno-unused-macros",
-					"-Wno-direct-ivar-access",
-					"-Wno-pedantic",
 				);
 			};
 			name = Debug;
@@ -258,11 +257,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iRate_Prefix.pch;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				INFOPLIST_FILE = "iRate-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = iRate;
@@ -272,9 +273,6 @@
 				WARNING_CFLAGS = (
 					"-Weverything",
 					"-Wno-objc-missing-property-synthesis",
-					"-Wno-unused-macros",
-					"-Wno-direct-ivar-access",
-					"-Wno-pedantic",
 				);
 			};
 			name = Release;

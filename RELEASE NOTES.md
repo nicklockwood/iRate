@@ -1,3 +1,8 @@
+Version 1.8.3
+
+- Stricter warning compliance
+- Now uses macros to avoid generating warnings when imported into apps with even stricter warning settings
+
 Version 1.8.2
 
 - Fixed issue where checkForConnectivityInBackground could be called on main thread, blocking user interaction
