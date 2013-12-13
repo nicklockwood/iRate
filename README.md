@@ -106,6 +106,10 @@ The rating prompt message. This should be polite and courteous, but not too word
 
 The button label for the button to dismiss the rating prompt without rating the app.
 
+    @property (nonatomic, copy) NSString *neverButtonLabel;
+
+The button label for the button to dismiss the rating prompt without rating the app if the `promptAgainForEachNewVersion` options is set to NO.
+
     @property (nonatomic, copy) NSString *rateButtonLabel;
 
 The button label for the button the user presses if they do want to rate the app.
@@ -117,10 +121,6 @@ The button label for the button the user presses if they don't want to rate the 
     @property (nonatomic, assign) BOOL useAllAvailableLanguages;
 
 By default, iRate will use all available languages in the iRate.bundle, even if used in an app that does not support localisation. If you would prefer to restrict iRate to only use the same set of languages that your application already supports, set this property to NO. (Defaults to YES).
-
-    @property (nonatomic, assign) BOOL promptAgainForEachNewVersion;
-    
-Because iTunes ratings are version-specific, you ideally want users to rate each new version of your app. However, it's debatable whether many users will actually do this, and if you update frequently this may get annoying. Set `promptAgainForEachNewVersion` to `NO`, and iRate won't prompt the user again each time they install an update if they've already rated the app. It will still prompt them each new version if they have *not* rated the app, but you can override this using the `iRateShouldShouldPromptForRating` delegate method if you wish.
 
     @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 
@@ -174,11 +174,11 @@ The average number of times per week that the current version of the app has bee
 
     @property (nonatomic, assign) BOOL declinedThisVersion;
 
-This flag indicates whether the user has declined to rate the current version (YES) or not (NO).
+This flag indicates whether the user has declined to rate the current version (YES) or not (NO). This is not currently used by the iRate prompting logic, but may be useful for implementing your own logic.
 
     @property (nonatomic, assign) BOOL declinedAnyVersion;
 
-This flag indicates whether the user has declined to rate any previous version of the app (YES) or not (NO). This is not currently used by the iRate prompting logic, but may be useful for implementing your own rules using the `iRateShouldPromptForRating` delegate method.
+This flag indicates whether the user has declined to rate any previous version of the app (YES) or not (NO). iRate will not prompt the user automatically if this is set to YES.
 
     @property (nonatomic, assign) BOOL ratedThisVersion;
 
@@ -234,7 +234,7 @@ This method is called if iRate detects that the application has been updated sin
 
     - (BOOL)iRateShouldShouldPromptForRating;
 
-This method is called immediately before the rating prompt is displayed to the user. You can use this method to implement custom prompt logic. You can also use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.
+This method is called immediately before the rating prompt is displayed to the user. You can use this method to implement custom prompt logic in addition to the standard rules. You can also use this method to block the standard prompt alert and display the rating prompt in a different way, or bypass it altogether.
 
     - (void)iRateDidPromptForRating;
 

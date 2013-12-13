@@ -1,3 +1,9 @@
+Version 1.9
+
+- iRate will no longer ask users to rate the app again each version
+- If the user selects "No, Thanks", they will now never be asked again
+- Removed the `promptAgainEachVersion` option
+
 Version 1.8.3
 
 - Stricter warning compliance

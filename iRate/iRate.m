@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.8.3
+//  Version 1.9
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -41,9 +41,11 @@
 
 
 #pragma GCC diagnostic ignored "-Wreceiver-is-weak"
+#pragma GCC diagnostic ignored "-Warc-repeated-use-of-weak"
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
 #pragma GCC diagnostic ignored "-Wdirect-ivar-access"
 #pragma GCC diagnostic ignored "-Wunused-macros"
+#pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wgnu"
 
 
@@ -190,7 +192,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.useAllAvailableLanguages = YES;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
-        self.promptAgainForEachNewVersion = YES;
         self.promptAtLaunch = YES;
         self.usesUntilPrompt = 10;
         self.eventsUntilPrompt = 10;
@@ -312,23 +313,23 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (NSUInteger)usesCount
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:iRateUseCountKey];
+    return (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:iRateUseCountKey];
 }
 
 - (void)setUsesCount:(NSUInteger)count
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:count forKey:iRateUseCountKey];
+    [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)count forKey:iRateUseCountKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSUInteger)eventCount
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
+    return (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
 }
 
 - (void)setEventCount:(NSUInteger)count
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:count forKey:iRateEventCountKey];
+    [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)count forKey:iRateEventCountKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -403,26 +404,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         return NO;
     }
     
-    //check if we've rated any version
-    else if (!self.promptAgainForEachNewVersion && self.ratedAnyVersion)
+    //check if we've declined to rate the app
+    else if (self.declinedAnyVersion)
     {
         if (self.verboseLogging)
         {
-            NSLog(@"iRate did not prompt for rating because the user has already rated this app, and promptAgainForEachNewVersion is disabled");
+            NSLog(@"iRate did not prompt for rating because the user has declined to rate the app");
         }
         return NO;
     }
-    
-    //check if we've declined to rate this version
-    else if (self.declinedThisVersion)
-    {
-        if (self.verboseLogging)
-        {
-            NSLog(@"iRate did not prompt for rating because the user has declined to rate this version");
-        }
-        return NO;
-    }
-    
+
     //check for first launch
     else if ((self.daysUntilPrompt > 0.0f || self.usesPerWeekForPrompt) && self.firstUsed == nil)
     {
