@@ -106,10 +106,6 @@ The rating prompt message. This should be polite and courteous, but not too word
 
 The button label for the button to dismiss the rating prompt without rating the app.
 
-    @property (nonatomic, copy) NSString *neverButtonLabel;
-
-The button label for the button to dismiss the rating prompt without rating the app if the `promptAgainForEachNewVersion` options is set to NO.
-
     @property (nonatomic, copy) NSString *rateButtonLabel;
 
 The button label for the button the user presses if they do want to rate the app.
