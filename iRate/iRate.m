@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.9
+//  Version 1.9.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -170,6 +170,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //get country
         self.appStoreCountry = [(NSLocale *)[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+        if ([self.appStoreCountry isEqualToString:@"150"])
+        {
+            self.appStoreCountry = @"eu";
+        }
+        else if ([[self.appStoreCountry stringByReplacingOccurrencesOfString:@"[A-Za-z]{2}" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, 2)] length])
+        {
+            self.appStoreCountry = @"us";
+        }
         
         //application version (use short version preferentially)
         self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];

@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.9
+//  Version 1.9.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -65,14 +65,13 @@ static NSString *const iRateRemindButtonKey = @"iRateRemindButton";
 static NSString *const iRateRateButtonKey = @"iRateRateButton";
 
 
-typedef enum
+typedef NS_ENUM(NSUInteger, iRateErrorCode)
 {
     iRateErrorBundleIdDoesNotMatchAppStore = 1,
     iRateErrorApplicationNotFoundOnAppStore,
     iRateErrorApplicationIsNotLatestVersion,
     iRateErrorCouldNotOpenRatingPageURL
-}
-iRateErrorCode;
+};
 
 
 @protocol iRateDelegate <NSObject>

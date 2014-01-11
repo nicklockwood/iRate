@@ -1,3 +1,7 @@
+Version 1.9.1
+
+- Fixed problem with fetching app ID when device region is set to Europe
+
 Version 1.9
 
 - iRate will no longer ask users to rate the app again each version
