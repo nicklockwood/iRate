@@ -1,3 +1,7 @@
+Version 1.9.2
+
+- Added Bengali, Farsi, Hindi, Punjabi, Thai and Vietnamese translations
+
 Version 1.9.1
 
 - Fixed problem with fetching app ID when device region is set to Europe
