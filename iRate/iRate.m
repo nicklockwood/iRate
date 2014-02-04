@@ -275,7 +275,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         return _ratingsURL;
     }
     
-    if (!self.appStoreID)
+    if (!self.appStoreID && self.verboseLogging)
     {
         NSLog(@"iRate could not find the App Store ID for this application. If the application is not intended for App Store release then you must specify a custom ratingsURL.");
     }
