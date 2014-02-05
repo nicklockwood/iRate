@@ -1,3 +1,8 @@
+Version 1.9.3
+
+- No longer logs warning if app ID is not found, unless in verbose mode
+- Minor translation fix for Vietnamese
+
 Version 1.9.2
 
 - Added Bengali, Farsi, Hindi, Punjabi, Thai and Vietnamese translations
