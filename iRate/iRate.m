@@ -829,12 +829,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
     {
-        //reset counts
         [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
-        [defaults setObject:[NSDate date] forKey:iRateFirstUsedKey];
-        [defaults setInteger:0 forKey:iRateUseCountKey];
-        [defaults setInteger:0 forKey:iRateEventCountKey];
-        [defaults setObject:nil forKey:iRateLastRemindedKey];
+        if ([[NSDate date] timeIntervalSinceDate:self.firstUsed] >= self.daysUntilPrompt * SECONDS_IN_A_DAY) {
+            //ask for rating one day later
+            NSDate *oneDayDelay = [NSDate dateWithTimeIntervalSinceNow:(self.daysUntilPrompt-1) * (-SECONDS_IN_A_DAY)];
+            [defaults setObject:oneDayDelay forKey:iRateFirstUsedKey];
+        }
         [defaults synchronize];
 
         //inform about app update
