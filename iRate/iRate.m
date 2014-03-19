@@ -203,6 +203,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.promptAtLaunch = YES;
         self.usesUntilPrompt = 10;
         self.eventsUntilPrompt = 10;
+        self.usesUntilRemind = 0;
         self.daysUntilPrompt = 10.0f;
         self.usesPerWeekForPrompt = 0.0f;
         self.remindPeriod = 1.0f;
@@ -468,6 +469,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         if (self.verboseLogging)
         {
             NSLog(@"iRate did not prompt for rating because the user last asked to be reminded less than %g days ago", self.remindPeriod);
+        }
+        return NO;
+    }
+    
+    else if (self.lastReminded != nil && self.usesUntilRemind && self.usesCount % self.usesUntilRemind != 0) {
+        if (self.verboseLogging)
+        {
+            NSLog(@"iRate did not prompt for rating because the user last asked to be reminded less than %i uses ago", (int)(self.usesCount % self.usesUntilRemind));
         }
         return NO;
     }
