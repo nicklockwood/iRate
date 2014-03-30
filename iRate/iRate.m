@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.9.3
+//  Version 1.10
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -46,6 +46,7 @@
 #pragma GCC diagnostic ignored "-Wdirect-ivar-access"
 #pragma GCC diagnostic ignored "-Wunused-macros"
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #pragma GCC diagnostic ignored "-Wgnu"
 
 
@@ -280,15 +281,30 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSLog(@"iRate could not find the App Store ID for this application. If the application is not intended for App Store release then you must specify a custom ratingsURL.");
     }
     
+    NSString *URLString;
+    
 #if TARGET_OS_IPHONE
     
-    return [NSURL URLWithString:[NSString stringWithFormat:([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)? iRateiOS7AppStoreURLFormat: iRateiOSAppStoreURLFormat, @(self.appStoreID)]];
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.1f)
+    {
+        URLString = iRateiOSAppStoreURLFormat;
+    }
+    else if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)
+    {
+        URLString = iRateiOS7AppStoreURLFormat;
+    }
+    else
+    {
+        URLString = iRateiOSAppStoreURLFormat;
+    }
     
 #else
     
-    return [NSURL URLWithString:[NSString stringWithFormat:iRateMacAppStoreURLFormat, @(self.appStoreID)]];
+    URLString = iRateMacAppStoreURLFormat;
     
 #endif
+            
+    return [NSURL URLWithString:[NSString stringWithFormat:URLString, @(self.appStoreID)]];
     
 }
 
@@ -321,7 +337,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (NSUInteger)usesCount
 {
-    return (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:iRateUseCountKey];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:iRateUseCountKey];
 }
 
 - (void)setUsesCount:(NSUInteger)count
@@ -332,7 +348,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (NSUInteger)eventCount
 {
-    return (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:iRateEventCountKey];
 }
 
 - (void)setEventCount:(NSUInteger)count
