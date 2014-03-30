@@ -144,7 +144,7 @@ This option will cause iRate to send detailed logs to the console about the prom
 
     @property (nonatomic, assign) BOOL previewMode;
 
-If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use or whether it's the latest version. Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).
+If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use or whether it's the latest version (unless you have explicitly disabled the `promptAtLaunch` option). Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).
 
 
 Advanced properties
