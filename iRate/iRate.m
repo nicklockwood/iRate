@@ -859,7 +859,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     
     [self incrementUseCount];
     [self checkForConnectivityInBackground];
-    if (self.promptAtLaunch && [self shouldPromptForRating])
+    if (self.previewMode || (self.promptAtLaunch && [self shouldPromptForRating]))
     {
         [self promptIfNetworkAvailable];
     }
