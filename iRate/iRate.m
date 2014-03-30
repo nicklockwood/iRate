@@ -199,6 +199,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //default settings
         self.useAllAvailableLanguages = YES;
+        self.promptForNewVersionIfUserRated = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
         self.promptAtLaunch = YES;
@@ -254,6 +255,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [message stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
+- (NSString *)updateMessage
+{
+    NSString *updateMessage = _updateMessage;
+    if (!updateMessage)
+    {
+        updateMessage = [self localizedStringForKey:iRateUpdateMessageKey withDefault:self.message];
+    }
+    return [updateMessage stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
+}
+
 - (NSString *)cancelButtonLabel
 {
     return _cancelButtonLabel ?: [self localizedStringForKey:iRateCancelButtonKey withDefault:@"No, Thanks"];
@@ -285,11 +296,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     
 #if TARGET_OS_IPHONE
     
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.1f)
-    {
-        URLString = iRateiOSAppStoreURLFormat;
-    }
-    else if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0f)
+    float iOSVersion = [[UIDevice currentDevice].systemVersion floatValue];
+    if (iOSVersion >= 7.0f && iOSVersion < 7.1f)
     {
         URLString = iRateiOS7AppStoreURLFormat;
     }
@@ -418,12 +426,22 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         return YES;
     }
     
-    //check if we've rated the app
-    else if (self.ratedAnyVersion)
+    //check if we've rated this version
+    else if (self.ratedThisVersion)
     {
         if (self.verboseLogging)
         {
-            NSLog(@"iRate did not prompt for rating because the user has already rated the app");
+            NSLog(@"iRate did not prompt for rating because the user has already rated this version");
+        }
+        return NO;
+    }
+    
+    //check if we've rated any version
+    else if (self.ratedAnyVersion && !self.promptForNewVersionIfUserRated)
+    {
+        if (self.verboseLogging)
+        {
+            NSLog(@"iRate did not prompt for rating because the user has already rated this app, and promptForNewVersionIfUserRated is disabled");
         }
         return NO;
     }
@@ -792,11 +810,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     if (!self.visibleAlert)
     {
+        NSString *message = self.ratedAnyVersion? self.updateMessage: self.message;
     
 #if TARGET_OS_IPHONE
     
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
-                                                        message:self.message
+                                                        message:message
                                                        delegate:(id<UIAlertViewDelegate>)self
                                               cancelButtonTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel: nil
                                               otherButtonTitles:self.rateButtonLabel, nil];
@@ -820,7 +839,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                             defaultButton:self.rateButtonLabel
                                           alternateButton:self.cancelButtonLabel
                                               otherButton:nil
-                                informativeTextWithFormat:@"%@", self.message];
+                                informativeTextWithFormat:@"%@", message];
         
         if ([self.remindButtonLabel length])
         {
@@ -846,7 +865,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
     {
         [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
-        if ([[NSDate date] timeIntervalSinceDate:self.firstUsed] >= self.daysUntilPrompt * SECONDS_IN_A_DAY) {
+        if ([[NSDate date] timeIntervalSinceDate:self.firstUsed] >= self.daysUntilPrompt * SECONDS_IN_A_DAY)
+        {
             //ask for rating one day later
             NSDate *oneDayDelay = [NSDate dateWithTimeIntervalSinceNow:(self.daysUntilPrompt-1) * (-SECONDS_IN_A_DAY)];
             [defaults setObject:oneDayDelay forKey:iRateFirstUsedKey];

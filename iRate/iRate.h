@@ -56,13 +56,19 @@ extern NSUInteger const iRateAppStoreGameGenreID;
 extern NSString *const iRateErrorDomain;
 
 
+#ifndef IRATE
+#define IRATE
+
 //localisation string keys
 static NSString *const iRateMessageTitleKey = @"iRateMessageTitle";
 static NSString *const iRateAppMessageKey = @"iRateAppMessage";
 static NSString *const iRateGameMessageKey = @"iRateGameMessage";
+static NSString *const iRateUpdateMessageKey = @"iRateUpdateMessage";
 static NSString *const iRateCancelButtonKey = @"iRateCancelButton";
 static NSString *const iRateRemindButtonKey = @"iRateRemindButton";
 static NSString *const iRateRateButtonKey = @"iRateRateButton";
+
+#endif
 
 
 typedef NS_ENUM(NSUInteger, iRateErrorCode)
@@ -115,12 +121,14 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 //message text, you may wish to customise these
 @property (nonatomic, copy) NSString *messageTitle;
 @property (nonatomic, copy) NSString *message;
+@property (nonatomic, copy) NSString *updateMessage;
 @property (nonatomic, copy) NSString *cancelButtonLabel;
 @property (nonatomic, copy) NSString *remindButtonLabel;
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
 //debugging and prompt overrides
 @property (nonatomic, assign) BOOL useAllAvailableLanguages;
+@property (nonatomic, assign) BOOL promptForNewVersionIfUserRated;
 @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
 @property (nonatomic, assign) BOOL onlyPromptIfMainWindowIsAvailable;
 @property (nonatomic, assign) BOOL promptAtLaunch;
