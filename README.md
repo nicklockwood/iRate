@@ -320,6 +320,10 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.10.1
+
+- Fixed serious bug that prevents rating prompt appearing for any new apps
+
 Version 1.10
 
 - Now links directly to review page again on iOS 7.1 + (Apple has fixed support)

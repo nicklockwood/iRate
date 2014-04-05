@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.10
+//  Version 1.10.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -862,17 +862,25 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 {
     //check if this is a new version
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
+    if (!self.firstUsed || ![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
     {
-        [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
-        if ([[NSDate date] timeIntervalSinceDate:self.firstUsed] >= self.daysUntilPrompt * SECONDS_IN_A_DAY)
+        if (self.firstUsed && [[NSDate date] timeIntervalSinceDate:self.firstUsed] < self.daysUntilPrompt * SECONDS_IN_A_DAY)
         {
-            //ask for rating one day later
-            NSDate *oneDayDelay = [NSDate dateWithTimeIntervalSinceNow:(self.daysUntilPrompt-1) * (-SECONDS_IN_A_DAY)];
-            [defaults setObject:oneDayDelay forKey:iRateFirstUsedKey];
+            //if was previously installed, but we haven't yet prompted for a rating
+            //don't reset, but make sure it won't rate for a day at least
+            self.firstUsed = [self.firstUsed dateByAddingTimeInterval:SECONDS_IN_A_DAY];
         }
-        [defaults synchronize];
-
+        else
+        {
+            //reset defaults
+            [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
+            [defaults setObject:[NSDate date] forKey:iRateFirstUsedKey];
+            [defaults setInteger:0 forKey:iRateUseCountKey];
+            [defaults setInteger:0 forKey:iRateEventCountKey];
+            [defaults setObject:nil forKey:iRateLastRemindedKey];
+            [defaults synchronize];
+        }
+        
         //inform about app update
         [self.delegate iRateDidDetectAppUpdate];
     }
