@@ -323,6 +323,7 @@ Release Notes
 Version 1.10.1
 
 - Fixed serious bug that prevents rating prompt appearing for any new apps
+- Fixed issue where bad response from iTunes would be cached indefinitely
 
 Version 1.10
 
