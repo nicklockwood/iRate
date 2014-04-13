@@ -322,7 +322,6 @@ Release Notes
 
 Version 1.10.2
 
-- Added -isFirstUse method
 - Fixed bug where app would never prompt for rating after an upgrade if it had not already done so
 - Improved italian localization
 
