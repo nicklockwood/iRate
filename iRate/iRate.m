@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.10.1
+//  Version 1.10.2
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -455,16 +455,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         return NO;
     }
-
-    //check for first launch
-    else if ((self.daysUntilPrompt > 0.0f || self.usesPerWeekForPrompt) && self.firstUsed == nil)
-    {
-        if (self.verboseLogging)
-        {
-            NSLog(@"iRate did not prompt for rating because this is the first time the app has been launched");
-        }
-        return NO;
-    }
     
     //check how long we've been using this version
     else if ([[NSDate date] timeIntervalSinceDate:self.firstUsed] < self.daysUntilPrompt * SECONDS_IN_A_DAY)
@@ -864,16 +854,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (!self.firstUsed || ![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
     {
-        if (self.firstUsed && [[NSDate date] timeIntervalSinceDate:self.firstUsed] < self.daysUntilPrompt * SECONDS_IN_A_DAY)
+        [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
+        if (self.firstUsed && [[NSDate date] timeIntervalSinceDate:self.firstUsed] < (self.daysUntilPrompt + 1) * SECONDS_IN_A_DAY)
         {
             //if was previously installed, but we haven't yet prompted for a rating
             //don't reset, but make sure it won't rate for a day at least
-            self.firstUsed = [self.firstUsed dateByAddingTimeInterval:SECONDS_IN_A_DAY];
+            self.firstUsed = [[NSDate date] dateByAddingTimeInterval:(self.daysUntilPrompt + 1) * -SECONDS_IN_A_DAY];
         }
         else
         {
             //reset defaults
-            [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
             [defaults setObject:[NSDate date] forKey:iRateFirstUsedKey];
             [defaults setInteger:0 forKey:iRateUseCountKey];
             [defaults setInteger:0 forKey:iRateEventCountKey];
