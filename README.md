@@ -320,6 +320,10 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.10.3
+
+- Fixed another bug in the rating reset logic after upgrade
+
 Version 1.10.2
 
 - Fixed bug where app would never prompt for rating after an upgrade if it had not already done so
