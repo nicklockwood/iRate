@@ -861,7 +861,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (!self.firstUsed || ![lastUsedVersion isEqualToString:self.applicationVersion])
     {
         [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
-        if (!self.firstUsed || [self ratedVersion:lastUsedVersion])
+        if (!self.firstUsed || [self ratedAnyVersion])
         {
             //reset defaults
             [defaults setObject:[NSDate date] forKey:iRateFirstUsedKey];
