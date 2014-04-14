@@ -855,7 +855,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     if (!self.firstUsed || ![[defaults objectForKey:iRateLastVersionUsedKey] isEqualToString:self.applicationVersion])
     {
         [defaults setObject:self.applicationVersion forKey:iRateLastVersionUsedKey];
-        if (self.firstUsed && [[NSDate date] timeIntervalSinceDate:self.firstUsed] < (self.daysUntilPrompt + 1) * SECONDS_IN_A_DAY)
+        if (self.firstUsed && [[NSDate date] timeIntervalSinceDate:self.firstUsed] > (self.daysUntilPrompt - 1) * SECONDS_IN_A_DAY)
         {
             //if was previously installed, but we haven't yet prompted for a rating
             //don't reset, but make sure it won't rate for a day at least
