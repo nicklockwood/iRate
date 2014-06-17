@@ -70,6 +70,15 @@ static NSString *const iRateRateButtonKey = @"iRateRateButton";
 
 #endif
 
+//notification names to listen on NSNotificationCenter
+static NSString *const iRateCouldNotConnectToAppStore = @"iRateCouldNotConnectToAppStore";
+static NSString *const iRateDidDetectAppUpdate = @"iRateDidDetectAppUpdate";
+static NSString *const iRateDidPromptForRating = @"iRateDidPromptForRating";
+static NSString *const iRateUserDidAttemptToRateApp = @"iRateUserDidAttemptToRateApp";
+static NSString *const iRateUserDidDeclineToRateApp = @"iRateUserDidDeclineToRateApp";
+static NSString *const iRateUserDidRequestReminderToRateApp = @"iRateUserDidRequestReminderToRateApp";
+static NSString *const iRateDidOpenAppStore = @"iRateDidOpenAppStore";
+
 
 typedef NS_ENUM(NSUInteger, iRateErrorCode)
 {
