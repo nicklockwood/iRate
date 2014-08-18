@@ -208,7 +208,7 @@ This method can be called from anywhere in your app (after iRate has been config
 
     - (BOOL)shouldPromptForRating;
 
-Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch.
+Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch. Calling this method will not call the `iRateShouldPromptForRating` delegate method.
 
     - (void)promptForRating;
 

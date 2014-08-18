@@ -49,6 +49,7 @@
     if (!self.alertView)
     {
         self.alertView = [[UIAlertView alloc] initWithTitle:@"Rate Me!" message:@"I'm a completely custom rating dialog. Awesome, right?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Rate Now", @"Maybe Later", @"Open Web Page", nil];
+        
         [self.alertView show];
     }
     return NO;
@@ -61,7 +62,7 @@
         //ignore this version
         [iRate sharedInstance].declinedThisVersion = YES;
     }
-    else if (buttonIndex == 1) // rate the app
+    else if (buttonIndex == 1) // rate now
     {
         //mark as rated
         [iRate sharedInstance].ratedThisVersion = YES;
@@ -74,12 +75,7 @@
         //remind later
         [iRate sharedInstance].lastReminded = [NSDate date];
     }
-    else if (buttonIndex == 3) // maybe later
-    {
-        //remind later
-        [iRate sharedInstance].lastReminded = [NSDate date];
-    }
-    else // open a web page?
+    else if (buttonIndex == 3) // open web page
     {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.apple.com"]];
     }
