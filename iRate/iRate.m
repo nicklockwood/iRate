@@ -215,7 +215,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //enable verbose logging in debug mode
         self.verboseLogging = YES;
-        
+        NSLog(@"Verbose logging enabled.");
 #endif
         
         //app launched
@@ -866,6 +866,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle message:message delegate:(id<UIAlertViewDelegate>)self cancelButtonTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel: nil otherButtonTitles:self.rateButtonLabel, nil];
+            
+            if (self.verboseLogging) NSLog(@"Displaying classic UIAlertView.");
             
             if ([self.remindButtonLabel length])
             {
