@@ -215,7 +215,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //enable verbose logging in debug mode
         self.verboseLogging = YES;
-        
+        NSLog(@"Verbose logging enabled.");
 #endif
         
         //app launched
@@ -238,6 +238,27 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         _delegate = (id<iRateDelegate>)[[APP_CLASS sharedApplication] delegate];
     }
     return _delegate;
+}
+
+#if TARGET_OS_IPHONE
+#define VC_CLASS UIViewController
+#else
+#define VC_CLASS id
+#endif
++ (VC_CLASS *)getTopController
+{
+#if TARGET_OS_IPHONE
+    
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+    
+    return topController;
+#else
+    return nil;
+#endif
 }
 
 - (NSString *)messageTitle
@@ -810,19 +831,55 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSString *message = self.ratedAnyVersion? self.updateMessage: self.message;
     
 #if TARGET_OS_IPHONE
-    
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
-                                                        message:message
-                                                       delegate:(id<UIAlertViewDelegate>)self
-                                              cancelButtonTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel: nil
-                                              otherButtonTitles:self.rateButtonLabel, nil];
-        if ([self.remindButtonLabel length])
+        
+        if ([UIAlertController class] != nil)
         {
-            [alert addButtonWithTitle:self.remindButtonLabel];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:self.messageTitle message:message preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel : nil style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                if (self.verboseLogging)  NSLog(@"Presented Cancel button with title: %@", action.title);
+                [self declineThisVersion];
+                self.visibleAlert = nil;
+            }];
+            
+            UIAlertAction *rateButton = [UIAlertAction actionWithTitle:self.rateButtonLabel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                if (self.verboseLogging)  NSLog(@"Presented Rate button with title: %@", action.title);
+                [self rate];
+                self.visibleAlert = nil;
+            }];
+            [alert addAction:cancelButton];
+            [alert addAction:rateButton];
+            
+            if ([self.remindButtonLabel length]) {
+                UIAlertAction *remindButton = [UIAlertAction actionWithTitle:self.remindButtonLabel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    if (self.verboseLogging)  NSLog(@"Presented Remind button with title: %@", action.title);
+                    [self remindLater];
+                    self.visibleAlert = nil;
+                }];
+                [alert addAction:remindButton];
+            }
+            
+            self.visibleAlert = alert;
+            
+            // get current view contoller and present alert
+            [[iRate getTopController] presentViewController:alert animated:YES completion:^{
+                if (self.verboseLogging) NSLog(@"Presented UIAlertController.");
+            }];
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle message:message delegate:(id<UIAlertViewDelegate>)self cancelButtonTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel: nil otherButtonTitles:self.rateButtonLabel, nil];
+            
+            if (self.verboseLogging) NSLog(@"Displaying classic UIAlertView.");
+            
+            if ([self.remindButtonLabel length])
+            {
+                [alert addButtonWithTitle:self.remindButtonLabel];
+            }
+            
+            self.visibleAlert = alert;
+            [self.visibleAlert show];
         }
         
-        self.visibleAlert = alert;
-        [self.visibleAlert show];
 #else
 
         //only show when main window is available
