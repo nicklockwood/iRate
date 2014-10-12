@@ -644,6 +644,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         //could not connect
         [self.delegate iRateCouldNotConnectToAppStore:error];
+        [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
+                                                            object:error];
     }
 }
 
@@ -850,6 +852,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
         //inform about prompt
         [self.delegate iRateDidPromptForRating];
+        [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidPromptForRating
+                                                            object:nil];
     }
 }
 
@@ -879,6 +883,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
         //inform about app update
         [self.delegate iRateDidDetectAppUpdate];
+        [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidDetectAppUpdate
+                                                            object:nil];
     }
     
     [self incrementUseCount];
@@ -925,6 +931,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         
         [[UIApplication sharedApplication] openURL:self.ratingsURL];
         [self.delegate iRateDidOpenAppStore];
+        [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidOpenAppStore
+                                                            object:nil];
     }
     else
     {
@@ -941,6 +949,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSLog(@"%@", message);
         NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: message}];
         [self.delegate iRateCouldNotConnectToAppStore:error];
+        [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
+                                                            object:error];
     }
 }
 
@@ -1123,6 +1133,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
     //log event
     [self.delegate iRateUserDidDeclineToRateApp];
+    [[NSNotificationCenter defaultCenter] postNotificationName:iRateUserDidDeclineToRateApp
+                                                        object:nil];
 }
 
 - (void)remindLater
@@ -1132,6 +1144,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
     //log event
     [self.delegate iRateUserDidRequestReminderToRateApp];
+    [[NSNotificationCenter defaultCenter] postNotificationName:iRateUserDidRequestReminderToRateApp
+                                                        object:nil];
 }
 
 - (void)rate
@@ -1141,6 +1155,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
     //log event
     [self.delegate iRateUserDidAttemptToRateApp];
+    [[NSNotificationCenter defaultCenter] postNotificationName:iRateUserDidAttemptToRateApp
+                                                        object:nil];
 
     if ([self.delegate iRateShouldOpenAppStore])
     {
