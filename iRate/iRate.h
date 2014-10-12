@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.10.3
+//  Version 1.11
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -45,39 +45,36 @@
 #endif
 
 
+#import <TargetConditionals.h>
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#define IRATE_EXTERN UIKIT_EXTERN
 #else
 #import <Cocoa/Cocoa.h>
+#define IRATE_EXTERN APPKIT_EXTERN
 #endif
 
 
-extern NSUInteger const iRateAppStoreGameGenreID;
-extern NSString *const iRateErrorDomain;
-
-
-#ifndef IRATE
-#define IRATE
+IRATE_EXTERN NSUInteger const iRateAppStoreGameGenreID;
+IRATE_EXTERN NSString *const iRateErrorDomain;
 
 //localisation string keys
-static NSString *const iRateMessageTitleKey = @"iRateMessageTitle";
-static NSString *const iRateAppMessageKey = @"iRateAppMessage";
-static NSString *const iRateGameMessageKey = @"iRateGameMessage";
-static NSString *const iRateUpdateMessageKey = @"iRateUpdateMessage";
-static NSString *const iRateCancelButtonKey = @"iRateCancelButton";
-static NSString *const iRateRemindButtonKey = @"iRateRemindButton";
-static NSString *const iRateRateButtonKey = @"iRateRateButton";
+IRATE_EXTERN NSString *const iRateMessageTitleKey; //iRateMessageTitle
+IRATE_EXTERN NSString *const iRateAppMessageKey; //iRateAppMessage
+IRATE_EXTERN NSString *const iRateGameMessageKey; //iRateGameMessage
+IRATE_EXTERN NSString *const iRateUpdateMessageKey; //iRateUpdateMessage
+IRATE_EXTERN NSString *const iRateCancelButtonKey; //iRateCancelButton
+IRATE_EXTERN NSString *const iRateRemindButtonKey; //iRateRemindButton
+IRATE_EXTERN NSString *const iRateRateButtonKey; //iRateRateButton
 
-#endif
-
-//notification names to listen on NSNotificationCenter
-static NSString *const iRateCouldNotConnectToAppStore = @"iRateCouldNotConnectToAppStore";
-static NSString *const iRateDidDetectAppUpdate = @"iRateDidDetectAppUpdate";
-static NSString *const iRateDidPromptForRating = @"iRateDidPromptForRating";
-static NSString *const iRateUserDidAttemptToRateApp = @"iRateUserDidAttemptToRateApp";
-static NSString *const iRateUserDidDeclineToRateApp = @"iRateUserDidDeclineToRateApp";
-static NSString *const iRateUserDidRequestReminderToRateApp = @"iRateUserDidRequestReminderToRateApp";
-static NSString *const iRateDidOpenAppStore = @"iRateDidOpenAppStore";
+//notification keys
+IRATE_EXTERN NSString *const iRateCouldNotConnectToAppStore;
+IRATE_EXTERN NSString *const iRateDidDetectAppUpdate;
+IRATE_EXTERN NSString *const iRateDidPromptForRating;
+IRATE_EXTERN NSString *const iRateUserDidAttemptToRateApp;
+IRATE_EXTERN NSString *const iRateUserDidDeclineToRateApp;
+IRATE_EXTERN NSString *const iRateUserDidRequestReminderToRateApp;
+IRATE_EXTERN NSString *const iRateDidOpenAppStore;
 
 
 typedef NS_ENUM(NSUInteger, iRateErrorCode)
@@ -161,6 +158,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 - (BOOL)shouldPromptForRating;
 - (void)promptForRating;
 - (void)promptIfNetworkAvailable;
+- (void)promptIfAllCriteriaMet;
 - (void)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;
 

@@ -216,7 +216,11 @@ This method will immediately trigger the rating prompt without checking that the
 
     - (void)promptIfNetworkAvailable;
 
-This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the appStoreID or iRate cannot function.
+This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the `appStoreID` or iRate cannot function.
+
+    - (void)promptIfAllCriteriaMet;
+
+This method will check if all prompting criteria have been met, and if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it.
 
     - (void)openRatingsPageInAppStore;
 
@@ -320,6 +324,18 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.11
+
+- Added `promptIfCriteriaMet` convenience method
+- Added `NSNotificationCenter` notifications as alternative to delegate
+- Now uses `UIAlertController` instead of `UIAlertView` if available
+- Fixed compiler error when building with Xcode 6
+- Fixed error in Thai translation
+- Fixed potential crash on iOS 6
+- Improved Farsi translation
+- Now fully compatible with Swift
+- Added Swift Demo example
+
 Version 1.10.3
 
 - Fixed another bug in the rating reset logic after upgrade
@@ -338,9 +354,9 @@ Version 1.10.1
 Version 1.10
 
 - Now links directly to review page again on iOS 7.1 + (Apple has fixed support)
-- No longer interrupts rating popups for the full daysUntilPrompt period after an app update
-- Added promptForNewVersionIfUserRated option to re-prompt users who have previous rated (off by default)
-- Added updateMessage property for use with promptForNewVersionIfUserRated option
+- No longer interrupts rating popups for the full `daysUntilPrompt` period after an app update
+- Added `promptForNewVersionIfUserRated` option to re-prompt users who have previous rated (off by default)
+- Added `updateMessage` property for use with `promptForNewVersionIfUserRated` option
 - Fixed typo in French translation
 
 Version 1.9.3
