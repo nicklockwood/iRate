@@ -11,8 +11,6 @@
 
 @implementation AppDelegate
 
-@synthesize window;
-
 + (void)initialize
 {
     //set the bundle ID. normally you wouldn't need to do this
@@ -25,10 +23,10 @@
     [iRate sharedInstance].previewMode = YES;
 }
 
-- (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    return YES;
+  // Override point for customization after application launch.
+  return YES;
 }
 
 @end

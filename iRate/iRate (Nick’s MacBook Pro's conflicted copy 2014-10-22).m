@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.11.1
+//  Version 1.11
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -40,14 +40,14 @@
 #endif
 
 
-#pragma clang diagnostic ignored "-Wreceiver-is-weak"
-#pragma clang diagnostic ignored "-Warc-repeated-use-of-weak"
-#pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
-#pragma clang diagnostic ignored "-Wdirect-ivar-access"
-#pragma clang diagnostic ignored "-Wunused-macros"
-#pragma clang diagnostic ignored "-Wconversion"
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
-#pragma clang diagnostic ignored "-Wgnu"
+#pragma GCC diagnostic ignored "-Wreceiver-is-weak"
+#pragma GCC diagnostic ignored "-Warc-repeated-use-of-weak"
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma GCC diagnostic ignored "-Wdirect-ivar-access"
+#pragma GCC diagnostic ignored "-Wunused-macros"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#pragma GCC diagnostic ignored "-Wgnu"
 
 
 NSUInteger const iRateAppStoreGameGenreID = 6014;
@@ -821,16 +821,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
 }
 
-- (BOOL)showRemindButton
-{
-    return [self.remindButtonLabel length];
-}
-
-- (BOOL)showCancelButton
-{
-    return [self.cancelButtonLabel length];
-}
-
 - (void)promptForRating
 {
     if (!self.visibleAlert)
@@ -849,25 +839,22 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:self.messageTitle message:message preferredStyle:UIAlertControllerStyleAlert];
             
-            //rate action
+            //cancel action
+            [alert addAction:[UIAlertAction actionWithTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel : nil style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                if (self.verboseLogging)  NSLog(@"iRate presented Cancel button with title: %@", action.title);
+                [self declineThisVersion];
+                self.visibleAlert = nil;
+            }]];
+            
+            //cancel action
             [alert addAction:[UIAlertAction actionWithTitle:self.rateButtonLabel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 if (self.verboseLogging)  NSLog(@"iRate presented Rate button with title: %@", action.title);
                 [self rate];
                 self.visibleAlert = nil;
             }]];
             
-            if ([self showCancelButton])
-            {
-                //cancel action
-                [alert addAction:[UIAlertAction actionWithTitle:self.cancelButtonLabel style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                    if (self.verboseLogging)  NSLog(@"iRate presented Cancel button with title: %@", action.title);
-                    [self declineThisVersion];
-                    self.visibleAlert = nil;
-                }]];
-            }
-            
             //remind action
-            if ([self showRemindButton])
+            if ([self.remindButtonLabel length])
             {
                 [alert addAction:[UIAlertAction actionWithTitle:self.remindButtonLabel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                     if (self.verboseLogging)  NSLog(@"iRate presented Remind button with title: %@", action.title);
@@ -883,14 +870,13 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                 if (self.verboseLogging) NSLog(@"iRate presented UIAlertController.");
             }];
         }
-  
         else
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle message:message delegate:(id<UIAlertViewDelegate>)self cancelButtonTitle:[self showCancelButton]? self.cancelButtonLabel: nil otherButtonTitles:self.rateButtonLabel, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle message:message delegate:(id<UIAlertViewDelegate>)self cancelButtonTitle:[self.cancelButtonLabel length] ? self.cancelButtonLabel: nil otherButtonTitles:self.rateButtonLabel, nil];
             
             if (self.verboseLogging) NSLog(@"iRate presented classic UIAlertView.");
             
-            if ([self showRemindButton])
+            if ([self.remindButtonLabel length])
             {
                 [alert addButtonWithTitle:self.remindButtonLabel];
             }
@@ -908,20 +894,17 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             return;
         }
         
-        NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = self.messageTitle;
-        alert.informativeText = message;
-        [alert addButtonWithTitle:self.rateButtonLabel];
-        if ([self showCancelButton])
+        self.visibleAlert = [NSAlert alertWithMessageText:self.messageTitle
+                                            defaultButton:self.rateButtonLabel
+                                          alternateButton:self.cancelButtonLabel
+                                              otherButton:nil
+                                informativeTextWithFormat:@"%@", message];
+        
+        if ([self.remindButtonLabel length])
         {
-            [alert addButtonWithTitle:self.cancelButtonLabel];
-        }
-        if ([self showRemindButton])
-        {
-            [alert addButtonWithTitle:self.remindButtonLabel];
+            [self.visibleAlert addButtonWithTitle:self.remindButtonLabel];
         }
         
-        self.visibleAlert = alert;
         [self.visibleAlert beginSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
                                       modalDelegate:self
                                      didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
@@ -972,30 +955,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         [self promptIfAllCriteriaMet];
     }
-}
-
-- (void)didDismissAlert:(__unused id)alertView withButtonAtIndex:(NSInteger)buttonIndex
-{
-    //get button indices
-    NSInteger rateButtonIndex = 0;
-    NSInteger cancelButtonIndex = [self showCancelButton]? 1: 0;
-    NSInteger remindButtonIndex = [self showRemindButton]? cancelButtonIndex + 1: 0;
-    
-    if (buttonIndex == rateButtonIndex)
-    {
-        [self rate];
-    }
-    else if (buttonIndex == cancelButtonIndex)
-    {
-        [self declineThisVersion];
-    }
-    else if (buttonIndex == remindButtonIndex)
-    {
-        [self remindLater];
-    }
-    
-    //release alert
-    self.visibleAlert = nil;
 }
 
 #if TARGET_OS_IPHONE
@@ -1059,7 +1018,22 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [self didDismissAlert:alertView withButtonAtIndex:buttonIndex];
+    if (buttonIndex == alertView.cancelButtonIndex)
+    {
+        [self declineThisVersion];
+    }
+    else if (([self.cancelButtonLabel length] && buttonIndex == 2) ||
+             ([self.cancelButtonLabel length] == 0 && buttonIndex == 1))
+    {
+        [self remindLater];
+    }
+    else
+    {
+        [self rate];
+    }
+    
+    //release alert
+    self.visibleAlert = nil;
 }
 
 #else
@@ -1103,9 +1077,28 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [self.delegate iRateDidOpenAppStore];
 }
 
-- (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(__unused void *)contextInfo
+- (void)alertDidEnd:(__unused NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(__unused void *)contextInfo
 {
-    [self didDismissAlert:alert withButtonAtIndex:returnCode - NSAlertFirstButtonReturn];
+    switch (returnCode)
+    {
+        case NSAlertAlternateReturn:
+        {
+            [self declineThisVersion];
+            break;
+        }
+        case NSAlertDefaultReturn:
+        {
+            [self rate];
+            break;
+        }
+        default:
+        {
+            [self remindLater];
+        }
+    }
+    
+    //release alert
+    self.visibleAlert = nil;
 }
 
 #endif
