@@ -324,6 +324,10 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.11.2
+
+- Fixed critical bug in alert button handling on iOS 7 and earlier
+
 Version 1.11.1
 
 - Fixed deprecation warnings on Mac OS X 10.10 Yosemite

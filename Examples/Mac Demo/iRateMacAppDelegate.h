@@ -10,6 +10,6 @@
 
 @interface iRateMacAppDelegate : NSObject <NSApplicationDelegate>
 
-@property (unsafe_unretained) IBOutlet NSWindow *window;
+@property (unsafe_unretained, nonatomic) IBOutlet NSWindow *window;
 
 @end
