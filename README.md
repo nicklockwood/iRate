@@ -146,6 +146,10 @@ This option will cause iRate to send detailed logs to the console about the prom
 
 If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use or whether it's the latest version (unless you have explicitly disabled the `promptAtLaunch` option). Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).
 
+    @property (nonatomic, assign) BOOL useUIAlertControllerIfAvailable;
+
+By default, iRate will use UIAlertView on iOS to display the rating prompt. UIAlertView was deprecated in iOS8 and replaced by UIAlertController. Unfortunately, unlike UIAlertView, presenting an alert with UIAlertController interferes with the ability of the app to display other controllers, and since iRate could theoretically display an alert at any point during the app's lifetime, it might clash with the app attempting to present another view controller. For this reason, use of UIAlertController is disabled by default. Uou should only set thus property to YES if you are certain that it won't clash with your app logic (e.g, if you have disabled automatic rating prompts, or if your app doesn't use any modal view controllers).
+
 
 Advanced properties
 --------------
@@ -323,6 +327,11 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 
 Release Notes
 -----------------
+
+Version 1.11.3
+
+- Added useUIAlertControllerIfAvailable option
+- Disabled UIAlertController by default as it may interfere with in-app controller logic
 
 Version 1.11.2
 

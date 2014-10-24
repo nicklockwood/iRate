@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.11.2
+//  Version 1.11.3
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -846,7 +846,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             topController = topController.presentedViewController;
         }
         
-        if ([UIAlertController class] && topController)
+        if ([UIAlertController class] && topController && self.useUIAlertControllerIfAvailable)
         {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:self.messageTitle message:message preferredStyle:UIAlertControllerStyleAlert];
             
