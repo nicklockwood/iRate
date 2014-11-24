@@ -1,19 +1,17 @@
 //
-//  iRateAppDelegate.m
-//  iRate
+//  AppDelegate.m
+//  iPhoneDemo
 //
-//  Created by Nick Lockwood on 26/01/2011.
-//  Copyright 2011 Charcoal Design. All rights reserved.
+//  Created by Nick Lockwood on 12/10/2014.
+//  Copyright (c) 2014 Charcoal Design. All rights reserved.
 //
 
-#import "iRateAppDelegate.h"
+#import "AppDelegate.h"
 #import "iRate.h"
 
+@implementation AppDelegate
 
-@implementation iRateAppDelegate
-
-#pragma mark -
-#pragma mark Application lifecycle
+@synthesize window;
 
 + (void)initialize
 {
@@ -21,15 +19,15 @@
     //as it is picked up automatically from your Info.plist file
     //but we want to test with an app that's actually on the store
     [iRate sharedInstance].applicationBundleID = @"com.charcoaldesign.rainbowblocks-free";
-	[iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+    [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
     
     //enable preview mode
     [iRate sharedInstance].previewMode = YES;
 }
 
 - (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions
-{    
-    [self.window makeKeyAndVisible];
+{
+    // Override point for customization after application launch.
     return YES;
 }
 

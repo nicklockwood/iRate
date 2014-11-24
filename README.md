@@ -7,7 +7,7 @@ iRate is a library to help you promote your iPhone and Mac App Store apps by pro
 Supported OS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 7.1 / Mac OS 10.9 (Xcode 5.1, Apple LLVM compiler 5.1)
+* Supported build target - iOS 8.1 / Mac OS 10.10 (Xcode 6.1, Apple LLVM compiler 6.0)
 * Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
@@ -146,6 +146,10 @@ This option will cause iRate to send detailed logs to the console about the prom
 
 If set to YES, iRate will always display the rating prompt on launch, regardless of how long the app has been in use or whether it's the latest version (unless you have explicitly disabled the `promptAtLaunch` option). Use this to proofread your message and check your configuration is correct during testing, but disable it for the final release (defaults to NO).
 
+    @property (nonatomic, assign) BOOL useUIAlertControllerIfAvailable;
+
+By default, iRate will use UIAlertView on iOS to display the rating prompt. UIAlertView was deprecated in iOS8 and replaced by UIAlertController. Unfortunately, unlike UIAlertView, presenting an alert with UIAlertController interferes with the ability of the app to display other controllers, and since iRate could theoretically display an alert at any point during the app's lifetime, it might clash with the app attempting to present another view controller. For this reason, use of UIAlertController is disabled by default. Uou should only set thus property to YES if you are certain that it won't clash with your app logic (e.g, if you have disabled automatic rating prompts, or if your app doesn't use any modal view controllers).
+
 
 Advanced properties
 --------------
@@ -208,7 +212,7 @@ This method can be called from anywhere in your app (after iRate has been config
 
     - (BOOL)shouldPromptForRating;
 
-Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch.
+Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch. Calling this method will not call the `iRateShouldPromptForRating` delegate method.
 
     - (void)promptForRating;
 
@@ -216,7 +220,11 @@ This method will immediately trigger the rating prompt without checking that the
 
     - (void)promptIfNetworkAvailable;
 
-This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the appStoreID or iRate cannot function.
+This method will check if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it. Note that if your app is sandboxed and does not have the network access permission, this method will ignore the network availability status, however in this case you will need to manually set the `appStoreID` or iRate cannot function.
+
+    - (void)promptIfAllCriteriaMet;
+
+This method will check if all prompting criteria have been met, and if the app store is available, and if it is, it will display the rating prompt to the user. The iRateShouldPromptForRating delegate method will be called before the alert is shown, so you can intercept it.
 
     - (void)openRatingsPageInAppStore;
 
@@ -320,9 +328,36 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.11.3
+
+- Added useUIAlertControllerIfAvailable option
+- Disabled UIAlertController by default as it may interfere with in-app controller logic
+
+Version 1.11.2
+
+- Fixed critical bug in alert button handling on iOS 7 and earlier
+
+Version 1.11.1
+
+- Fixed deprecation warnings on Mac OS X 10.10 Yosemite
+- Improved Urdu translation
+
+Version 1.11
+
+- Added `promptIfCriteriaMet` convenience method
+- Added `NSNotificationCenter` notifications as alternative to delegate
+- Now uses `UIAlertController` instead of `UIAlertView` if available
+- Fixed compiler error when building with Xcode 6
+- Fixed error in Thai translation
+- Fixed potential crash on iOS 6
+- Improved Farsi translation
+- Now fully compatible with Swift
+- Added Swift Demo example
+
 Version 1.10.3
 
 - Fixed another bug in the rating reset logic after upgrade
+- Improved Turkish translation
 
 Version 1.10.2
 
@@ -337,9 +372,9 @@ Version 1.10.1
 Version 1.10
 
 - Now links directly to review page again on iOS 7.1 + (Apple has fixed support)
-- No longer interrupts rating popups for the full daysUntilPrompt period after an app update
-- Added promptForNewVersionIfUserRated option to re-prompt users who have previous rated (off by default)
-- Added updateMessage property for use with promptForNewVersionIfUserRated option
+- No longer interrupts rating popups for the full `daysUntilPrompt` period after an app update
+- Added `promptForNewVersionIfUserRated` option to re-prompt users who have previous rated (off by default)
+- Added `updateMessage` property for use with `promptForNewVersionIfUserRated` option
 - Fixed typo in French translation
 
 Version 1.9.3
