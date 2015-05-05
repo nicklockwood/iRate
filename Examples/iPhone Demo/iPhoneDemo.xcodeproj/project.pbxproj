@@ -51,7 +51,9 @@
 				135A33D219EB1293004B8F17 /* iPhoneDemo */,
 				135A33D119EB1293004B8F17 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		135A33D119EB1293004B8F17 /* Products */ = {
 			isa = PBXGroup;

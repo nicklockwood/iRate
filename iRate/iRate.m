@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.11.3
+//  Version 1.11.4
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -131,7 +131,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     static iRate *sharedInstance = nil;
     if (sharedInstance == nil)
     {
-        sharedInstance = [[self alloc] init];
+        sharedInstance = [(iRate *)[self alloc] init];
     }
     return sharedInstance;
 }
@@ -185,10 +185,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         {
             self.appStoreCountry = @"eu";
         }
-        else if ([[self.appStoreCountry stringByReplacingOccurrencesOfString:@"[A-Za-z]{2}" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, 2)] length])
+        else if (!self.appStoreCountry || [[self.appStoreCountry stringByReplacingOccurrencesOfString:@"[A-Za-z]{2}" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, 2)] length])
         {
-            self.appStoreCountry = @"us";
-        } else if (self.appStoreCountry == nil) {
             self.appStoreCountry = @"us";
         }
 
@@ -1041,7 +1039,33 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         return;
     }
 
-    if ([[UIApplication sharedApplication] canOpenURL:self.ratingsURL])
+    NSString *cantOpenMessage = nil;
+
+#if TARGET_IPHONE_SIMULATOR
+
+    if ([[self.ratingsURL scheme] isEqualToString:iRateiOSAppStoreURLScheme])
+    {
+        cantOpenMessage = @"iRate could not open the ratings page because the App Store is not available on the iOS simulator";
+    }
+
+#elif DEBUG
+
+    if (![[UIApplication sharedApplication] canOpenURL:self.ratingsURL])
+    {
+        cantOpenMessage = [NSString stringWithFormat:@"iRate was unable to open the specified ratings URL: %@", self.ratingsURL];
+    }
+
+#endif
+
+    if (cantOpenMessage)
+    {
+        NSLog(@"%@", cantOpenMessage);
+        NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: cantOpenMessage}];
+        [self.delegate iRateCouldNotConnectToAppStore:error];
+        [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
+                                                            object:error];
+    }
+    else
     {
         if (self.verboseLogging)
         {
@@ -1051,25 +1075,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [[UIApplication sharedApplication] openURL:self.ratingsURL];
         [self.delegate iRateDidOpenAppStore];
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidOpenAppStore
-                                                            object:nil];
-    }
-    else
-    {
-         NSString *message = [NSString stringWithFormat:@"iRate was unable to open the specified ratings URL: %@", self.ratingsURL];
-
-#if TARGET_IPHONE_SIMULATOR
-
-        if ([[self.ratingsURL scheme] isEqualToString:iRateiOSAppStoreURLScheme])
-        {
-            message = @"iRate could not open the ratings page because the App Store is not available on the iOS simulator";
-        }
-
-#endif
-        NSLog(@"%@", message);
-        NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: message}];
-        [self.delegate iRateCouldNotConnectToAppStore:error];
-        [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
-                                                            object:error];
+                                                        object:nil];
     }
 }
 

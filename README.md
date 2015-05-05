@@ -7,7 +7,7 @@ iRate is a library to help you promote your iPhone and Mac App Store apps by pro
 Supported OS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 8.1 / Mac OS 10.10 (Xcode 6.1, Apple LLVM compiler 6.0)
+* Supported build target - iOS 8.3 / Mac OS 10.10 (Xcode 6.1, Apple LLVM compiler 6.1)
 * Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
@@ -327,6 +327,12 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 
 Release Notes
 -----------------
+
+Version 1.11.4
+
+- Added fix for possible Apple rejection issue to do with `canOpenURL:`
+- Added fix for nil locale issue
+- Added Macedonian translation
 
 Version 1.11.3
 
