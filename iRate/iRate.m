@@ -126,12 +126,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
 }
 
-+ (iRate *)sharedInstance
++ (instancetype)sharedInstance
 {
     static iRate *sharedInstance = nil;
     if (sharedInstance == nil)
     {
-        sharedInstance = [[iRate alloc] init];
+        sharedInstance = [[self alloc] init];
     }
     return sharedInstance;
 }

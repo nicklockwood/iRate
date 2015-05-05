@@ -104,7 +104,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 
 @interface iRate : NSObject
 
-+ (iRate *)sharedInstance;
++ (instancetype)sharedInstance;
 
 //app store ID - this is only needed if your
 //bundle ID is not unique between iOS and Mac app stores
