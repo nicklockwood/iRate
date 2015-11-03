@@ -161,7 +161,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
 }
 
-- (iRate *)init
+- (instancetype)init
 {
     if ((self = [super init]))
     {
