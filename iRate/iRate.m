@@ -194,14 +194,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         if ([self.applicationVersion length] == 0)
         {
-            self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+            self.applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(__bridge NSString *)kCFBundleVersionKey];
         }
 
         //localised application name
         self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
         if ([self.applicationName length] == 0)
         {
-            self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
+            self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(__bridge NSString *)kCFBundleNameKey];
         }
 
         //bundle id
@@ -693,7 +693,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
         NSError *error = nil;
         NSURLResponse *response = nil;
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:iTunesServiceURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIMEOUT];
+        NSURL *url = [NSURL URLWithString:iTunesServiceURL];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIMEOUT];
         NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
         NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
         if (data && statusCode == 200)

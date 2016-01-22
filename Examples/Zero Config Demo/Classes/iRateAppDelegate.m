@@ -29,7 +29,8 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    window.rootViewController = viewController;
     // Add the view controller's view to the window and display.
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];

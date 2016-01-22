@@ -77,7 +77,8 @@
     }
     else if (buttonIndex == 3) // open web page
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.apple.com"]];
+        NSURL *url = [NSURL URLWithString:@"http://www.apple.com"];
+        [[UIApplication sharedApplication] openURL:url];
     }
     
     self.alertView = nil;
