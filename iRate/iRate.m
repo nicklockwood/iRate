@@ -663,7 +663,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.checkingForPrompt = NO;
 
 #if TARGET_OS_IPHONE
-        if(self.shouldAskSentiment && [self canDeviceSendEmail] && [self developerEmail] != nil)
+        if(self.shouldAskSentiment && [self canDeviceSendEmail] && ([self developerEmail] != nil || [self.delegate respondsToSelector:@selector(iRatePromptForFeedback)]) )
         {
             //confirm with delegate
             if (![self.delegate iRateShouldPromptForSentiment])
