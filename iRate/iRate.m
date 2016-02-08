@@ -107,6 +107,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (void)iRateCouldNotConnectToAppStore:(__unused NSError *)error {}
 - (void)iRateDidDetectAppUpdate {}
 - (BOOL)iRateShouldPromptForRating { return YES; }
+- (BOOL)iRateShouldPromptForSentiment { return YES; }
+
 - (void)iRateDidPromptForRating {}
 - (void)iRateUserDidAttemptToRateApp {}
 - (void)iRateUserDidDeclineToRateApp {}
@@ -326,7 +328,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     NSString *updateMessage = _updateMessageSentiment;
     if (!updateMessage)
     {
-        updateMessage = [self localizedStringForKey:iRateUpdateMessageKey withDefault:self.updateMessageSentiment];
+        updateMessage = [self localizedStringForKey:iRateUpdateMessageKey withDefault:self.messageSentiment];
     }
     return [updateMessage stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
@@ -660,23 +662,32 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         //no longer checking
         self.checkingForPrompt = NO;
 
-        //confirm with delegate
-        if (![self.delegate iRateShouldPromptForRating])
-        {
-            if (self.verboseLogging)
-            {
-                NSLog(@"iRate did not display the rating prompt because the iRateShouldPromptForRating delegate method returned NO");
-            }
-            return;
-        }
 #if TARGET_OS_IPHONE
         if(self.shouldAskSentiment && [self canDeviceSendEmail] && [self developerEmail] != nil)
         {
+            //confirm with delegate
+            if (![self.delegate iRateShouldPromptForSentiment])
+            {
+                if (self.verboseLogging)
+                {
+                    NSLog(@"iRate did not display the sentiment prompt because the iRateShouldPromptForSentiment delegate method returned NO");
+                }
+                return;
+            }
             [self promptForSentiment];
         }
         else
 #endif
         {
+            //confirm with delegate
+            if (![self.delegate iRateShouldPromptForRating])
+            {
+                if (self.verboseLogging)
+                {
+                    NSLog(@"iRate did not display the rating prompt because the iRateShouldPromptForRating delegate method returned NO");
+                }
+                return;
+            }
             [self promptForRating];
         }
     }
