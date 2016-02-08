@@ -670,7 +670,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             return;
         }
 #if TARGET_OS_IPHONE
-        if(self.shouldAskSentiment && [self canDeviceSendEmail])
+        if(self.shouldAskSentiment && [self canDeviceSendEmail] && [self developerEmail] != nil)
         {
             [self promptForSentiment];
         }
