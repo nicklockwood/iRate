@@ -60,6 +60,17 @@
     return NO;
 }
 
+- (void)iRatePromptForFeedback
+{
+    if (!self.alertView)
+    {
+        self.alertView = [[UIAlertView alloc] initWithTitle:@"Feedback!" message:@"I'm A feedback modal?" delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"1", @"2", @"3", nil];
+        
+        [self.alertView show];
+    }
+}
+
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == alertView.cancelButtonIndex)

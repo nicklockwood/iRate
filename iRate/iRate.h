@@ -109,6 +109,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 - (void)iRateUserDidRequestReminderToRateApp;
 - (BOOL)iRateShouldOpenAppStore;
 - (void)iRateDidOpenAppStore;
+- (void)iRatePromptForFeedback;
 
 @end
 

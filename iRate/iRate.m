@@ -1241,11 +1241,21 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         else if (buttonIndex == cancelButtonIndex)
         {
-            
+            [self declineThisVersion];
         }
         else if (buttonIndex == negativeButtonIndex)
         {
-            [self promptForFeedback];
+            [self declineThisVersion];
+            
+            //Have we setup custom feedback
+            if ([self.delegate respondsToSelector:@selector(iRatePromptForFeedback)])
+            {
+                [self.delegate iRatePromptForFeedback];
+            }
+            else
+            {
+                [self promptForFeedback];
+            }
         }
     }
     else

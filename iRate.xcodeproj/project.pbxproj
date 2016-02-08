@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		3A2D4EDA1B90E4A900F3F94E /* iRate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A2D4ED91B90E4A900F3F94E /* iRate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3A2D4EE21B90E68D00F3F94E /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D4EE11B90E68D00F3F94E /* iRate.m */; settings = {ASSET_TAGS = (); }; };
-		3A2D4EE51B90EE9900F3F94E /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D4EE11B90E68D00F3F94E /* iRate.m */; settings = {ASSET_TAGS = (); }; };
+		3A2D4EE21B90E68D00F3F94E /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D4EE11B90E68D00F3F94E /* iRate.m */; };
+		3A2D4EE51B90EE9900F3F94E /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D4EE11B90E68D00F3F94E /* iRate.m */; };
 		3A2D4EE81B90EE9900F3F94E /* iRate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A2D4ED91B90E4A900F3F94E /* iRate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A39CFC9B1C694EF600DBB5BF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A39CFC9A1C694EF600DBB5BF /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		3A2D4EDB1B90E4A900F3F94E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A2D4EE11B90E68D00F3F94E /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		3A2D4EED1B90EE9900F3F94E /* iRate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iRate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A39CFC9A1C694EF600DBB5BF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A39CFC9B1C694EF600DBB5BF /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +45,7 @@
 		3A2D4ECC1B90E4A900F3F94E = {
 			isa = PBXGroup;
 			children = (
+				A39CFC9C1C694EFA00DBB5BF /* Framework */,
 				3A2D4ED81B90E4A900F3F94E /* iRate */,
 				3A2D4ED71B90E4A900F3F94E /* Products */,
 			);
@@ -64,6 +68,14 @@
 				3A2D4EDB1B90E4A900F3F94E /* Info.plist */,
 			);
 			path = iRate;
+			sourceTree = "<group>";
+		};
+		A39CFC9C1C694EFA00DBB5BF /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				A39CFC9A1C694EF600DBB5BF /* MessageUI.framework */,
+			);
+			name = Framework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
