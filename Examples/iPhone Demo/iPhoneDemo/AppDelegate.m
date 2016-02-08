@@ -23,6 +23,11 @@
     
     //enable preview mode
     [iRate sharedInstance].previewMode = YES;
+    /*
+    [iRate sharedInstance].shouldAskSentiment = YES;
+    [iRate sharedInstance].cancelButtonLabel = @"Not now";
+    [iRate sharedInstance].developerEmail = @"test@test.com";
+     */
 }
 
 - (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions

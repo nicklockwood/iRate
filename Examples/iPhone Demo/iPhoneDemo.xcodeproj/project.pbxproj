@@ -15,6 +15,7 @@
 		135A33E419EB1293004B8F17 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135A33E219EB1293004B8F17 /* LaunchScreen.xib */; };
 		13BDD52119EB26150060C341 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 13BDD51E19EB26150060C341 /* iRate.bundle */; };
 		13BDD52219EB26150060C341 /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BDD52019EB26150060C341 /* iRate.m */; };
+		A33B225E1C68BCC10012CCCA /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A33B225D1C68BCC10012CCCA /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		13BDD51E19EB26150060C341 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
 		13BDD51F19EB26150060C341 /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		13BDD52019EB26150060C341 /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
+		A33B225D1C68BCC10012CCCA /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A33B225E1C68BCC10012CCCA /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +50,7 @@
 		135A33C719EB1293004B8F17 = {
 			isa = PBXGroup;
 			children = (
+				A33B225D1C68BCC10012CCCA /* MessageUI.framework */,
 				13BDD51D19EB26150060C341 /* iRate */,
 				135A33D219EB1293004B8F17 /* iPhoneDemo */,
 				135A33D119EB1293004B8F17 /* Products */,
