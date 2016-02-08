@@ -893,12 +893,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 -(NSString*)developerEmail
 {
-#if TARGET_OS_IPHONE
-    if(self.shouldAskSentiment)
-    {
-        NSAssert(_developerEmail != nil, @"Please set a developer email!");
-    }
-#endif
     return _developerEmail;
 }
 
