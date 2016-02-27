@@ -1,6 +1,6 @@
 iRate
 
-Version 1.11.4, May 5th, 2015
+Version 1.11.5, Feb 27th, 2016
 
 Copyright (C) 2011 Charcoal Design
 
@@ -16,8 +16,8 @@ freely, subject to the following restrictions:
    claim that you wrote the original software. If you use this software
    in a product, an acknowledgment in the product documentation would be
    appreciated but is not required.
-   
+
 2. Altered source versions must be plainly marked as such, and must not be
    misrepresented as being the original software.
-   
+
 3. This notice may not be removed or altered from any source distribution.
