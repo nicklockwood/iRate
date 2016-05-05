@@ -180,6 +180,10 @@ The number of significant application events that have been recorded since the c
 
 The average number of times per week that the current version of the app has been used (launched).
 
+    @property (nonatomic, readonly) NSUInteger userRatingCountForCurrentVersion;
+
+The number of user ratings for the current version, in the country specified by the `appStoreCountry` property.
+
     @property (nonatomic, assign) BOOL declinedThisVersion;
 
 This flag indicates whether the user has declined to rate the current version (YES) or not (NO). This is not currently used by the iRate prompting logic, but may be useful for implementing your own logic.
