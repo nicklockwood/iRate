@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0736B7141CBB4B820081B7D8 /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0736B7131CBB4B820081B7D8 /* iRate.bundle */; };
 		3A2D4EDA1B90E4A900F3F94E /* iRate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A2D4ED91B90E4A900F3F94E /* iRate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3A2D4EE21B90E68D00F3F94E /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D4EE11B90E68D00F3F94E /* iRate.m */; settings = {ASSET_TAGS = (); }; };
 		3A2D4EE51B90EE9900F3F94E /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2D4EE11B90E68D00F3F94E /* iRate.m */; settings = {ASSET_TAGS = (); }; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0736B7131CBB4B820081B7D8 /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
 		3A2D4ED61B90E4A900F3F94E /* iRate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iRate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A2D4ED91B90E4A900F3F94E /* iRate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
 		3A2D4EDB1B90E4A900F3F94E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 		3A2D4ED81B90E4A900F3F94E /* iRate */ = {
 			isa = PBXGroup;
 			children = (
+				0736B7131CBB4B820081B7D8 /* iRate.bundle */,
 				3A2D4ED91B90E4A900F3F94E /* iRate.h */,
 				3A2D4EE11B90E68D00F3F94E /* iRate.m */,
 				3A2D4EDB1B90E4A900F3F94E /* Info.plist */,
@@ -160,6 +163,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0736B7141CBB4B820081B7D8 /* iRate.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
