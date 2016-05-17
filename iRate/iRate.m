@@ -312,7 +312,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #if TARGET_OS_IPHONE
 
     float iOSVersion = [[UIDevice currentDevice].systemVersion floatValue];
-    if (iOSVersion >= 7.0f && iOSVersion < 7.1f)
+    if (iOSVersion >= IOS_7_0 && iOSVersion < IOS_7_1)
     {
         URLString = iRateiOS7AppStoreURLFormat;
     }
