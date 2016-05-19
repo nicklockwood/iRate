@@ -128,10 +128,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 + (instancetype)sharedInstance
 {
-    static iRate *sharedInstance = nil;
+    static id sharedInstance = nil;
     if (sharedInstance == nil)
     {
-        sharedInstance = [(iRate *)[self alloc] init];
+        sharedInstance = [[self alloc] init];
     }
     return sharedInstance;
 }
@@ -161,7 +161,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
 }
 
-- (iRate *)init
+- (instancetype)init
 {
     if ((self = [super init]))
     {
