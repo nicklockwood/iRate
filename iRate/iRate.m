@@ -95,21 +95,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #define REQUEST_TIMEOUT 60.0
 
 
-@implementation NSObject (iRate)
-
-- (void)iRateCouldNotConnectToAppStore:(__unused NSError *)error {}
-- (void)iRateDidDetectAppUpdate {}
-- (BOOL)iRateShouldPromptForRating { return YES; }
-- (void)iRateDidPromptForRating {}
-- (void)iRateUserDidAttemptToRateApp {}
-- (void)iRateUserDidDeclineToRateApp {}
-- (void)iRateUserDidRequestReminderToRateApp {}
-- (BOOL)iRateShouldOpenAppStore { return YES; }
-- (void)iRateDidOpenAppStore {}
-
-@end
-
-
 @interface iRate()
 
 @property (nonatomic, strong) id visibleAlert;
@@ -625,7 +610,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.checkingForPrompt = NO;
 
         //confirm with delegate
-        if (![self.delegate iRateShouldPromptForRating])
+        if ([self.delegate respondsToSelector:@selector(iRateShouldPromptForRating)] && ![self.delegate iRateShouldPromptForRating])
         {
             if (self.verboseLogging)
             {
@@ -658,7 +643,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
 
         //could not connect
-        [self.delegate iRateCouldNotConnectToAppStore:error];
+        if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)]) {
+            [self.delegate iRateCouldNotConnectToAppStore:error];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
                                                             object:error];
     }
@@ -949,7 +936,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 
         //inform about prompt
-        [self.delegate iRateDidPromptForRating];
+        if ([self.delegate respondsToSelector:@selector(iRateDidPromptForRating)]) {
+            [self.delegate iRateDidPromptForRating];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidPromptForRating
                                                             object:nil];
     }
@@ -980,7 +969,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
 
         //inform about app update
-        [self.delegate iRateDidDetectAppUpdate];
+        if ([self.delegate respondsToSelector:@selector(iRateDidDetectAppUpdate)]) {
+            [self.delegate iRateDidDetectAppUpdate];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidDetectAppUpdate
                                                             object:nil];
     }
@@ -1066,7 +1057,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     {
         NSLog(@"%@", cantOpenMessage);
         NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: cantOpenMessage}];
-        [self.delegate iRateCouldNotConnectToAppStore:error];
+        if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)]) {
+            [self.delegate iRateCouldNotConnectToAppStore:error];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
                                                             object:error];
     }
@@ -1078,7 +1071,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
 
         [[UIApplication sharedApplication] openURL:self.ratingsURL];
-        [self.delegate iRateDidOpenAppStore];
+        if ([self.delegate respondsToSelector:@selector(iRateDidOpenAppStore)]) {
+            [self.delegate iRateDidOpenAppStore];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidOpenAppStore
                                                         object:nil];
     }
@@ -1127,7 +1122,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
     [[NSWorkspace sharedWorkspace] openURL:self.ratingsURL];
     [self openAppPageWhenAppStoreLaunched];
-    [self.delegate iRateDidOpenAppStore];
+    if ([self.delegate respondsToSelector:@selector(iRateDidOpenAppStore)]) {
+        [self.delegate iRateDidOpenAppStore];
+    }
 }
 
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(__unused void *)contextInfo
@@ -1154,7 +1151,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     self.declinedThisVersion = YES;
 
     //log event
-    [self.delegate iRateUserDidDeclineToRateApp];
+    if ([self.delegate respondsToSelector:@selector(iRateUserDidDeclineToRateApp)]) {
+        [self.delegate iRateUserDidDeclineToRateApp];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:iRateUserDidDeclineToRateApp
                                                         object:nil];
 }
@@ -1165,7 +1164,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     self.lastReminded = [NSDate date];
 
     //log event
-    [self.delegate iRateUserDidRequestReminderToRateApp];
+    if ([self.delegate respondsToSelector:@selector(iRateUserDidRequestReminderToRateApp)]) {
+        [self.delegate iRateUserDidRequestReminderToRateApp];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:iRateUserDidRequestReminderToRateApp
                                                         object:nil];
 }
@@ -1176,11 +1177,14 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     self.ratedThisVersion = YES;
 
     //log event
-    [self.delegate iRateUserDidAttemptToRateApp];
+    if ([self.delegate respondsToSelector:@selector(iRateUserDidAttemptToRateApp)]) {
+        [self.delegate iRateUserDidAttemptToRateApp];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:iRateUserDidAttemptToRateApp
                                                         object:nil];
 
-    if ([self.delegate iRateShouldOpenAppStore])
+    // if the delegate has not implemented the method, or if it returns YES
+    if (![self.delegate respondsToSelector:@selector(iRateShouldOpenAppStore)] || [self.delegate iRateShouldOpenAppStore])
     {
         //launch mac app store
         [self openRatingsPageInAppStore];
