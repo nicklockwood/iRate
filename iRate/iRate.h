@@ -30,7 +30,6 @@
 //  3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
 
@@ -53,6 +52,10 @@
 #import <Cocoa/Cocoa.h>
 #define IRATE_EXTERN APPKIT_EXTERN
 #endif
+
+// Some Macros for better code readability
+#define IOS_7_0 7.0f
+#define IOS_7_1 7.1f
 
 //! Project version number for iRate.
 FOUNDATION_EXPORT double iRateVersionNumber;
