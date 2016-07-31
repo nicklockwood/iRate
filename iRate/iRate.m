@@ -108,16 +108,18 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 + (void)load
 {
-    [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self sharedInstance];
+    });
 }
 
 + (instancetype)sharedInstance
 {
+    static dispatch_once_t once;
     static iRate *sharedInstance = nil;
-    if (sharedInstance == nil)
-    {
+    dispatch_once(&once, ^{
         sharedInstance = [(iRate *)[self alloc] init];
-    }
+    });
     return sharedInstance;
 }
 
@@ -219,7 +221,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 #endif
 
         //app launched
-        [self performSelectorOnMainThread:@selector(applicationLaunched) withObject:nil waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self applicationLaunched];
+        });
     }
     return self;
 }
@@ -653,19 +657,15 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)checkForConnectivityInBackground
 {
-    if ([NSThread isMainThread])
-    {
-        [self performSelectorInBackground:@selector(checkForConnectivityInBackground) withObject:nil];
-        return;
-    }
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
+        [self checkForConnectivity];
+    });
+}
 
+- (void)checkForConnectivity
+{
     @autoreleasepool
     {
-        //prevent concurrent checks
-        static BOOL checking = NO;
-        if (checking) return;
-        checking = YES;
-
         //first check iTunes
         NSString *iTunesServiceURL = [NSString stringWithFormat:iRateAppLookupURLFormat, self.appStoreCountry];
         if (_appStoreID) //important that we check ivar and not getter in case it has changed
@@ -722,7 +722,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                         if (!_appStoreID)
                         {
                             NSString *appStoreIDString = [self valueForKey:@"trackId" inJSON:json];
-                            [self performSelectorOnMainThread:@selector(setAppStoreIDOnMainThread:) withObject:appStoreIDString waitUntilDone:YES];
+                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                [self setAppStoreIDOnMainThread:appStoreIDString];
+                            });
 
                             if (self.verboseLogging)
                             {
@@ -784,16 +786,18 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         //handle errors (ignoring sandbox issues)
         if (error && !(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && _appStoreID))
         {
-            [self performSelectorOnMainThread:@selector(connectionError:) withObject:error waitUntilDone:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self connectionError:error];
+            });
         }
         else if (self.appStoreID || self.previewMode)
         {
             //show prompt
-            [self performSelectorOnMainThread:@selector(connectionSucceeded) withObject:nil waitUntilDone:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self connectionSucceeded];
+            });
         }
 
-        //finished
-        checking = NO;
     }
 }
 
@@ -986,26 +990,29 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)didDismissAlert:(__unused id)alertView withButtonAtIndex:(NSInteger)buttonIndex
 {
-    //get button indices
-    NSInteger rateButtonIndex = 0;
-    NSInteger cancelButtonIndex = [self showCancelButton]? 1: 0;
-    NSInteger remindButtonIndex = [self showRemindButton]? cancelButtonIndex + 1: 0;
+    dispatch_async(dispatch_get_main_queue(), ^{
 
-    if (buttonIndex == rateButtonIndex)
-    {
-        [self rate];
-    }
-    else if (buttonIndex == cancelButtonIndex)
-    {
-        [self declineThisVersion];
-    }
-    else if (buttonIndex == remindButtonIndex)
-    {
-        [self remindLater];
-    }
+        //get button indices
+        NSInteger rateButtonIndex = 0;
+        NSInteger cancelButtonIndex = [self showCancelButton]? 1: 0;
+        NSInteger remindButtonIndex = [self showRemindButton]? cancelButtonIndex + 1: 0;
 
-    //release alert
-    self.visibleAlert = nil;
+        if (buttonIndex == rateButtonIndex)
+        {
+            [self rate];
+        }
+        else if (buttonIndex == cancelButtonIndex)
+        {
+            [self declineThisVersion];
+        }
+        else if (buttonIndex == remindButtonIndex)
+        {
+            [self remindLater];
+        }
+        
+        //release alert
+        self.visibleAlert = nil;
+    });
 }
 
 #if TARGET_OS_IPHONE
