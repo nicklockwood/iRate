@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.11.4
+//  Version 1.11.5
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -53,9 +53,6 @@
 #define IRATE_EXTERN APPKIT_EXTERN
 #endif
 
-// Some Macros for better code readability
-#define IOS_7_0 7.0f
-#define IOS_7_1 7.1f
 
 //! Project version number for iRate.
 FOUNDATION_EXPORT double iRateVersionNumber;
@@ -170,7 +167,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 - (void)promptIfAllCriteriaMet;
 - (void)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;
-- (void)remindLater; // Exposed this method
+- (void)remindLater;
 
 @end
 

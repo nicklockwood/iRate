@@ -7,8 +7,8 @@ iRate is a library to help you promote your iPhone and Mac App Store apps by pro
 Supported OS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 8.3 / Mac OS 10.10 (Xcode 6.1, Apple LLVM compiler 6.1)
-* Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
+* Supported build target - iOS 9.3 / Mac OS 10.11 (Xcode 7.3, Apple LLVM compiler 7.1)
+* Earliest supported deployment target - iOS 7.0 / Mac OS 10.9
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -206,10 +206,6 @@ Methods
 
 Besides configuration, iRate has the following methods:
 
-    - (void)logEvent:(BOOL)deferPrompt;
-
-This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached, the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
-
     - (BOOL)shouldPromptForRating;
 
 Returns YES if the prompt criteria have been met, and NO if they have not. You can use this to decide when to display a rating prompt if you have disabled the automatic display at app launch. Calling this method will not call the `iRateShouldPromptForRating` delegate method.
@@ -229,6 +225,14 @@ This method will check if all prompting criteria have been met, and if the app s
     - (void)openRatingsPageInAppStore;
 
 This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, depending on which platform iRate is running on. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call the `-iRateShouldOpenAppStore` delegate method. You should use this method to open the ratings page instead of the ratingsURL property, as the process for launching the app store is more complex than merely opening the URL in many cases. Note that this method depends on the `appStoreID` which is only retrieved after polling the iTunes server. If you call this method without first doing an update check, you will either need to set the `appStoreID` property yourself beforehand, or risk that the method may take some time to make a network call, or fail entirely. On success, this method will call the `-iRateDidOpenAppStore` delegate method. On Failure it will call the `-iRateCouldNotConnectToAppStore:` delegate method.
+
+- (void)logEvent:(BOOL)deferPrompt;
+
+This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached, the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
+
+- (void)remindLater;
+
+This method resets the reminder period.
 
 
 Delegate methods
@@ -327,6 +331,17 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 
 Release Notes
 -----------------
+
+Version 1.11.5
+
+- Now uses https URLs to avoid issues with App Transport Security
+- Fixed Swift crashes due to nonstandard delegate implementation
+- Added special case for Gibraltar
+- Fixed warnings on latest Xcode
+- Added Carthage support
+- Added Taiwan Chinese (zh-TW) Localization
+- Better Italian localisation
+- Exposed remindLater method
 
 Version 1.11.4
 
