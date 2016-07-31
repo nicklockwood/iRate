@@ -35,7 +35,7 @@ To install iRate into your app, drag the iRate.h, .m and .bundle files into your
 
 iRate typically requires no configuration at all and will simply run automatically, using the application's bundle ID to look the app ID up on the App Store.
 
-**Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app. Also, if you are creating a sandboxed Mac app and your app does not request the network access permission then you will need to set the appStoreID because it cannot be retrieved from the iTunes service. 
+**Note:** If you have apps with matching bundle IDs on both the Mac and iOS app stores (even if they use different capitalisation), the lookup mechanism won't work, so you'll need to manually set the appStoreID property, which is a numeric ID that can be found in iTunes Connect after you set up an app. Also, if you are creating a sandboxed Mac app and your app does not request the network access permission then you will need to set the appStoreID because it cannot be retrieved from the iTunes service.
 
 If you do wish to customise iRate, the best time to do this is *before* the app has finished launching. The easiest way to do this is to add the iRate configuration code in your AppDelegate's `initialize` method, like this:
 
@@ -103,7 +103,7 @@ The title displayed for the rating prompt. If you don't want to display a title 
 The rating prompt message. This should be polite and courteous, but not too wordy. If you don't want to display a message then set this to `@""`;
 
     @property (nonatomic, copy) NSString *updateMessage;
-    
+
 This is a message to be used for users who have previously rated the app, encouraging them to re-rate. This allows you to customise the message for these users. If you do not supply a custom message for this case, the standard message will be used.
 
     @property (nonatomic, copy) NSString *cancelButtonLabel;
@@ -123,7 +123,7 @@ The button label for the button the user presses if they don't want to rate the 
 By default, iRate will use all available languages in the iRate.bundle, even if used in an app that does not support localisation. If you would prefer to restrict iRate to only use the same set of languages that your application already supports, set this property to NO. (Defaults to YES).
 
     @property (nonatomic, assign) BOOL promptForNewVersionIfUserRated;
-    
+
 Because iTunes ratings are version-specific, you ideally want users to rate each new version of your app. Users who really love your app may be willing to update their review for new releases. Set `promptForNewVersionIfUserRated` to `YES`, and iRate will prompt the user again each time they install an update until they decline to rate the app. If they decline, they will not be asked again.
 
     @property (nonatomic, assign) BOOL onlyPromptIfLatestVersion;
@@ -174,7 +174,7 @@ The number of times the current version of the app has been used (launched).
 
     @property (nonatomic, assign) NSUInteger eventCount;
 
-The number of significant application events that have been recorded since the current version was installed. This is incremented by the logEvent method, but can also be manipulated directly. Check out the *Events Demo* to see how this os used. 
+The number of significant application events that have been recorded since the current version was installed. This is incremented by the logEvent method, but can also be manipulated directly. Check out the *Events Demo* to see how this os used.
 
     @property (nonatomic, readonly) float usesPerWeek;
 
@@ -198,7 +198,7 @@ This (readonly) flag indicates whether the user has previously rated any version
 
     @property (nonatomic, assign) id<iRateDelegate> delegate;
 
-An object you have supplied that implements the `iRateDelegate` protocol, documented below. Use this to detect and/or override iRate's default behaviour. This defaults to the App Delegate, so if you are using your App Delegate as your iRate delegate, you don't need to set this property. 
+An object you have supplied that implements the `iRateDelegate` protocol, documented below. Use this to detect and/or override iRate's default behaviour. This defaults to the App Delegate, so if you are using your App Delegate as your iRate delegate, you don't need to set this property.
 
 
 Methods
@@ -253,19 +253,19 @@ This method is called immediately before the rating prompt is displayed to the u
 This method is called immediately before the rating prompt is displayed. This is useful if you use analytics to track what percentage of users see the prompt and then go to the app store. This can help you fine tune the circumstances around when/how you show the prompt.
 
     - (void)iRateUserDidAttemptToRateApp;
-    
+
 This is called when the user pressed the rate button in the rating prompt. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation or call the `openRatingsPageInAppStore` method directly.
-    
+
     - (void)iRateUserDidDeclineToRateApp;
-    
+
 This is called when the user declines to rate the app. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation.
-    
+
     - (void)iRateUserDidRequestReminderToRateApp;
 
 This is called when the user asks to be reminded to rate the app. This is useful if you want to log user interaction with iRate. This method is only called if you are using the standard iRate alert view prompt and will not be called automatically if you provide a custom rating implementation.
 
     - (BOOL)iRateShouldOpenAppStore;
-    
+
 This method is called immediately before iRate attempts to open the app store. Return NO if you wish to implement your own ratings page display logic.
 
     - (void)iRateDidOpenAppStore;
@@ -327,6 +327,11 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 
 Release Notes
 -----------------
+
+Version 1.11.5
+- Switched to HTTPS for communication with iTunes
+- iRate now searches for the localization files in a proper folder
+- Fixes for the sample application
 
 Version 1.11.4
 
@@ -546,7 +551,7 @@ Version 1.4.4
 
 Version 1.4.3
 
-- It is now possible again to use debug to test the iRate message for apps that are not yet on the App Store. 
+- It is now possible again to use debug to test the iRate message for apps that are not yet on the App Store.
 
 Version 1.4.2
 
@@ -601,7 +606,7 @@ Version 1.3
 
 Version 1.2.3
 
-- iRate now uses CFBundleDisplayName for the application name (if available) 
+- iRate now uses CFBundleDisplayName for the application name (if available)
 - Reorganised examples
 
 Version 1.2.2
