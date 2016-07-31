@@ -33,6 +33,9 @@
 
 #import "iRate.h"
 
+#if TARGET_OS_IPHONE
+#import <MessageUI/MessageUI.h>
+#endif
 
 #import <Availability.h>
 #if !__has_feature(objc_arc)
@@ -62,6 +65,10 @@ NSString *const iRateUpdateMessageKey = @"iRateUpdateMessage";
 NSString *const iRateCancelButtonKey = @"iRateCancelButton";
 NSString *const iRateRemindButtonKey = @"iRateRemindButton";
 NSString *const iRateRateButtonKey = @"iRateRateButton";
+NSString *const iRateAppMessageSentimentKey = @"iRateAppMessageSentiment";
+NSString *const iRateGameMessageSentimentKey = @"iRateGameMessageSentiment";
+NSString *const iRateSentimentPostitiveButtonKey = @"iRateSentimentPostitiveButton";
+NSString *const iRateSentimentNegativeButtonKey = @"iRateSentimentNegativeButton";
 
 NSString *const iRateCouldNotConnectToAppStore = @"iRateCouldNotConnectToAppStore";
 NSString *const iRateDidDetectAppUpdate = @"iRateDidDetectAppUpdate";
@@ -100,6 +107,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (void)iRateCouldNotConnectToAppStore:(__unused NSError *)error {}
 - (void)iRateDidDetectAppUpdate {}
 - (BOOL)iRateShouldPromptForRating { return YES; }
+- (BOOL)iRateShouldPromptForSentiment { return YES; }
+
 - (void)iRateDidPromptForRating {}
 - (void)iRateUserDidAttemptToRateApp {}
 - (void)iRateUserDidDeclineToRateApp {}
@@ -115,6 +124,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 @property (nonatomic, strong) id visibleAlert;
 @property (nonatomic, assign) BOOL checkingForPrompt;
 @property (nonatomic, assign) BOOL checkingForAppStoreID;
+@property (nonatomic, assign) BOOL feedbackAlert;
 
 @end
 
@@ -224,7 +234,9 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.remindPeriod = 1.0f;
         self.verboseLogging = NO;
         self.previewMode = NO;
-
+#if TARGET_OS_IPHONE
+        self.shouldAskSentiment = NO;
+#endif
 #if DEBUG
 
         //enable verbose logging in debug mode
@@ -293,6 +305,36 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 - (NSString *)remindButtonLabel
 {
     return _remindButtonLabel ?: [self localizedStringForKey:iRateRemindButtonKey withDefault:@"Remind Me Later"];
+}
+
+- (NSString *)sentimentPositiveButtonLabel
+{
+    return _sentimentPositiveButtonLabel ?: [self localizedStringForKey:iRateSentimentPostitiveButtonKey withDefault:@"Yes"];
+}
+
+- (NSString *)sentimentNegativeButtonLabel
+{
+    return _sentimentNegativeButtonLabel ?: [self localizedStringForKey:iRateSentimentNegativeButtonKey withDefault:@"No"];
+}
+
+- (NSString *)messageSentiment
+{
+    NSString *message = _messageSentiment;
+    if (!message)
+    {
+        message = (self.appStoreGenreID == iRateAppStoreGameGenreID)? [self localizedStringForKey:iRateGameMessageSentimentKey withDefault:@"Do you enjoy playing %@?"]: [self localizedStringForKey:iRateAppMessageSentimentKey withDefault:@"Do you enjoy using %@?"];
+    }
+    return [message stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
+}
+
+- (NSString *)updateMessageSentiment
+{
+    NSString *updateMessage = _updateMessageSentiment;
+    if (!updateMessage)
+    {
+        updateMessage = [self localizedStringForKey:iRateUpdateMessageKey withDefault:self.messageSentiment];
+    }
+    return [updateMessage stringByReplacingOccurrencesOfString:@"%@" withString:self.applicationName];
 }
 
 - (NSURL *)ratingsURL
@@ -624,18 +666,34 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         //no longer checking
         self.checkingForPrompt = NO;
 
-        //confirm with delegate
-        if (![self.delegate iRateShouldPromptForRating])
+#if TARGET_OS_IPHONE
+        if(self.shouldAskSentiment && [self canDeviceSendEmail] && ([self developerEmail] != nil || [self.delegate respondsToSelector:@selector(iRatePromptForFeedback)]) )
         {
-            if (self.verboseLogging)
+            //confirm with delegate
+            if (![self.delegate iRateShouldPromptForSentiment])
             {
-                NSLog(@"iRate did not display the rating prompt because the iRateShouldPromptForRating delegate method returned NO");
+                if (self.verboseLogging)
+                {
+                    NSLog(@"iRate did not display the sentiment prompt because the iRateShouldPromptForSentiment delegate method returned NO");
+                }
+                return;
             }
-            return;
+            [self promptForSentiment];
         }
-
-        //prompt user
-        [self promptForRating];
+        else
+#endif
+        {
+            //confirm with delegate
+            if (![self.delegate iRateShouldPromptForRating])
+            {
+                if (self.verboseLogging)
+                {
+                    NSLog(@"iRate did not display the rating prompt because the iRateShouldPromptForRating delegate method returned NO");
+                }
+                return;
+            }
+            [self promptForRating];
+        }
     }
 }
 
@@ -837,12 +895,164 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     return [self.cancelButtonLabel length];
 }
 
+-(NSString*)developerEmail
+{
+    return _developerEmail;
+}
+
+- (void)promptForFeedback
+{
+#if TARGET_OS_IPHONE
+    if ([self canDeviceSendEmail])
+    {
+        MFMailComposeViewController *mPicker = [[MFMailComposeViewController alloc] init];
+        mPicker.mailComposeDelegate = (id<MFMailComposeViewControllerDelegate>)self;
+        [mPicker setSubject:@"Feedback"];
+            
+        NSArray *toRecipients = @[[self developerEmail]];
+            
+        [mPicker setToRecipients:toRecipients];
+            
+        UIDevice *currentDevice = [UIDevice currentDevice];
+        NSString *model = [currentDevice model];
+        NSString *systemVersion = [currentDevice systemVersion];
+        
+        NSArray *languageArray = [NSLocale preferredLanguages];
+        NSString *language = languageArray[0];
+        NSLocale *locale = [NSLocale currentLocale];
+        NSString *country = [locale localeIdentifier];
+        NSString *appVersion = [[NSBundle mainBundle]
+                                    objectForInfoDictionaryKey:(__bridge NSString *)kCFBundleVersionKey];
+        NSString *deviceSpecs = [NSString stringWithFormat:@"%@ \n\n\n\n\n\n %@ \n OS - %@ \n Lang - %@ \n Country - %@  \n App Version - %@", @"Main Body", model, systemVersion, language, country, appVersion];
+            
+        [mPicker setMessageBody:deviceSpecs isHTML:NO];
+            
+        UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
+        while (topController.presentedViewController)
+        {
+            topController = topController.presentedViewController;
+        }
+            
+        self.visibleAlert = mPicker;
+            
+        [topController presentViewController:mPicker animated:YES completion:nil];
+    }
+    else if(self.verboseLogging)
+    {
+        NSLog(@"MFMailComposeViewController isn't available please add MessageUI.framework to project or check that mail at least one mail account has been setup");
+    }
+#endif
+}
+
+- (void)promptForSentiment
+{
+    if (!self.visibleAlert)
+    {
+        NSString *message = self.ratedAnyVersion? self.updateMessageSentiment: self.messageSentiment;
+        self.feedbackAlert = YES;
+#if TARGET_OS_IPHONE
+        
+        UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
+        while (topController.presentedViewController)
+        {
+            topController = topController.presentedViewController;
+        }
+        
+        if ([UIAlertController class] && topController && self.useUIAlertControllerIfAvailable)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+            
+            //cancel action
+            if ([self showCancelButton])
+            {
+                [alert addAction:[UIAlertAction actionWithTitle:self.cancelButtonLabel style:UIAlertActionStyleCancel handler:^(__unused UIAlertAction *action) {
+                    [self didDismissAlert:alert withButtonAtIndex:[self showCancelButton]? 2: 1];
+                }]];
+            }
+            
+            //posititve action
+            [alert addAction:[UIAlertAction actionWithTitle:self.sentimentPositiveButtonLabel style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
+                [self didDismissAlert:alert withButtonAtIndex:[self showCancelButton]? 2: 1];
+            }]];
+            
+            //negative action
+            [alert addAction:[UIAlertAction actionWithTitle:self.sentimentNegativeButtonLabel style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
+                [self didDismissAlert:alert withButtonAtIndex:[self showCancelButton]? 1: 0];
+            }]];
+            
+            self.visibleAlert = alert;
+            
+            //get current view controller and present alert
+            [topController presentViewController:alert animated:YES completion:NULL];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:message
+                                                           delegate:(id<UIAlertViewDelegate>)self
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:self.sentimentPositiveButtonLabel, nil];
+            if ([self showCancelButton])
+            {
+                [alert addButtonWithTitle:self.cancelButtonLabel];
+                alert.cancelButtonIndex = 1;
+            }
+            
+            [alert addButtonWithTitle:self.sentimentNegativeButtonLabel];
+            
+            self.visibleAlert = alert;
+            [self.visibleAlert show];
+        }
+        
+#else
+        
+        //only show when main window is available
+        if (self.onlyPromptIfMainWindowIsAvailable && ![[NSApplication sharedApplication] mainWindow])
+        {
+            [self performSelector:@selector(promptForRating) withObject:nil afterDelay:0.5];
+            return;
+        }
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = message;
+        [alert addButtonWithTitle:self.sentimentPositiveButtonLabel];
+        [alert addButtonWithTitle:self.sentimentNegativeButtonLabel];
+        
+        if ([self showCancelButton])
+        {
+            [alert addButtonWithTitle:self.cancelButtonLabel];
+        }
+        
+        self.visibleAlert = alert;
+        
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_9
+        
+        if (![alert respondsToSelector:@selector(beginSheetModalForWindow:completionHandler:)])
+        {
+            [alert beginSheetModalForWindow:[NSApplication sharedApplication].mainWindow
+                              modalDelegate:self
+                             didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
+                                contextInfo:nil];
+        }
+        else
+#endif
+            
+        {
+            [alert beginSheetModalForWindow:[NSApplication sharedApplication].mainWindow completionHandler:^(NSModalResponse returnCode) {
+                [self didDismissAlert:alert withButtonAtIndex:returnCode - NSAlertFirstButtonReturn];
+            }];
+        }
+        
+#endif
+    }
+}
+
 - (void)promptForRating
 {
     if (!self.visibleAlert)
     {
         NSString *message = self.ratedAnyVersion? self.updateMessage: self.message;
-
+        self.feedbackAlert = NO;
 #if TARGET_OS_IPHONE
 
         UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
@@ -993,28 +1203,82 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
     }
 }
 
+#if TARGET_OS_IPHONE
+
+- (BOOL)canDeviceSendEmail
+{
+    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+    return mailClass != nil && [mailClass canSendMail];
+}
+
+- (void)mailComposeController:(id)controller didFinishWithResult:(__unused id)result error:(__unused id)error
+{
+    if ([self canDeviceSendEmail])
+    {
+        MFMailComposeViewController* viewController = (MFMailComposeViewController*)controller;
+        [viewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+#endif
+
 - (void)didDismissAlert:(__unused id)alertView withButtonAtIndex:(NSInteger)buttonIndex
 {
-    //get button indices
-    NSInteger rateButtonIndex = 0;
-    NSInteger cancelButtonIndex = [self showCancelButton]? 1: 0;
-    NSInteger remindButtonIndex = [self showRemindButton]? cancelButtonIndex + 1: 0;
-
-    if (buttonIndex == rateButtonIndex)
+#if TARGET_OS_IPHONE
+    if(self.feedbackAlert && self.shouldAskSentiment)
     {
-        [self rate];
+        //release alert
+        self.visibleAlert = nil;
+        
+        NSInteger postitiveButtonIndex = 0;
+        NSInteger cancelButtonIndex = [self showCancelButton]? 1: 0;
+        NSInteger negativeButtonIndex = cancelButtonIndex + 1;
+        
+        if (buttonIndex == postitiveButtonIndex)
+        {
+            [self promptForRating];
+        }
+        else if (buttonIndex == cancelButtonIndex)
+        {
+            [self declineThisVersion];
+        }
+        else if (buttonIndex == negativeButtonIndex)
+        {
+            [self declineThisVersion];
+            
+            //Have we setup custom feedback
+            if ([self.delegate respondsToSelector:@selector(iRatePromptForFeedback)])
+            {
+                [self.delegate iRatePromptForFeedback];
+            }
+            else
+            {
+                [self promptForFeedback];
+            }
+        }
     }
-    else if (buttonIndex == cancelButtonIndex)
+    else
+#endif
     {
-        [self declineThisVersion];
+        //get button indices
+        NSInteger rateButtonIndex = 0;
+        NSInteger cancelButtonIndex = [self showCancelButton]? 1: 0;
+        NSInteger remindButtonIndex = [self showRemindButton]? cancelButtonIndex + 1: 0;
+    
+        if (buttonIndex == rateButtonIndex)
+        {
+            [self rate];
+        }
+        else if (buttonIndex == cancelButtonIndex)
+        {
+            [self declineThisVersion];
+        }
+        else if (buttonIndex == remindButtonIndex)
+        {
+            [self remindLater];
+        }
+        //release alert
+        self.visibleAlert = nil;
     }
-    else if (buttonIndex == remindButtonIndex)
-    {
-        [self remindLater];
-    }
-
-    //release alert
-    self.visibleAlert = nil;
 }
 
 #if TARGET_OS_IPHONE

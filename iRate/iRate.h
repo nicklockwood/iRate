@@ -75,6 +75,11 @@ IRATE_EXTERN NSString *const iRateCancelButtonKey; //iRateCancelButton
 IRATE_EXTERN NSString *const iRateRemindButtonKey; //iRateRemindButton
 IRATE_EXTERN NSString *const iRateRateButtonKey; //iRateRateButton
 
+IRATE_EXTERN NSString *const iRateAppMessageSentimentKey; //iRateAppMessageSentimentKey
+IRATE_EXTERN NSString *const iRateGameMessageSentimentKey; //iRateGameMessageSentimentKey
+IRATE_EXTERN NSString *const iRateSentimentPostitiveButtonKey; //iRateSentimentPostitiveButtonKey
+IRATE_EXTERN NSString *const iRateSentimentNegativeButtonKey; //iRateSentimentNegativeButtonKey
+
 //notification keys
 IRATE_EXTERN NSString *const iRateCouldNotConnectToAppStore;
 IRATE_EXTERN NSString *const iRateDidDetectAppUpdate;
@@ -100,12 +105,14 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 - (void)iRateCouldNotConnectToAppStore:(NSError *)error;
 - (void)iRateDidDetectAppUpdate;
 - (BOOL)iRateShouldPromptForRating;
+- (BOOL)iRateShouldPromptForSentiment;
 - (void)iRateDidPromptForRating;
 - (void)iRateUserDidAttemptToRateApp;
 - (void)iRateUserDidDeclineToRateApp;
 - (void)iRateUserDidRequestReminderToRateApp;
 - (BOOL)iRateShouldOpenAppStore;
 - (void)iRateDidOpenAppStore;
+- (void)iRatePromptForFeedback;
 
 @end
 
@@ -136,9 +143,17 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, copy) NSString *messageTitle;
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, copy) NSString *updateMessage;
+
+@property (nonatomic, copy) NSString *messageTitleSentiment;
+@property (nonatomic, copy) NSString *messageSentiment;
+@property (nonatomic, copy) NSString *updateMessageSentiment;
+@property (nonatomic, copy) NSString *developerEmail;
+
 @property (nonatomic, copy) NSString *cancelButtonLabel;
 @property (nonatomic, copy) NSString *remindButtonLabel;
 @property (nonatomic, copy) NSString *rateButtonLabel;
+@property (nonatomic, copy) NSString *sentimentPositiveButtonLabel;
+@property (nonatomic, copy) NSString *sentimentNegativeButtonLabel;
 
 //debugging and prompt overrides
 @property (nonatomic, assign) BOOL useUIAlertControllerIfAvailable;
@@ -162,6 +177,10 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, assign) BOOL ratedThisVersion;
 @property (nonatomic, readonly) BOOL ratedAnyVersion;
 @property (nonatomic, weak_delegate) id<iRateDelegate> delegate;
+
+#if TARGET_OS_IPHONE
+@property (nonatomic, assign) BOOL shouldAskSentiment;
+#endif
 
 //manually control behaviour
 - (BOOL)shouldPromptForRating;
