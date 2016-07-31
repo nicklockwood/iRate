@@ -167,6 +167,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 - (void)promptIfAllCriteriaMet;
 - (void)openRatingsPageInAppStore;
 - (void)logEvent:(BOOL)deferPrompt;
+- (void)remindLater; // Exposed this method
 
 @end
 
