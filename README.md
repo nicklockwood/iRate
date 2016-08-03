@@ -226,11 +226,11 @@ This method will check if all prompting criteria have been met, and if the app s
 
 This method skips the user alert and opens the application ratings page in the Mac or iPhone app store, depending on which platform iRate is running on. This method does not perform any checks to verify that the machine has network access or that the app store is available. It also does not call the `-iRateShouldOpenAppStore` delegate method. You should use this method to open the ratings page instead of the ratingsURL property, as the process for launching the app store is more complex than merely opening the URL in many cases. Note that this method depends on the `appStoreID` which is only retrieved after polling the iTunes server. If you call this method without first doing an update check, you will either need to set the `appStoreID` property yourself beforehand, or risk that the method may take some time to make a network call, or fail entirely. On success, this method will call the `-iRateDidOpenAppStore` delegate method. On Failure it will call the `-iRateCouldNotConnectToAppStore:` delegate method.
 
-- (void)logEvent:(BOOL)deferPrompt;
+    - (void)logEvent:(BOOL)deferPrompt;
 
 This method can be called from anywhere in your app (after iRate has been configured) and increments the iRate significant event count. When the predefined number of events is reached, the rating prompt will be shown. The optional deferPrompt parameter is used to determine if the prompt will be shown immediately (NO) or if the app will wait until the next launch (YES).
 
-- (void)remindLater;
+    - (void)remindLater;
 
 This method resets the reminder period.
 
