@@ -1,6 +1,6 @@
 iRate
 
-Version 1.11.5, July 31st, 2016
+Version 1.11.6, August 4th, 2016
 
 Copyright (C) 2011 Charcoal Design
 

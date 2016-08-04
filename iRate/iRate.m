@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.11.5
+//  Version 1.11.6
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -664,7 +664,15 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)checkForConnectivityInBackground
 {
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
+
+#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0) \
+ || (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_10)
+#define IRATE_BACKGROUND_QUEUE QOS_CLASS_BACKGROUND
+#else
+#define IRATE_BACKGROUND_QUEUE DISPATCH_QUEUE_PRIORITY_BACKGROUND
+#endif
+
+    dispatch_async(dispatch_get_global_queue(IRATE_BACKGROUND_QUEUE, 0), ^{
         [self checkForConnectivity];
     });
 }

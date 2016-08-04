@@ -332,6 +332,10 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.11.6
+
+- Fixed compatibility with iOS 7
+
 Version 1.11.5
 
 - Now uses https URLs to avoid issues with App Transport Security
