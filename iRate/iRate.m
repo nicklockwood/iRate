@@ -771,6 +771,11 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                         {
                             _userRatingCountForCurrentVersion = [[self valueForKey:@"userRatingCountForCurrentVersion" inJSON:json] integerValue];
                         }
+                        
+                        if (self.averageUserRatingForCurrentVersion == 0.0)
+                        {
+                            _averageUserRatingForCurrentVersion = [[self valueForKey:@"averageUserRatingForCurrentVersion" inJSON:json] floatValue];
+                        }
                     }
                     else
                     {
