@@ -43,7 +43,7 @@
 {
 	//perform manual check
 	[[iRate sharedInstance] promptIfNetworkAvailable];
-	[label setStringValue:@"Connecting to App Store..."];
+	[label setStringValue:NSLocalizedString(@"Connecting to App Store...", nil)];
 	[progressIndicator startAnimation:self];
 }
 
@@ -60,7 +60,7 @@
 {
 	//don't show prompt, just open app store
 	[[iRate sharedInstance] openRatingsPageInAppStore];
-	[label setStringValue:@"Connected."];
+	[label setStringValue:NSLocalizedString(@"Connected.", nil)];
 	[progressIndicator stopAnimation:self];
 	return NO;
 }

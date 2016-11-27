@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.11.6
+//  Version 1.11.7
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -40,7 +40,6 @@
 #endif
 
 
-#pragma clang diagnostic ignored "-Wreceiver-is-weak"
 #pragma clang diagnostic ignored "-Warc-repeated-use-of-weak"
 #pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
 #pragma clang diagnostic ignored "-Wdirect-ivar-access"
@@ -803,21 +802,18 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             error = [NSError errorWithDomain:@"HTTPResponseErrorDomain" code:statusCode userInfo:@{NSLocalizedDescriptionKey: message}];
         }
 
-        //handle errors (ignoring sandbox issues)
-        if (error && !(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && _appStoreID))
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //handle errors (ignoring sandbox issues)
+            if (error && !(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && _appStoreID))
+            {
                 [self connectionError:error];
-            });
-        }
-        else if (self.appStoreID || self.previewMode)
-        {
-            //show prompt
-            dispatch_async(dispatch_get_main_queue(), ^{
+            }
+            else if (self.appStoreID || self.previewMode)
+            {
+                //show prompt
                 [self connectionSucceeded];
-            });
-        }
-
+            }
+        });
     }
 }
 
@@ -1087,16 +1083,33 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #endif
 
+    void (^handler)(NSString *errorMessage) = ^(NSString *errorMessage)
+    {
+        if (errorMessage)
+        {
+            NSLog(@"%@", errorMessage);
+            NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
+            if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
+            {
+                [self.delegate iRateCouldNotConnectToAppStore:error];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
+                                                                object:error];
+        }
+        else
+        {
+            if ([self.delegate respondsToSelector:@selector(iRateDidOpenAppStore)])
+            {
+                [self.delegate iRateDidOpenAppStore];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidOpenAppStore
+                                                                object:nil];
+        }
+    };
+
     if (cantOpenMessage)
     {
-        NSLog(@"%@", cantOpenMessage);
-        NSError *error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorCouldNotOpenRatingPageURL userInfo:@{NSLocalizedDescriptionKey: cantOpenMessage}];
-        if ([self.delegate respondsToSelector:@selector(iRateCouldNotConnectToAppStore:)])
-        {
-            [self.delegate iRateCouldNotConnectToAppStore:error];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:iRateCouldNotConnectToAppStore
-                                                            object:error];
+        handler(cantOpenMessage);
     }
     else
     {
@@ -1105,13 +1118,23 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
             NSLog(@"iRate will open the App Store ratings page using the following URL: %@", self.ratingsURL);
         }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
+
+        [[UIApplication sharedApplication] openURL:self.ratingsURL options:@{} completionHandler:^(BOOL success){
+            if (success)
+            {
+                handler(nil);
+            }
+            else
+            {
+                handler([NSString stringWithFormat:@"iRate was unable to open the specified ratings URL: %@", self.ratingsURL]);
+            }
+        }];
+#else
         [[UIApplication sharedApplication] openURL:self.ratingsURL];
-        if ([self.delegate respondsToSelector:@selector(iRateDidOpenAppStore)])
-        {
-            [self.delegate iRateDidOpenAppStore];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidOpenAppStore
-                                                        object:nil];
+        handler(nil);
+#endif
+
     }
 }
 
