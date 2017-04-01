@@ -92,6 +92,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #define IOS_7_0 7.0
 #define IOS_7_1 7.1
+#define IOS_10_3 10.3
 
 
 #define SECONDS_IN_A_DAY 86400.0
@@ -852,7 +853,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #if TARGET_OS_IPHONE
         float iOSVersion = [[UIDevice currentDevice].systemVersion floatValue];
-        if(self.useStoreReviewController && iOSVersion >= __IPHONE_10_3) {
+        if(self.useStoreReviewController && iOSVersion >= IOS_10_3) {
             [SKStoreReviewController requestReview];
         } else {
             UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
