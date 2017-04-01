@@ -47,6 +47,7 @@
 #import <TargetConditionals.h>
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
+#import <StoreKit/StoreKit.h>
 #define IRATE_EXTERN UIKIT_EXTERN
 #else
 #import <Cocoa/Cocoa.h>
@@ -128,6 +129,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, assign) float daysUntilPrompt;
 @property (nonatomic, assign) float usesPerWeekForPrompt;
 @property (nonatomic, assign) float remindPeriod;
+@property (nonatomic, assign) BOOL useStoreReviewController;
 
 //message text, you may wish to customise these
 @property (nonatomic, copy) NSString *messageTitle;
