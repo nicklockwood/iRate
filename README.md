@@ -296,7 +296,7 @@ It is not recommended that you modify the strings files in the iRate.bundle, as 
 
 If you want to add an additional language for iRate in your app without submitting them back to the github project, you can add these strings directly to the appropriate Localizable.strings file in your project folder. If you wish to replace some or all of the default iRate strings, the simplest option is to copy just those strings into your own Localizable.strings file and then modify them. iRate will automatically use strings in the main application bundle in preference to the ones in the iRate bundle so you can override any string in this way.
 
-If you do not want to use *any* of the default localisations, you can omit the iRate.bundle altogether. Note that if you only want to support a subset of languages that iRate supports, it is not neccesary to delete the other strings files from iRate.bundle - just set `useAllAvailableLanguages` to NO, and iRate will only use the languages that your app already supports.
+If you do not want to use *any* of the default localisations, you can omit the iRate.bundle altogether. Note that if you only want to support a subset of languages that iRate supports, it is not necessary to delete the other strings files from iRate.bundle - just set `useAllAvailableLanguages` to NO, and iRate will only use the languages that your app already supports.
 
 The old method of overriding iRate's default strings by using individual setter methods (see below) is still supported, however the recommended approach is now to add those strings to your project's Localizable.strings file, which will be detected automatically by iRate.
 
@@ -487,7 +487,7 @@ Version 1.7.1
 - Fixed deprecation warning when targeting iOS6 as the base target
 - Added iRateDidPresentStoreKitModal and iRateDidDismissStoreKitModal delegate methods
 - Added additional error logging if StoreKit fails to load product info
-- Added Ukranian translation
+- Added Ukrainian translation
 
 Version 1.7
 
