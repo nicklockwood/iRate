@@ -699,7 +699,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSError *error = nil;
         NSURLResponse *response = nil;
         NSURL *url = [NSURL URLWithString:iTunesServiceURL];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIMEOUT];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:REQUEST_TIMEOUT];
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
