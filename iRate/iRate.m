@@ -92,6 +92,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #define IOS_7_0 7.0
 #define IOS_7_1 7.1
+#define IOS_10_3 10.3
 
 
 #define SECONDS_IN_A_DAY 86400.0
@@ -851,70 +852,73 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         NSString *message = self.ratedAnyVersion? self.updateMessage: self.message;
 
 #if TARGET_OS_IPHONE
-
-        UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
-        while (topController.presentedViewController)
-        {
-            topController = topController.presentedViewController;
-        }
-
-        if ([UIAlertController class] && topController && self.useUIAlertControllerIfAvailable)
-        {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:self.messageTitle message:message preferredStyle:UIAlertControllerStyleAlert];
-
-            //rate action
-            [alert addAction:[UIAlertAction actionWithTitle:self.rateButtonLabel style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
-                [self didDismissAlert:alert withButtonAtIndex:0];
-            }]];
-
-            //cancel action
-            if ([self showCancelButton])
+        float iOSVersion = [[UIDevice currentDevice].systemVersion floatValue];
+        if(self.useStoreReviewController && iOSVersion >= IOS_10_3) {
+            [SKStoreReviewController requestReview];
+        } else {
+            UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
+            while (topController.presentedViewController)
             {
-                [alert addAction:[UIAlertAction actionWithTitle:self.cancelButtonLabel style:UIAlertActionStyleCancel handler:^(__unused UIAlertAction *action) {
-                    [self didDismissAlert:alert withButtonAtIndex:1];
+                topController = topController.presentedViewController;
+            }
+
+            if ([UIAlertController class] && topController && self.useUIAlertControllerIfAvailable)
+            {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:self.messageTitle message:message preferredStyle:UIAlertControllerStyleAlert];
+
+                //rate action
+                [alert addAction:[UIAlertAction actionWithTitle:self.rateButtonLabel style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
+                    [self didDismissAlert:alert withButtonAtIndex:0];
                 }]];
-            }
 
-            //remind action
-            if ([self showRemindButton])
+                //cancel action
+                if ([self showCancelButton])
+                {
+                    [alert addAction:[UIAlertAction actionWithTitle:self.cancelButtonLabel style:UIAlertActionStyleCancel handler:^(__unused UIAlertAction *action) {
+                        [self didDismissAlert:alert withButtonAtIndex:1];
+                    }]];
+                }
+
+                //remind action
+                if ([self showRemindButton])
+                {
+                    [alert addAction:[UIAlertAction actionWithTitle:self.remindButtonLabel style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
+                        [self didDismissAlert:alert withButtonAtIndex:[self showCancelButton]? 2: 1];
+                    }]];
+                }
+
+                self.visibleAlert = alert;
+
+                //get current view controller and present alert
+                [topController presentViewController:alert animated:YES completion:NULL];
+            }
+            else
             {
-                [alert addAction:[UIAlertAction actionWithTitle:self.remindButtonLabel style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
-                    [self didDismissAlert:alert withButtonAtIndex:[self showCancelButton]? 2: 1];
-                }]];
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
+                                                                message:message
+                                                               delegate:(id<UIAlertViewDelegate>)self
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:self.rateButtonLabel, nil];
+    #pragma clang diagnostic pop
+
+                if ([self showCancelButton])
+                {
+                    [alert addButtonWithTitle:self.cancelButtonLabel];
+                    alert.cancelButtonIndex = 1;
+                }
+
+                if ([self showRemindButton])
+                {
+                    [alert addButtonWithTitle:self.remindButtonLabel];
+                }
+
+                self.visibleAlert = alert;
+                [self.visibleAlert show];
             }
-
-            self.visibleAlert = alert;
-
-            //get current view controller and present alert
-            [topController presentViewController:alert animated:YES completion:NULL];
         }
-        else
-        {
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.messageTitle
-                                                            message:message
-                                                           delegate:(id<UIAlertViewDelegate>)self
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:self.rateButtonLabel, nil];
-#pragma clang diagnostic pop
-
-            if ([self showCancelButton])
-            {
-                [alert addButtonWithTitle:self.cancelButtonLabel];
-                alert.cancelButtonIndex = 1;
-            }
-
-            if ([self showRemindButton])
-            {
-                [alert addButtonWithTitle:self.remindButtonLabel];
-            }
-
-            self.visibleAlert = alert;
-            [self.visibleAlert show];
-        }
-
 #else
 
         //only show when main window is available
