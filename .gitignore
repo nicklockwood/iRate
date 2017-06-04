@@ -7,3 +7,6 @@ xcuserdata
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Carthage
+Carthage/Build
