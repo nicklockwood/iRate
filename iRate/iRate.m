@@ -648,7 +648,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         else
         {
-            NSLog(@"iRate rating process failed because an unknown error occured");
+            NSLog(@"iRate rating process failed because an unknown error occurred");
         }
 
         //could not connect
