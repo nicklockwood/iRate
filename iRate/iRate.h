@@ -1,7 +1,7 @@
 //
 //  iRate.h
 //
-//  Version 1.11.7
+//  Version 1.12
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -129,7 +129,6 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, assign) float daysUntilPrompt;
 @property (nonatomic, assign) float usesPerWeekForPrompt;
 @property (nonatomic, assign) float remindPeriod;
-@property (nonatomic, assign) BOOL useStoreReviewController;
 
 //message text, you may wish to customise these
 @property (nonatomic, copy) NSString *messageTitle;
@@ -140,6 +139,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
 //debugging and prompt overrides
+@property (nonatomic, assign) BOOL useSKStoreReviewControllerIfAvailable;
 @property (nonatomic, assign) BOOL useUIAlertControllerIfAvailable;
 @property (nonatomic, assign) BOOL useAllAvailableLanguages;
 @property (nonatomic, assign) BOOL promptForNewVersionIfUserRated;

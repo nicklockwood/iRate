@@ -13,20 +13,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    override class func initialize() -> Void {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         //set the bundle ID. normally you wouldn't need to do this
         //as it is picked up automatically from your Info.plist file
         //but we want to test with an app that's actually on the store
-        iRate.sharedInstance().applicationBundleID = "com.charcoaldesign.rainbowblocks-free"
+        iRate.sharedInstance().applicationBundleID = "com.charcoaldesign.rainbowblocks"
         iRate.sharedInstance().onlyPromptIfLatestVersion = false
+        iRate.sharedInstance().useSKStoreReviewControllerIfAvailable = false
 
         //enable preview mode
         iRate.sharedInstance().previewMode = true
-    }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         return true
     }
 }
