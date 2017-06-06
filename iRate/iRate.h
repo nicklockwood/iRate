@@ -156,6 +156,10 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, assign) NSUInteger usesCount;
 @property (nonatomic, assign) NSUInteger eventCount;
 @property (nonatomic, readonly) float usesPerWeek;
+@property (nonatomic, readonly) float averageUserRating;
+@property (nonatomic, readonly) NSUInteger userRatingCount;
+@property (nonatomic, readonly) float averageUserRatingForCurrentVersion;
+@property (nonatomic, readonly) NSUInteger userRatingCountForCurrentVersion;
 @property (nonatomic, assign) BOOL declinedThisVersion;
 @property (nonatomic, readonly) BOOL declinedAnyVersion;
 @property (nonatomic, assign) BOOL ratedThisVersion;

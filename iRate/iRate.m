@@ -752,6 +752,26 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
                                 error = [NSError errorWithDomain:iRateErrorDomain code:iRateErrorApplicationIsNotLatestVersion userInfo:@{NSLocalizedDescriptionKey: @"Installed app is not the latest version available"}];
                             }
                         }
+                        
+                        if (self.userRatingCount == 0)
+                        {
+                            _userRatingCount = [[self valueForKey:@"userRatingCount" inJSON:json] integerValue];
+                        }
+                        
+                        if (self.averageUserRating == 0.0)
+                        {
+                            _averageUserRating = [[self valueForKey:@"averageUserRating" inJSON:json] floatValue];
+                        }
+                        
+                        if (self.userRatingCountForCurrentVersion == 0)
+                        {
+                            _userRatingCountForCurrentVersion = [[self valueForKey:@"userRatingCountForCurrentVersion" inJSON:json] integerValue];
+                        }
+                        
+                        if (self.averageUserRatingForCurrentVersion == 0.0)
+                        {
+                            _averageUserRatingForCurrentVersion = [[self valueForKey:@"averageUserRatingForCurrentVersion" inJSON:json] floatValue];
+                        }
                     }
                     else
                     {
