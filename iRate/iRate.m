@@ -39,6 +39,7 @@
 #error This class requires automatic reference counting
 #endif
 
+#define STOREKIT_REVIEW_AVAILABLE ( defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_2)
 
 #pragma clang diagnostic ignored "-Warc-repeated-use-of-weak"
 #pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
