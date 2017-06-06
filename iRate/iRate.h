@@ -54,7 +54,6 @@
 #define IRATE_EXTERN APPKIT_EXTERN
 #endif
 
-
 //! Project version number for iRate.
 FOUNDATION_EXPORT double iRateVersionNumber;
 
@@ -139,6 +138,7 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
 //debugging and prompt overrides
+
 @property (nonatomic, assign) BOOL useSKStoreReviewControllerIfAvailable;
 @property (nonatomic, assign) BOOL useUIAlertControllerIfAvailable;
 @property (nonatomic, assign) BOOL useAllAvailableLanguages;

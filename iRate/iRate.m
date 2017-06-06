@@ -39,6 +39,7 @@
 #error This class requires automatic reference counting
 #endif
 
+#define STOREKIT_REVIEW_AVAILABLE ( defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_2)
 
 #pragma clang diagnostic ignored "-Warc-repeated-use-of-weak"
 #pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
@@ -200,7 +201,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
         //default settings
         self.useAllAvailableLanguages = YES;
-        self.useSKStoreReviewControllerIfAvailable = YES;
         self.promptForNewVersionIfUserRated = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
@@ -213,6 +213,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.verboseLogging = NO;
         self.previewMode = NO;
 
+#if STOREKIT_REVIEW_AVAILABLE
+        self.useSKStoreReviewControllerIfAvailable = YES;
+#endif
+        
 #if DEBUG
 
         //enable verbose logging in debug mode
@@ -845,11 +849,20 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #if TARGET_OS_IPHONE
 
-        if (!manual && self.useSKStoreReviewControllerIfAvailable &&
-            [SKStoreReviewController respondsToSelector:@selector(requestReview)])
+        BOOL storeReviewAvailable = NO;
+        
+#if STOREKIT_REVIEW_AVAILABLE
+        storeReviewAvailable = self.useSKStoreReviewControllerIfAvailable;
+#endif
+        
+        if (!manual && storeReviewAvailable)
         {
             [self remindLater];
+            
+#if STOREKIT_REVIEW_AVAILABLE
             [SKStoreReviewController requestReview];
+#endif
+            
         }
         else
         {
