@@ -200,7 +200,6 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
         //default settings
         self.useAllAvailableLanguages = YES;
-        self.useSKStoreReviewControllerIfAvailable = YES;
         self.promptForNewVersionIfUserRated = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
@@ -213,6 +212,10 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.verboseLogging = NO;
         self.previewMode = NO;
 
+#if STOREKIT_REVIEW_AVAILABLE
+        self.useSKStoreReviewControllerIfAvailable = YES;
+#endif
+        
 #if DEBUG
 
         //enable verbose logging in debug mode
@@ -845,11 +848,20 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #if TARGET_OS_IPHONE
 
-        if (!manual && self.useSKStoreReviewControllerIfAvailable &&
-            [SKStoreReviewController respondsToSelector:@selector(requestReview)])
+        BOOL storeReviewAvailable = NO;
+        
+#if STOREKIT_REVIEW_AVAILABLE
+        storeReviewAvailable = self.useSKStoreReviewControllerIfAvailable;
+#endif
+        
+        if (!manual && storeReviewAvailable)
         {
             [self remindLater];
+            
+#if STOREKIT_REVIEW_AVAILABLE
             [SKStoreReviewController requestReview];
+#endif
+            
         }
         else
         {

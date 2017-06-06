@@ -54,6 +54,7 @@
 #define IRATE_EXTERN APPKIT_EXTERN
 #endif
 
+#define STOREKIT_REVIEW_AVAILABLE ( defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_2)
 
 //! Project version number for iRate.
 FOUNDATION_EXPORT double iRateVersionNumber;
@@ -139,7 +140,10 @@ typedef NS_ENUM(NSUInteger, iRateErrorCode)
 @property (nonatomic, copy) NSString *rateButtonLabel;
 
 //debugging and prompt overrides
+#if STOREKIT_REVIEW_AVAILABLE
 @property (nonatomic, assign) BOOL useSKStoreReviewControllerIfAvailable;
+#endif
+
 @property (nonatomic, assign) BOOL useUIAlertControllerIfAvailable;
 @property (nonatomic, assign) BOOL useAllAvailableLanguages;
 @property (nonatomic, assign) BOOL promptForNewVersionIfUserRated;
