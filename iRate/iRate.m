@@ -1,7 +1,7 @@
 //
 //  iRate.m
 //
-//  Version 1.12
+//  Version 1.12.1
 //
 //  Created by Nick Lockwood on 26/01/2011.
 //  Copyright 2011 Charcoal Design
@@ -38,8 +38,6 @@
 #if !__has_feature(objc_arc)
 #error This class requires automatic reference counting
 #endif
-
-#define STOREKIT_REVIEW_AVAILABLE ( defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_2)
 
 #pragma clang diagnostic ignored "-Warc-repeated-use-of-weak"
 #pragma clang diagnostic ignored "-Wobjc-missing-property-synthesis"
@@ -212,11 +210,8 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.remindPeriod = 1.0;
         self.verboseLogging = NO;
         self.previewMode = NO;
-
-#if STOREKIT_REVIEW_AVAILABLE
         self.useSKStoreReviewControllerIfAvailable = YES;
-#endif
-        
+
 #if DEBUG
 
         //enable verbose logging in debug mode
@@ -796,7 +791,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
         dispatch_async(dispatch_get_main_queue(), ^{
             //handle errors (ignoring sandbox issues)
-            if (error && !(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && _appStoreID))
+            if (error && !(error.code == EPERM && [error.domain isEqualToString:NSPOSIXErrorDomain] && self.appStoreID))
             {
                 [self connectionError:error];
             }
@@ -849,22 +844,15 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 #if TARGET_OS_IPHONE
 
-        BOOL storeReviewAvailable = NO;
-        
-#if STOREKIT_REVIEW_AVAILABLE
-        storeReviewAvailable = self.useSKStoreReviewControllerIfAvailable;
-#endif
-        
-        if (!manual && storeReviewAvailable)
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_2
+
+        if (!manual && [SKStoreReviewController class])
         {
             [self remindLater];
-            
-#if STOREKIT_REVIEW_AVAILABLE
             [SKStoreReviewController requestReview];
-#endif
-            
         }
         else
+#endif
         {
             UIViewController *topController = [UIApplication sharedApplication].delegate.window.rootViewController;
             while (topController.presentedViewController)

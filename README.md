@@ -339,6 +339,10 @@ The example is for Mac OS, but the same principle can be applied on iOS.
 Release Notes
 -----------------
 
+Version 1.12.1
+
+- Fixed problems compiling on older Xcode versions due to SKStoreReviewController
+
 Version 1.12
 
 - Added support for SKStoreReviewController on iOS 10.3+ (thanks @EpicDraws!)
