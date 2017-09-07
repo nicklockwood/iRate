@@ -209,7 +209,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.promptForNewVersionIfUserRated = NO;
         self.onlyPromptIfLatestVersion = YES;
         self.onlyPromptIfMainWindowIsAvailable = YES;
-        self.promptAtLaunch = YES;
+        self.promptAtLaunch = NO;
         self.usesUntilPrompt = 10;
         self.eventsUntilPrompt = 10;
         self.daysUntilPrompt = 10.0;
@@ -870,6 +870,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)promptForRating
 {
+#if FALSE
     if (!self.visibleAlert)
     {
         NSString *message = self.ratedAnyVersion? self.updateMessage: self.message;
@@ -992,6 +993,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         [[NSNotificationCenter defaultCenter] postNotificationName:iRateDidPromptForRating
                                                             object:nil];
     }
+#endif
 }
 
 - (void)applicationLaunched
