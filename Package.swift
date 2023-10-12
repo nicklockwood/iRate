@@ -20,9 +20,5 @@ let package = Package(
 		.target(
 			name: "iRate",
 		),
-		.testTarget(
-			name: "iRate",
-			dependencies: ["iRate"]
-		),
 	]
 )
