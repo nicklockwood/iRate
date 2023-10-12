@@ -19,6 +19,6 @@ let package = Package(
 	targets: [
 		.target(
 			name: "iRate",
-		),
+		)
 	]
 )
