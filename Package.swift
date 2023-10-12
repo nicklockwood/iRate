@@ -22,6 +22,6 @@ let package = Package(
 		.target(
 			name: "iRate",
 			dependencies: [],
-			path: "Sources/iRate"),
+			path: "Sources"),
 	]
 )
