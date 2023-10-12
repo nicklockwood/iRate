@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
 	name: "iRate",
+	defaultLocalization: "en",
 	platforms: [
 		.iOS(.v13), // Adjust as needed
 	],
