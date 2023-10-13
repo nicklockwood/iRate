@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7.1
 import PackageDescription
 
 let package = Package(
@@ -13,6 +13,7 @@ let package = Package(
 	targets: [
 		.target(
 			name: "iRate",
-			path: "Sources/iRate")
+			path: "Sources",
+			publicHeadersPath: ""),
 	]
 )
